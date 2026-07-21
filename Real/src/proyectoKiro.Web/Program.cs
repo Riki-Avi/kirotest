@@ -3,9 +3,9 @@ using proyectoKiro.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Registrar Razor Pages y Controllers
+// Registrar MVC (Controllers + Views Views/{Controller}/{Action}.cshtml) y Razor Pages
+builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
-builder.Services.AddControllers();
 
 // Registrar DbContext con PostgreSQL (Supabase)
 var connectionString = builder.Configuration.GetConnectionString("SupabaseConnection") 
@@ -28,6 +28,11 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
+// Ruta MVC predeterminada: Views/{Controller}/{Action}.cshtml
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapRazorPages();
 app.MapControllers();
