@@ -1,49 +1,153 @@
 [
   {
     "id": "exercise-1-reverse-string",
+    "emoji": "\uD83D\uDD24",
     "name": "Ejercicio 1: Invertir Cadena",
-    "emoji": "🔤",
+    "avatar": "",
     "description": "Crea un algoritmo que invierta una cadena de texto sin usar funciones nativas como Reverse().",
-    "systemInstruction": "Eres un Evaluador y Mentor Interactivo para el Ejercicio: 'Invertir una Cadena de Texto en C#'.\n\nENUNCIADO DEL EJERCICIO:\nCrea un método en C# llamado `string Invertir(string texto)` que reciba una cadena y devuelva el texto invertido (ej. 'hola' -> 'aloh').\nRESTRICCIÓN: No puedes utilizar métodos nativos como `Array.Reverse()` ni LINQ.\n\nREGLAS PARA EL MENTOR:\n1. Si el usuario te saluda o pregunta qué hacer, dale el enunciado de forma clara y amigable.\n2. Si el usuario te envía un bloque de código:\n   - Analiza su solución.\n   - Si tiene errores de sintaxis o lógica, NO le des la respuesta correcta directamente. Dale pistas progresivas para que razone por sí mismo.\n   - Si la solución es correcta y cumple con la restricción, felicítalo, explica por qué su código es eficiente y proponle una pequeña optimización o pregunta conceptual de seguimiento.",
+    "systemInstruction": "Eres un Evaluador y Mentor Interactivo para el Ejercicio: \u0027Invertir una Cadena de Texto en C#\u0027.\n\nENUNCIADO DEL EJERCICIO:\nCrea un m\u00E9todo en C# llamado \u0060string Invertir(string texto)\u0060 que reciba una cadena y devuelva el texto invertido (ej. \u0027hola\u0027 -\u003E \u0027aloh\u0027).\nRESTRICCI\u00D3N: No puedes utilizar m\u00E9todos nativos como \u0060Array.Reverse()\u0060 ni LINQ.\n\nREGLAS PARA EL MENTOR:\n1. Si el usuario te saluda o pregunta qu\u00E9 hacer, dale el enunciado de forma clara y amigable.\n2. Si el usuario te env\u00EDa un bloque de c\u00F3digo:\n   - Analiza su soluci\u00F3n.\n   - Si tiene errores de sintaxis o l\u00F3gica, NO le des la respuesta correcta directamente. Dale pistas progresivas para que razone por s\u00ED mismo.\n   - Si la soluci\u00F3n es correcta y cumple con la restricci\u00F3n, felic\u00EDtalo, explica por qu\u00E9 su c\u00F3digo es eficiente y proponle una peque\u00F1a optimizaci\u00F3n o pregunta conceptual de seguimiento.",
     "temperature": 0.5,
+    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        string resultado = Invertir(\u0022Hola Mundo\u0022);\n        Console.WriteLine($\u0022Resultado: {resultado}\u0022);\n    }\n\n    public static string Invertir(string texto)\n    {\n        // Escribe tu soluci\u00F3n aqu\u00ED (Sin usar Array.Reverse() ni LINQ)\n        return \u0022\u0022;\n    }\n}",
     "isCustom": false,
-    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        string resultado = Invertir(\"Hola Mundo\");\n        Console.WriteLine($\"Resultado: {resultado}\");\n    }\n\n    public static string Invertir(string texto)\n    {\n        // Escribe tu solución aquí (Sin usar Array.Reverse() ni LINQ)\n        return \"\";\n    }\n}",
     "testCases": [
-      { "id": 1, "description": "Cadena estándar con espacios", "methodCall": "Program.Invertir(\"Hola Mundo\")", "expectedOutput": "odnuM aloH" },
-      { "id": 2, "description": "Palabra corta ('C#')", "methodCall": "Program.Invertir(\"C#\")", "expectedOutput": "#C" },
-      { "id": 3, "description": "Cadena vacía ('')", "methodCall": "Program.Invertir(\"\")", "expectedOutput": "" },
-      { "id": 4, "description": "Palabra minúscula ('kiro')", "methodCall": "Program.Invertir(\"kiro\")", "expectedOutput": "orik" }
+      {
+        "id": "1",
+        "name": "",
+        "description": "Cadena est\u00E1ndar con espacios",
+        "input": "",
+        "expectedOutput": "odnuM aloH",
+        "methodCall": "Program.Invertir(\u0022Hola Mundo\u0022)"
+      },
+      {
+        "id": "2",
+        "name": "",
+        "description": "Palabra corta (\u0027C#\u0027)",
+        "input": "",
+        "expectedOutput": "#C",
+        "methodCall": "Program.Invertir(\u0022C#\u0022)"
+      },
+      {
+        "id": "3",
+        "name": "",
+        "description": "Cadena vac\u00EDa (\u0027\u0027)",
+        "input": "",
+        "expectedOutput": "",
+        "methodCall": "Program.Invertir(\u0022\u0022)"
+      },
+      {
+        "id": "4",
+        "name": "",
+        "description": "Palabra min\u00FAscula (\u0027kiro\u0027)",
+        "input": "",
+        "expectedOutput": "orik",
+        "methodCall": "Program.Invertir(\u0022kiro\u0022)"
+      }
     ]
   },
   {
     "id": "exercise-2-palindrome",
-    "name": "Ejercicio 2: Palíndromos",
-    "emoji": "🔄",
-    "description": "Verifica si una palabra o frase es un palíndromo (se lee igual al derecho y al revés).",
-    "systemInstruction": "Eres un Mentor Interactivo para el Ejercicio: 'Verificar Palíndromos en C#'.\n\nENUNCIADO DEL EJERCICIO:\nEscribe un método `bool EsPalindromo(string texto)` que devuelva true si el texto es un palíndromo (ej. 'Neuquen', 'Anita lava la tina') o false si no lo es. Debe ignorar mayúsculas, minúsculas y espacios.\n\nREGLAS PARA EL MENTOR:\n- Evalúa el código enviado por el alumno.\n- Pon a prueba su código con casos borde (espacios, mayúsculas, cadenas vacías).\n- Guíalo con preguntas socráticas si falla en algún caso borde.",
+    "emoji": "\uD83D\uDD04",
+    "name": "Ejercicio 2: Pal\u00EDndromos",
+    "avatar": "",
+    "description": "Verifica si una palabra o frase es un pal\u00EDndromo (se lee igual al derecho y al rev\u00E9s).",
+    "systemInstruction": "Eres un Mentor Interactivo para el Ejercicio: \u0027Verificar Pal\u00EDndromos en C#\u0027.\n\nENUNCIADO DEL EJERCICIO:\nEscribe un m\u00E9todo \u0060bool EsPalindromo(string texto)\u0060 que devuelva true si el texto es un pal\u00EDndromo (ej. \u0027Neuquen\u0027, \u0027Anita lava la tina\u0027) o false si no lo es. Debe ignorar may\u00FAsculas, min\u00FAsculas y espacios.\n\nREGLAS PARA EL MENTOR:\n- Eval\u00FAa el c\u00F3digo enviado por el alumno.\n- Pon a prueba su c\u00F3digo con casos borde (espacios, may\u00FAsculas, cadenas vac\u00EDas).\n- Gu\u00EDalo con preguntas socr\u00E1ticas si falla en alg\u00FAn caso borde.",
     "temperature": 0.5,
+    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine($\u0022\u00BFNeuquen es pal\u00EDndromo?: {EsPalindromo(\u0022Neuquen\u0022)}\u0022);\n        Console.WriteLine($\u0022\u00BFHola es pal\u00EDndromo?: {EsPalindromo(\u0022Hola\u0022)}\u0022);\n    }\n\n    public static bool EsPalindromo(string texto)\n    {\n        // Tu soluci\u00F3n aqu\u00ED\n        return false;\n    }\n}",
     "isCustom": false,
-    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine($\"¿Neuquen es palíndromo?: {EsPalindromo(\"Neuquen\")}\");\n        Console.WriteLine($\"¿Hola es palíndromo?: {EsPalindromo(\"Hola\")}\");\n    }\n\n    public static bool EsPalindromo(string texto)\n    {\n        // Tu solución aquí\n        return false;\n    }\n}",
     "testCases": [
-      { "id": 1, "description": "Palíndromo con mayúscula ('Neuquen')", "methodCall": "Program.EsPalindromo(\"Neuquen\")", "expectedOutput": "True" },
-      { "id": 2, "description": "Frase palíndromo con espacios ('Anita lava la tina')", "methodCall": "Program.EsPalindromo(\"Anita lava la tina\")", "expectedOutput": "True" },
-      { "id": 3, "description": "Palabra NO palíndromo ('Programacion')", "methodCall": "Program.EsPalindromo(\"Programacion\")", "expectedOutput": "False" }
+      {
+        "id": "1",
+        "name": "",
+        "description": "Pal\u00EDndromo con may\u00FAscula (\u0027Neuquen\u0027)",
+        "input": "",
+        "expectedOutput": "True",
+        "methodCall": "Program.EsPalindromo(\u0022Neuquen\u0022)"
+      },
+      {
+        "id": "2",
+        "name": "",
+        "description": "Frase pal\u00EDndromo con espacios (\u0027Anita lava la tina\u0027)",
+        "input": "",
+        "expectedOutput": "True",
+        "methodCall": "Program.EsPalindromo(\u0022Anita lava la tina\u0022)"
+      },
+      {
+        "id": "3",
+        "name": "",
+        "description": "Palabra NO pal\u00EDndromo (\u0027Programacion\u0027)",
+        "input": "",
+        "expectedOutput": "False",
+        "methodCall": "Program.EsPalindromo(\u0022Programacion\u0022)"
+      }
     ]
   },
   {
     "id": "exercise-3-fizzbuzz",
+    "emoji": "\uD83E\uDDE9",
     "name": "Ejercicio 3: FizzBuzz",
-    "emoji": "🧩",
-    "description": "El clásico reto FizzBuzz: múltiplos de 3, 5 y ambos.",
-    "systemInstruction": "Eres un Evaluador para el Ejercicio: 'FizzBuzz en C#'.\n\nENUNCIADO DEL EJERCICIO:\nEscribe un método `string ObtenerFizzBuzz(int numero)` que devuelva:\n- 'Fizz' si es múltiplo de 3\n- 'Buzz' si es múltiplo de 5\n- 'FizzBuzz' si es múltiplo de ambos (3 y 5)\n- El número como cadena en cualquier otro caso.",
+    "avatar": "",
+    "description": "El cl\u00E1sico reto FizzBuzz: m\u00FAltiplos de 3, 5 y ambos.",
+    "systemInstruction": "Eres un Evaluador para el Ejercicio: \u0027FizzBuzz en C#\u0027.\n\nENUNCIADO DEL EJERCICIO:\nEscribe un m\u00E9todo \u0060string ObtenerFizzBuzz(int numero)\u0060 que devuelva:\n- \u0027Fizz\u0027 si es m\u00FAltiplo de 3\n- \u0027Buzz\u0027 si es m\u00FAltiplo de 5\n- \u0027FizzBuzz\u0027 si es m\u00FAltiplo de ambos (3 y 5)\n- El n\u00FAmero como cadena en cualquier otro caso.",
     "temperature": 0.4,
+    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine(ObtenerFizzBuzz(15));\n    }\n\n    public static string ObtenerFizzBuzz(int n)\n    {\n        // Tu soluci\u00F3n aqu\u00ED\n        return \u0022\u0022;\n    }\n}",
     "isCustom": false,
-    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine(ObtenerFizzBuzz(15));\n    }\n\n    public static string ObtenerFizzBuzz(int n)\n    {\n        // Tu solución aquí\n        return \"\";\n    }\n}",
     "testCases": [
-      { "id": 1, "description": "Múltiplo de 3 (3)", "methodCall": "Program.ObtenerFizzBuzz(3)", "expectedOutput": "Fizz" },
-      { "id": 2, "description": "Múltiplo de 5 (5)", "methodCall": "Program.ObtenerFizzBuzz(5)", "expectedOutput": "Buzz" },
-      { "id": 3, "description": "Múltiplo de 3 y 5 (15)", "methodCall": "Program.ObtenerFizzBuzz(15)", "expectedOutput": "FizzBuzz" },
-      { "id": 4, "description": "Número normal (7)", "methodCall": "Program.ObtenerFizzBuzz(7)", "expectedOutput": "7" }
+      {
+        "id": "1",
+        "name": "",
+        "description": "M\u00FAltiplo de 3 (3)",
+        "input": "",
+        "expectedOutput": "Fizz",
+        "methodCall": "Program.ObtenerFizzBuzz(3)"
+      },
+      {
+        "id": "2",
+        "name": "",
+        "description": "M\u00FAltiplo de 5 (5)",
+        "input": "",
+        "expectedOutput": "Buzz",
+        "methodCall": "Program.ObtenerFizzBuzz(5)"
+      },
+      {
+        "id": "3",
+        "name": "",
+        "description": "M\u00FAltiplo de 3 y 5 (15)",
+        "input": "",
+        "expectedOutput": "FizzBuzz",
+        "methodCall": "Program.ObtenerFizzBuzz(15)"
+      },
+      {
+        "id": "4",
+        "name": "",
+        "description": "N\u00FAmero normal (7)",
+        "input": "",
+        "expectedOutput": "7",
+        "methodCall": "Program.ObtenerFizzBuzz(7)"
+      }
     ]
+  },
+  {
+    "id": "default-csharp-dev",
+    "emoji": "\uD83D\uDCBB",
+    "name": "Desarrollador C# Senior",
+    "avatar": "",
+    "description": "Experto en C#, .NET 10, clean code, patrones de dise\u00F1o y arquitectura de software.",
+    "systemInstruction": "Eres un arquitecto y desarrollador de software Senior especializado en C# y la plataforma .NET. Respondes con explicaciones claras, c\u00F3digo limpio de producci\u00F3n, buenas pr\u00E1cticas y sugerencias de arquitectura modernas.",
+    "temperature": 0.4,
+    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine(\u0022\u00A1Hola Mundo desde C# y .NET 10!\u0022);\n    }\n}",
+    "isCustom": false,
+    "testCases": []
+  },
+  {
+    "id": "default-teacher",
+    "emoji": "\uD83D\uDCDA",
+    "name": "Profesor Paciente",
+    "avatar": "",
+    "description": "Explica conceptos complejos paso a paso con analog\u00EDas sencillas.",
+    "systemInstruction": "Eres un profesor universitario sumamente paciente, pedag\u00F3gico y emp\u00E1tico. Tu objetivo es explicar cualquier concepto de forma muy clara, usando ejemplos cotidianos y analog\u00EDas.",
+    "temperature": 0.6,
+    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine(\u0022Escribe aqu\u00ED tu c\u00F3digo para consultar al profesor...\u0022);\n    }\n}",
+    "isCustom": false,
+    "testCases": []
   }
 ]
