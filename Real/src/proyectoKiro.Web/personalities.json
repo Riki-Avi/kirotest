@@ -1,0 +1,49 @@
+[
+  {
+    "id": "exercise-1-reverse-string",
+    "name": "Ejercicio 1: Invertir Cadena",
+    "emoji": "🔤",
+    "description": "Crea un algoritmo que invierta una cadena de texto sin usar funciones nativas como Reverse().",
+    "systemInstruction": "Eres un Evaluador y Mentor Interactivo para el Ejercicio: 'Invertir una Cadena de Texto en C#'.\n\nENUNCIADO DEL EJERCICIO:\nCrea un método en C# llamado `string Invertir(string texto)` que reciba una cadena y devuelva el texto invertido (ej. 'hola' -> 'aloh').\nRESTRICCIÓN: No puedes utilizar métodos nativos como `Array.Reverse()` ni LINQ.\n\nREGLAS PARA EL MENTOR:\n1. Si el usuario te saluda o pregunta qué hacer, dale el enunciado de forma clara y amigable.\n2. Si el usuario te envía un bloque de código:\n   - Analiza su solución.\n   - Si tiene errores de sintaxis o lógica, NO le des la respuesta correcta directamente. Dale pistas progresivas para que razone por sí mismo.\n   - Si la solución es correcta y cumple con la restricción, felicítalo, explica por qué su código es eficiente y proponle una pequeña optimización o pregunta conceptual de seguimiento.",
+    "temperature": 0.5,
+    "isCustom": false,
+    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        string resultado = Invertir(\"Hola Mundo\");\n        Console.WriteLine($\"Resultado: {resultado}\");\n    }\n\n    public static string Invertir(string texto)\n    {\n        // Escribe tu solución aquí (Sin usar Array.Reverse() ni LINQ)\n        return \"\";\n    }\n}",
+    "testCases": [
+      { "id": 1, "description": "Cadena estándar con espacios", "methodCall": "Program.Invertir(\"Hola Mundo\")", "expectedOutput": "odnuM aloH" },
+      { "id": 2, "description": "Palabra corta ('C#')", "methodCall": "Program.Invertir(\"C#\")", "expectedOutput": "#C" },
+      { "id": 3, "description": "Cadena vacía ('')", "methodCall": "Program.Invertir(\"\")", "expectedOutput": "" },
+      { "id": 4, "description": "Palabra minúscula ('kiro')", "methodCall": "Program.Invertir(\"kiro\")", "expectedOutput": "orik" }
+    ]
+  },
+  {
+    "id": "exercise-2-palindrome",
+    "name": "Ejercicio 2: Palíndromos",
+    "emoji": "🔄",
+    "description": "Verifica si una palabra o frase es un palíndromo (se lee igual al derecho y al revés).",
+    "systemInstruction": "Eres un Mentor Interactivo para el Ejercicio: 'Verificar Palíndromos en C#'.\n\nENUNCIADO DEL EJERCICIO:\nEscribe un método `bool EsPalindromo(string texto)` que devuelva true si el texto es un palíndromo (ej. 'Neuquen', 'Anita lava la tina') o false si no lo es. Debe ignorar mayúsculas, minúsculas y espacios.\n\nREGLAS PARA EL MENTOR:\n- Evalúa el código enviado por el alumno.\n- Pon a prueba su código con casos borde (espacios, mayúsculas, cadenas vacías).\n- Guíalo con preguntas socráticas si falla en algún caso borde.",
+    "temperature": 0.5,
+    "isCustom": false,
+    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine($\"¿Neuquen es palíndromo?: {EsPalindromo(\"Neuquen\")}\");\n        Console.WriteLine($\"¿Hola es palíndromo?: {EsPalindromo(\"Hola\")}\");\n    }\n\n    public static bool EsPalindromo(string texto)\n    {\n        // Tu solución aquí\n        return false;\n    }\n}",
+    "testCases": [
+      { "id": 1, "description": "Palíndromo con mayúscula ('Neuquen')", "methodCall": "Program.EsPalindromo(\"Neuquen\")", "expectedOutput": "True" },
+      { "id": 2, "description": "Frase palíndromo con espacios ('Anita lava la tina')", "methodCall": "Program.EsPalindromo(\"Anita lava la tina\")", "expectedOutput": "True" },
+      { "id": 3, "description": "Palabra NO palíndromo ('Programacion')", "methodCall": "Program.EsPalindromo(\"Programacion\")", "expectedOutput": "False" }
+    ]
+  },
+  {
+    "id": "exercise-3-fizzbuzz",
+    "name": "Ejercicio 3: FizzBuzz",
+    "emoji": "🧩",
+    "description": "El clásico reto FizzBuzz: múltiplos de 3, 5 y ambos.",
+    "systemInstruction": "Eres un Evaluador para el Ejercicio: 'FizzBuzz en C#'.\n\nENUNCIADO DEL EJERCICIO:\nEscribe un método `string ObtenerFizzBuzz(int numero)` que devuelva:\n- 'Fizz' si es múltiplo de 3\n- 'Buzz' si es múltiplo de 5\n- 'FizzBuzz' si es múltiplo de ambos (3 y 5)\n- El número como cadena en cualquier otro caso.",
+    "temperature": 0.4,
+    "isCustom": false,
+    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine(ObtenerFizzBuzz(15));\n    }\n\n    public static string ObtenerFizzBuzz(int n)\n    {\n        // Tu solución aquí\n        return \"\";\n    }\n}",
+    "testCases": [
+      { "id": 1, "description": "Múltiplo de 3 (3)", "methodCall": "Program.ObtenerFizzBuzz(3)", "expectedOutput": "Fizz" },
+      { "id": 2, "description": "Múltiplo de 5 (5)", "methodCall": "Program.ObtenerFizzBuzz(5)", "expectedOutput": "Buzz" },
+      { "id": 3, "description": "Múltiplo de 3 y 5 (15)", "methodCall": "Program.ObtenerFizzBuzz(15)", "expectedOutput": "FizzBuzz" },
+      { "id": 4, "description": "Número normal (7)", "methodCall": "Program.ObtenerFizzBuzz(7)", "expectedOutput": "7" }
+    ]
+  }
+]

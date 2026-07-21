@@ -24,20 +24,28 @@ public class ApplicationDbContext : DbContext
                 Title = "Ejercicio 1: Invertir Cadena",
                 Description = "Crea un algoritmo que invierta una cadena de texto sin usar funciones nativas como Array.Reverse() ni LINQ.",
                 InitialCode = "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        string resultado = Invertir(\"Hola Mundo\");\n        Console.WriteLine($\"Resultado: {resultado}\");\n    }\n\n    public static string Invertir(string texto)\n    {\n        // Escribe tu solución aquí\n        return \"\";\n    }\n}",
-                MentorRules = "RESTRICCIÓN: No puedes utilizar métodos nativos como 'Array.Reverse()' ni LINQ."
+                MentorRules = "RESTRICCIÓN: No puedes utilizar métodos nativos como 'Array.Reverse()' ni LINQ.",
+                CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc)
             }
         );
 
-        modelBuilder.Entity<Personality>().HasData(
-            new Personality
-            {
-                Id = 1,
-                Name = "Mentor C# Senior",
-                Avatar = "⚡",
-                Description = "Tutor paciente enfocado en buenas prácticas de C# y rendimiento.",
-                SystemInstruction = "Eres un mentor experto en C#. Da pistas progresivas sin revelar la solución de inmediato.",
-                Temperature = 0.7
-            }
-        );
+        modelBuilder.Entity<Personality>(b =>
+        {
+            b.Ignore(p => p.TestCases);
+            b.HasData(
+                new Personality
+                {
+                    Id = "1",
+                    Emoji = "🔤",
+                    Name = "Ejercicio 1: Invertir Cadena",
+                    Avatar = "⚡",
+                    Description = "Crea un algoritmo que invierta una cadena de texto sin usar funciones nativas como Array.Reverse() ni LINQ.",
+                    SystemInstruction = "Eres un mentor experto en C#. Da pistas progresivas sin revelar la solución de inmediato.",
+                    StarterCode = "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        string resultado = Invertir(\"Hola Mundo\");\n        Console.WriteLine($\"Resultado: {resultado}\");\n    }\n\n    public static string Invertir(string texto)\n    {\n        // Escribe tu solución aquí\n        return \"\";\n    }\n}",
+                    Temperature = 0.7,
+                    IsCustom = false
+                }
+            );
+        });
     }
 }
