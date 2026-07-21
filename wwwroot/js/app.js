@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let personalities = [];
     let activePersonality = null;
     let chatHistoriesByPersonality = {};
+    let lastCodeByPersonality = {};
     let monacoEditor = null;
 
     // Elementos DOM
@@ -55,6 +56,71 @@ document.addEventListener('DOMContentLoaded', () => {
     // Inicializar Datos
     fetchPersonalities();
     fetchAvailableModels();
+
+    // Reconocimiento de Voz (Web Speech API)
+    const micBtn = document.getElementById('micBtn');
+    let recognition = null;
+    let isRecording = false;
+
+    if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+        const SpeechRecognitionClass = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognitionClass();
+        recognition.lang = 'es-ES';
+        recognition.continuous = false;
+        recognition.interimResults = true;
+
+        recognition.onstart = () => {
+            isRecording = true;
+            if (micBtn) {
+                micBtn.classList.add('recording');
+                micBtn.title = "Escuchando... Haz clic para detener";
+            }
+        };
+
+        recognition.onresult = (event) => {
+            let transcript = '';
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+                transcript += event.results[i][0].transcript;
+            }
+            messageInput.value = transcript;
+            messageInput.style.height = 'auto';
+            messageInput.style.height = Math.min(messageInput.scrollHeight, 120) + 'px';
+        };
+
+        recognition.onerror = (event) => {
+            console.error('Error de micrófono:', event.error);
+            stopRecording();
+        };
+
+        recognition.onend = () => {
+            stopRecording();
+        };
+    }
+
+    function stopRecording() {
+        isRecording = false;
+        if (micBtn) {
+            micBtn.classList.remove('recording');
+            micBtn.title = "Hablar por micrófono";
+        }
+    }
+
+    micBtn?.addEventListener('click', () => {
+        if (!recognition) {
+            alert('Tu navegador no soporta el reconocimiento de voz (Web Speech API). Te recomendamos utilizar Google Chrome o Microsoft Edge.');
+            return;
+        }
+
+        if (isRecording) {
+            recognition.stop();
+        } else {
+            try {
+                recognition.start();
+            } catch (err) {
+                console.error('No se pudo iniciar el micrófono:', err);
+            }
+        }
+    });
 
     // Event Listeners
     pTemperature.addEventListener('input', (e) => {
@@ -317,12 +383,51 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!messageText) return;
 
         messageInput.value = '';
+        messageInput.style.height = 'auto';
 
         const welcomeCard = chatMessages.querySelector('.welcome-card');
         if (welcomeCard) welcomeCard.remove();
 
         appendUserMessage(messageText);
         const typingEl = appendTypingIndicator();
+
+        // Código en Monaco Editor (actual y previo)
+        const currentCode = monacoEditor ? monacoEditor.getValue() : '';
+        const previousCode = activePersonality ? (lastCodeByPersonality[activePersonality.id] || null) : null;
+
+        let promptForGemini = messageText;
+
+        if (currentCode) {
+            if (previousCode && previousCode !== currentCode) {
+                promptForGemini = `[MENSAJE / CONSULTA DEL ALUMNO]:
+${messageText}
+
+[CÓDIGO ENVIADO EN LA INTERACCIÓN ANTERIOR]:
+\`\`\`csharp
+${previousCode}
+\`\`\`
+
+[CÓDIGO ACTUAL EN EL EDITOR MONACO]:
+\`\`\`csharp
+${currentCode}
+\`\`\`
+
+(Instrucción para el Mentor: Compara detenidamente los cambios introducidos entre el código anterior y el código actual. Responde a la duda o consulta del usuario considerando estas modificaciones e identificando avances o posibles nuevos errores).`;
+            } else {
+                promptForGemini = `[MENSAJE / CONSULTA DEL ALUMNO]:
+${messageText}
+
+[CÓDIGO ACTUAL EN EL EDITOR MONACO]:
+\`\`\`csharp
+${currentCode}
+\`\`\``;
+            }
+        }
+
+        // Registrar el código actual como "anterior" para la siguiente pregunta
+        if (activePersonality) {
+            lastCodeByPersonality[activePersonality.id] = currentCode;
+        }
 
         try {
             const currentHistory = chatHistoriesByPersonality[activePersonality?.id || ''] || [];
@@ -332,7 +437,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     personalityId: activePersonality?.id || '',
-                    message: messageText,
+                    message: promptForGemini,
                     history: currentHistory,
                     customApiKey: localStorage.getItem('gemini_api_key') || null,
                     model: localStorage.getItem('gemini_model') || 'gemini-3.5-flash'
