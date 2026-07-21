@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "proyectoKiro": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:57209;http://localhost:57210"
+    }
+  }
+}

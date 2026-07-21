@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/proyectoKiro.Domain/proyectoKiro.Domain.csproj" />
+    <Project Path="src/proyectoKiro.Infrastructure/proyectoKiro.Infrastructure.csproj" />
+    <Project Path="src/proyectoKiro.Web/proyectoKiro.Web.csproj" />
+  </Folder>
+</Solution>
