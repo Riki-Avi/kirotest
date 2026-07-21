@@ -11,7 +11,11 @@ builder.Services.AddHttpClient<GeminiService>();
 builder.Services.AddHttpClient<Judge0Service>();
 
 // Registrar MVC (Controllers + Views Views/{Controller}/{Action}.cshtml) y Razor Pages
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+    });
 builder.Services.AddRazorPages();
 
 // Registrar DbContext con PostgreSQL (Supabase)

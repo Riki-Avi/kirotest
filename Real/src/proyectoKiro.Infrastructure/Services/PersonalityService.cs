@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Hosting;
 using proyectoKiro.Domain.Entities;
 
@@ -9,6 +10,14 @@ namespace proyectoKiro.Infrastructure.Services
         private readonly string _filePath;
         private readonly List<Personality> _personalities = new();
         private readonly object _lockObj = new();
+
+        private static readonly JsonSerializerOptions _jsonOptions = new()
+        {
+            PropertyNameCaseInsensitive = true,
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            WriteIndented = true,
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
+        };
 
         public PersonalityService(IWebHostEnvironment env)
         {
@@ -25,7 +34,7 @@ namespace proyectoKiro.Infrastructure.Services
                     try
                     {
                         var json = File.ReadAllText(_filePath);
-                        var loaded = JsonSerializer.Deserialize<List<Personality>>(json);
+                        var loaded = JsonSerializer.Deserialize<List<Personality>>(json, _jsonOptions);
                         if (loaded != null && loaded.Count > 0)
                         {
                             _personalities.Clear();
@@ -105,8 +114,7 @@ namespace proyectoKiro.Infrastructure.Services
         {
             try
             {
-                var options = new JsonSerializerOptions { WriteIndented = true };
-                var json = JsonSerializer.Serialize(_personalities, options);
+                var json = JsonSerializer.Serialize(_personalities, _jsonOptions);
                 File.WriteAllText(_filePath, json);
             }
             catch (Exception ex)
