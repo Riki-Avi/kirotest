@@ -57,70 +57,373 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchPersonalities();
     fetchAvailableModels();
 
-    // Reconocimiento de Voz (Web Speech API)
+    // Reconocimiento de Voz en Tiempo Real y Grabación de Audio
     const micBtn = document.getElementById('micBtn');
     let recognition = null;
-    let isRecording = false;
+    let isSpeechActive = false;
+    let baseTextBeforeSpeech = '';
+    let isBraveNetworkBlocked = false;
+
+    // MediaRecorder Fallback
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let isRecordingAudio = false;
 
     if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
         const SpeechRecognitionClass = window.SpeechRecognition || window.webkitSpeechRecognition;
         recognition = new SpeechRecognitionClass();
-        recognition.lang = 'es-ES';
-        recognition.continuous = false;
+        recognition.lang = navigator.language || 'es-AR';
+        recognition.continuous = true;
         recognition.interimResults = true;
 
         recognition.onstart = () => {
-            isRecording = true;
+            isSpeechActive = true;
+            baseTextBeforeSpeech = messageInput.value ? messageInput.value.trim() + ' ' : '';
             if (micBtn) {
                 micBtn.classList.add('recording');
-                micBtn.title = "Escuchando... Haz clic para detener";
+                micBtn.title = "Escuchando en vivo... Haz clic para detener";
             }
+            messageInput.placeholder = "🎙️ Escuchando... habla ahora...";
+            showToast('🎙️ Escuchando... habla ahora');
         };
 
         recognition.onresult = (event) => {
-            let transcript = '';
-            for (let i = event.resultIndex; i < event.results.length; i++) {
-                transcript += event.results[i][0].transcript;
+            let finalTranscript = '';
+            let interimTranscript = '';
+
+            for (let i = 0; i < event.results.length; i++) {
+                const transcript = event.results[i][0].transcript;
+                if (event.results[i].isFinal) {
+                    finalTranscript += transcript + ' ';
+                } else {
+                    interimTranscript += transcript;
+                }
             }
-            messageInput.value = transcript;
+
+            const currentText = baseTextBeforeSpeech + finalTranscript + interimTranscript;
+            messageInput.value = currentText.trimStart();
             messageInput.style.height = 'auto';
             messageInput.style.height = Math.min(messageInput.scrollHeight, 120) + 'px';
         };
 
         recognition.onerror = (event) => {
-            console.error('Error de micrófono:', event.error);
-            stopRecording();
+            if (event.error === 'network') {
+                // Bloqueo nativo de Brave contra servidores de voz de Google
+                isBraveNetworkBlocked = true;
+                stopSpeechRecognition();
+                startAudioRecordingFallback();
+                return;
+            }
+            if (event.error === 'not-allowed') {
+                showToast('⚠️ Permiso de micrófono denegado en el navegador.');
+            }
+            stopSpeechRecognition();
         };
 
         recognition.onend = () => {
-            stopRecording();
+            stopSpeechRecognition();
         };
     }
 
-    function stopRecording() {
-        isRecording = false;
+    function stopSpeechRecognition() {
+        isSpeechActive = false;
         if (micBtn) {
             micBtn.classList.remove('recording');
             micBtn.title = "Hablar por micrófono";
         }
+        if (messageInput) {
+            messageInput.placeholder = "Escribe o habla por micrófono para consultar al mentor...";
+            messageInput.focus();
+        }
     }
 
-    micBtn?.addEventListener('click', () => {
-        if (!recognition) {
-            alert('Tu navegador no soporta el reconocimiento de voz (Web Speech API). Te recomendamos utilizar Google Chrome o Microsoft Edge.');
-            return;
-        }
-
-        if (isRecording) {
-            recognition.stop();
+    micBtn?.addEventListener('click', async () => {
+        if (isSpeechActive) {
+            if (recognition) recognition.stop();
+        } else if (isRecordingAudio) {
+            stopAudioRecording();
         } else {
-            try {
-                recognition.start();
-            } catch (err) {
-                console.error('No se pudo iniciar el micrófono:', err);
+            if (recognition && !isBraveNetworkBlocked) {
+                try {
+                    recognition.lang = navigator.language || 'es-AR';
+                    recognition.start();
+                } catch (e) {
+                    await startAudioRecordingFallback();
+                }
+            } else {
+                await startAudioRecordingFallback();
             }
         }
     });
+
+    // Whisper WebAssembly STT (100% Local en Navegador)
+    let whisperTranscriber = null;
+    let isWhisperLoading = false;
+
+    async function getWhisperTranscriber() {
+        if (whisperTranscriber) return whisperTranscriber;
+        if (isWhisperLoading) return null;
+
+        isWhisperLoading = true;
+        showToast('🧠 Inicializando IA de voz Whisper en el navegador...');
+
+        try {
+            if (window.WhisperPipeline) {
+                whisperTranscriber = await window.WhisperPipeline('automatic-speech-recognition', 'Xenova/whisper-tiny');
+                showToast('✅ IA de voz Whisper lista');
+            }
+        } catch (err) {
+            console.warn('Whisper Wasm no disponible:', err);
+        } finally {
+            isWhisperLoading = false;
+        }
+        return whisperTranscriber;
+    }
+
+    let wavRecorder = null;
+    let wavAudioStream = null;
+
+    async function startAudioRecordingFallback() {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            showToast('⚠️ Tu navegador no permite el acceso al micrófono.');
+            return;
+        }
+
+        try {
+            wavAudioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            isRecordingAudio = true;
+            micBtn.classList.add('recording');
+            micBtn.title = "Escuchando con Whisper.net C#... Haz clic para detener";
+            messageInput.placeholder = "🎙️ Escuchando... habla ahora. Haz clic de nuevo para ver el texto.";
+            showToast('🎙️ Escuchando con Whisper.net C#...');
+
+            wavRecorder = await createWavRecorder(wavAudioStream);
+        } catch (err) {
+            console.error('Error al acceder al micrófono:', err);
+            showToast('⚠️ Permiso de micrófono denegado o no disponible.');
+        }
+    }
+
+    function stopAudioRecording() {
+        if (wavRecorder && isRecordingAudio) {
+            isRecordingAudio = false;
+            micBtn.classList.remove('recording');
+            micBtn.title = "Hablar por micrófono";
+            messageInput.placeholder = "⏳ Transcribiendo con Whisper.net C#...";
+
+            wavRecorder.stop(async (wavBlob) => {
+                if (wavAudioStream) {
+                    wavAudioStream.getTracks().forEach(t => t.stop());
+                }
+
+                if (!wavBlob || wavBlob.size === 0) {
+                    messageInput.placeholder = "Escribe o habla por micrófono para consultar al mentor...";
+                    return;
+                }
+
+                const base64Wav = await blobToBase64(wavBlob);
+
+                try {
+                    const res = await fetch('/api/chat/transcribe', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            audioBase64: base64Wav,
+                            audioMimeType: 'audio/wav',
+                            customApiKey: localStorage.getItem('gemini_api_key') || null
+                        })
+                    });
+                    const data = await res.json();
+                    if (data.success && data.text) {
+                        let cleanText = data.text.trim();
+                        if (cleanText) {
+                            const existingText = messageInput.value ? messageInput.value.trim() + ' ' : '';
+                            messageInput.value = (existingText + cleanText).trim();
+                            messageInput.style.height = 'auto';
+                            messageInput.style.height = Math.min(messageInput.scrollHeight, 120) + 'px';
+                            showToast(`⚡ Transcrito con ${data.source || 'Whisper.net C#'}`);
+                        } else {
+                            showToast('ℹ️ No se detectó voz clara en la grabación.');
+                        }
+                    } else {
+                        showToast('⚠️ No se pudo transcribir el audio.');
+                    }
+                } catch (err) {
+                    showToast('⚠️ Error al procesar transcripción: ' + err.message);
+                } finally {
+                    messageInput.placeholder = "Escribe o habla por micrófono para consultar al mentor...";
+                    messageInput.focus();
+                }
+            });
+        }
+    }
+
+    async function createWavRecorder(stream) {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)({ sampleRate: 16000 });
+        const source = audioCtx.createMediaStreamSource(stream);
+        const processor = audioCtx.createScriptProcessor(4096, 1, 1);
+        const pcmSamples = [];
+
+        processor.onaudioprocess = (e) => {
+            if (isRecordingAudio) {
+                const input = e.inputBuffer.getChannelData(0);
+                pcmSamples.push(new Float32Array(input));
+            }
+        };
+
+        source.connect(processor);
+        processor.connect(audioCtx.destination);
+
+        return {
+            stop: async (callback) => {
+                processor.disconnect();
+                source.disconnect();
+                await audioCtx.close();
+
+                let totalLength = pcmSamples.reduce((acc, curr) => acc + curr.length, 0);
+                let merged = new Float32Array(totalLength);
+                let offset = 0;
+                for (let chunk of pcmSamples) {
+                    merged.set(chunk, offset);
+                    offset += chunk.length;
+                }
+
+                const wavBlob = encodeWAV16Bit(merged, 16000);
+                callback(wavBlob);
+            }
+        };
+    }
+
+    function encodeWAV16Bit(samples, sampleRate) {
+        const buffer = new ArrayBuffer(44 + samples.length * 2);
+        const view = new DataView(buffer);
+
+        writeString(view, 0, 'RIFF');
+        view.setUint32(4, 36 + samples.length * 2, true);
+        writeString(view, 8, 'WAVE');
+        writeString(view, 12, 'fmt ');
+        view.setUint32(16, 16, true);
+        view.setUint16(20, 1, true);
+        view.setUint16(22, 1, true);
+        view.setUint32(24, sampleRate, true);
+        view.setUint32(28, sampleRate * 2, true);
+        view.setUint16(32, 2, true);
+        view.setUint16(34, 16, true);
+        writeString(view, 36, 'data');
+        view.setUint32(40, samples.length * 2, true);
+
+        let index = 44;
+        for (let i = 0; i < samples.length; i++) {
+            let s = Math.max(-1, Math.min(1, samples[i]));
+            view.setInt16(index, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+            index += 2;
+        }
+
+        return new Blob([view], { type: 'audio/wav' });
+    }
+
+    function writeString(view, offset, string) {
+        for (let i = 0; i < string.length; i++) {
+            view.setUint8(offset + i, string.charCodeAt(i));
+        }
+    }
+
+    function blobToBase64(blob) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const dataUrl = reader.result;
+                const base64 = dataUrl.split(',')[1];
+                resolve(base64);
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(blob);
+        });
+    }
+
+    async function sendAudioMessageToGemini(audioBase64, mimeType) {
+        const textTyped = messageInput.value.trim();
+        messageInput.value = '';
+        messageInput.style.height = 'auto';
+
+        const welcomeCard = chatMessages.querySelector('.welcome-card');
+        if (welcomeCard) welcomeCard.remove();
+
+        const displayMessage = textTyped ? `🎙️ [Mensaje de voz]: ${textTyped}` : '🎙️ [Mensaje de voz enviado]';
+        appendUserMessage(displayMessage);
+        const typingEl = appendTypingIndicator();
+
+        const currentCode = monacoEditor ? monacoEditor.getValue() : '';
+        const previousCode = activePersonality ? (lastCodeByPersonality[activePersonality.id] || null) : null;
+
+        let promptForGemini = textTyped || 'Mensaje de voz del alumno.';
+
+        if (currentCode) {
+            if (previousCode && previousCode !== currentCode) {
+                promptForGemini = `${promptForGemini}
+
+[CÓDIGO ENVIADO EN LA INTERACCIÓN ANTERIOR]:
+\`\`\`csharp
+${previousCode}
+\`\`\`
+
+[CÓDIGO ACTUAL EN EL EDITOR MONACO]:
+\`\`\`csharp
+${currentCode}
+\`\`\`
+
+(Instrucción para el Mentor: Escucha el audio del alumno y compara detenidamente los cambios entre el código anterior y el código actual).`;
+            } else {
+                promptForGemini = `${promptForGemini}
+
+[CÓDIGO ACTUAL EN EL EDITOR MONACO]:
+\`\`\`csharp
+${currentCode}
+\`\`\``;
+            }
+        }
+
+        if (activePersonality) {
+            lastCodeByPersonality[activePersonality.id] = currentCode;
+        }
+
+        try {
+            const currentHistory = chatHistoriesByPersonality[activePersonality?.id || ''] || [];
+
+            const res = await fetch('/api/chat/send', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    personalityId: activePersonality?.id || '',
+                    message: promptForGemini,
+                    audioBase64: audioBase64,
+                    audioMimeType: mimeType,
+                    history: currentHistory,
+                    customApiKey: localStorage.getItem('gemini_api_key') || null,
+                    model: localStorage.getItem('gemini_model') || 'gemini-3.5-flash'
+                })
+            });
+
+            const data = await res.json();
+            typingEl.remove();
+
+            if (data.success) {
+                appendModelMessage(data.response);
+                if (activePersonality) {
+                    if (!chatHistoriesByPersonality[activePersonality.id]) {
+                        chatHistoriesByPersonality[activePersonality.id] = [];
+                    }
+                    chatHistoriesByPersonality[activePersonality.id].push({ role: 'user', message: displayMessage });
+                    chatHistoriesByPersonality[activePersonality.id].push({ role: 'model', message: data.response });
+                }
+            } else {
+                appendErrorMessage(data.errorMessage || 'Error al comunicarse con Gemini.');
+            }
+        } catch (err) {
+            typingEl.remove();
+            appendErrorMessage('Error de red al enviar el audio: ' + err.message);
+        }
+    }
 
     // Event Listeners
     pTemperature.addEventListener('input', (e) => {
@@ -717,5 +1020,23 @@ ${currentCode}
 
     function escapeHtml(str) {
         return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+    }
+
+    function showToast(msg) {
+        let toastContainer = document.getElementById('toastContainer');
+        if (!toastContainer) {
+            toastContainer = document.createElement('div');
+            toastContainer.id = 'toastContainer';
+            toastContainer.style.cssText = 'position: fixed; bottom: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; pointer-events: none;';
+            document.body.appendChild(toastContainer);
+        }
+        const toast = document.createElement('div');
+        toast.style.cssText = 'background: rgba(21, 28, 44, 0.95); border: 1px solid var(--accent-primary); color: #FFF; padding: 10px 16px; border-radius: 8px; font-size: 13px; box-shadow: 0 4px 14px rgba(0,0,0,0.4); backdrop-filter: blur(8px); transition: all 0.3s ease;';
+        toast.textContent = msg;
+        toastContainer.appendChild(toast);
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => toast.remove(), 300);
+        }, 3500);
     }
 });

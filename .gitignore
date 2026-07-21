@@ -5,3 +5,7 @@ obj/
 .vscode/
 *.user
 *.suo
+*.bin
+**/bin/
+**/obj/
+**/*.bin

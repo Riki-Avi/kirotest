@@ -10,11 +10,13 @@ namespace proyectoKiro.Controllers
     {
         private readonly GeminiService _geminiService;
         private readonly PersonalityService _personalityService;
+        private readonly WhisperService _whisperService;
 
-        public ChatController(GeminiService geminiService, PersonalityService personalityService)
+        public ChatController(GeminiService geminiService, PersonalityService personalityService, WhisperService whisperService)
         {
             _geminiService = geminiService;
             _personalityService = personalityService;
+            _whisperService = whisperService;
         }
 
         [HttpPost("send")]
@@ -29,7 +31,6 @@ namespace proyectoKiro.Controllers
                 });
             }
 
-            // Buscar la personalidad por ID o usar la predeterminada por defecto
             var personality = _personalityService.GetById(request.PersonalityId);
             if (personality == null)
             {
@@ -50,6 +51,36 @@ namespace proyectoKiro.Controllers
         {
             var models = await _geminiService.GetAvailableModelsAsync(apiKey);
             return Ok(models);
+        }
+
+        [HttpPost("transcribe")]
+        public async Task<IActionResult> TranscribeAudio([FromBody] TranscribeRequest request)
+        {
+            if (string.IsNullOrWhiteSpace(request.AudioBase64))
+            {
+                return BadRequest(new { success = false, text = string.Empty });
+            }
+
+            try
+            {
+                var audioBytes = Convert.FromBase64String(request.AudioBase64);
+                // Si el formato enviado es WAV, usar Whisper.net directamente
+                if (request.AudioMimeType.Contains("wav"))
+                {
+                    var whisperText = await _whisperService.TranscribeWavAsync(audioBytes);
+                    if (!string.IsNullOrWhiteSpace(whisperText))
+                    {
+                        return Ok(new { success = true, text = whisperText, source = "Whisper.net" });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Nota Whisper.net: {ex.Message}. Usando Gemini fallback...");
+            }
+
+            var text = await _geminiService.TranscribeAudioAsync(request.AudioBase64, request.AudioMimeType, request.CustomApiKey);
+            return Ok(new { success = true, text, source = "Gemini" });
         }
     }
 }

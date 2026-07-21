@@ -40,7 +40,19 @@ namespace proyectoKiro.Models
     public class GeminiPart
     {
         [JsonPropertyName("text")]
-        public string Text { get; set; } = string.Empty;
+        public string? Text { get; set; }
+
+        [JsonPropertyName("inlineData")]
+        public GeminiInlineData? InlineData { get; set; }
+    }
+
+    public class GeminiInlineData
+    {
+        [JsonPropertyName("mimeType")]
+        public string MimeType { get; set; } = "audio/webm";
+
+        [JsonPropertyName("data")]
+        public string Data { get; set; } = string.Empty;
     }
 
     public class GeminiGenerationConfig
@@ -92,9 +104,18 @@ namespace proyectoKiro.Models
     {
         public string PersonalityId { get; set; } = string.Empty;
         public string Message { get; set; } = string.Empty;
+        public string? AudioBase64 { get; set; }
+        public string? AudioMimeType { get; set; }
         public List<ChatMessageDto> History { get; set; } = new();
         public string? CustomApiKey { get; set; }
         public string? Model { get; set; }
+    }
+
+    public class TranscribeRequest
+    {
+        public string AudioBase64 { get; set; } = string.Empty;
+        public string AudioMimeType { get; set; } = "audio/webm";
+        public string? CustomApiKey { get; set; }
     }
 
     public class ChatSendResponse

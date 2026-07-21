@@ -226,6 +226,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <!-- Monaco Editor Loader -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/loader.min.js"></script>
+    <!-- Transformers.js (Whisper AI WebAssembly Local STT) -->
+    <script type="module">
+        import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
+        env.allowLocalModels = false;
+        window.WhisperPipeline = pipeline;
+    </script>
     <script src="js/app.js"></script>
 </body>
 </html>
