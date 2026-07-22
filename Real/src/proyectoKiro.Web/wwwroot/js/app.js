@@ -426,17 +426,17 @@ ${currentCode}
     }
 
     // Event Listeners
-    pTemperature.addEventListener('input', (e) => {
-        tempValue.textContent = e.target.value;
+    pTemperature?.addEventListener('input', (e) => {
+        if (tempValue) tempValue.textContent = e.target.value;
     });
 
-    openNewModalBtn.addEventListener('click', () => openPersonalityModal());
-    closePersonalityModalBtn.addEventListener('click', () => closePersonalityModal());
-    cancelPersonalityBtn.addEventListener('click', () => closePersonalityModal());
+    openNewModalBtn?.addEventListener('click', () => openPersonalityModal());
+    closePersonalityModalBtn?.addEventListener('click', () => closePersonalityModal());
+    cancelPersonalityBtn?.addEventListener('click', () => closePersonalityModal());
 
-    openSettingsModalBtn.addEventListener('click', () => settingsModal.classList.add('active'));
-    closeSettingsModalBtn.addEventListener('click', () => settingsModal.classList.remove('active'));
-    cancelSettingsBtn.addEventListener('click', () => settingsModal.classList.remove('active'));
+    openSettingsModalBtn?.addEventListener('click', () => settingsModal?.classList.add('active'));
+    closeSettingsModalBtn?.addEventListener('click', () => settingsModal?.classList.remove('active'));
+    cancelSettingsBtn?.addEventListener('click', () => settingsModal?.classList.remove('active'));
 
     openSidebarBtn?.addEventListener('click', () => sidebar.classList.add('open'));
     closeSidebarBtn?.addEventListener('click', () => sidebar.classList.remove('open'));
@@ -448,24 +448,24 @@ ${currentCode}
     });
 
     // Guardar Configuración
-    settingsForm.addEventListener('submit', (e) => {
+    settingsForm?.addEventListener('submit', (e) => {
         e.preventDefault();
-        localStorage.setItem('gemini_api_key', customApiKeyInput.value.trim());
-        localStorage.setItem('gemini_model', modelSelect.value);
-        localStorage.setItem('judge0_url', customJudge0UrlInput.value.trim());
-        settingsModal.classList.remove('active');
+        if (customApiKeyInput) localStorage.setItem('gemini_api_key', customApiKeyInput.value.trim());
+        if (modelSelect) localStorage.setItem('gemini_model', modelSelect.value);
+        if (customJudge0UrlInput) localStorage.setItem('judge0_url', customJudge0UrlInput.value.trim());
+        settingsModal?.classList.remove('active');
     });
 
     // Guardar / Crear Ejercicio
-    personalityForm.addEventListener('submit', async (e) => {
+    personalityForm?.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const id = document.getElementById('editPersonalityId').value;
-        const name = document.getElementById('pName').value.trim();
-        const emoji = document.getElementById('pEmoji').value.trim() || '🧩';
-        const description = document.getElementById('pDescription').value.trim();
-        const starterCode = document.getElementById('pStarterCode').value;
-        const systemInstruction = document.getElementById('pSystemInstruction').value.trim();
-        const temperature = parseFloat(pTemperature.value);
+        const id = document.getElementById('editPersonalityId')?.value || '';
+        const name = document.getElementById('pName')?.value.trim() || '';
+        const emoji = document.getElementById('pEmoji')?.value.trim() || '🧩';
+        const description = document.getElementById('pDescription')?.value.trim() || '';
+        const starterCode = document.getElementById('pStarterCode')?.value || '';
+        const systemInstruction = document.getElementById('pSystemInstruction')?.value.trim() || '';
+        const temperature = pTemperature ? parseFloat(pTemperature.value) : 0.5;
 
         const payload = { name, emoji, description, starterCode, systemInstruction, temperature, isCustom: true };
 
@@ -927,28 +927,36 @@ ${currentCode}
 
     function openPersonalityModal(personality = null) {
         if (personality) {
-            modalTitle.textContent = 'Editar Ejercicio';
-            document.getElementById('editPersonalityId').value = personality.id;
-            document.getElementById('pName').value = personality.name;
-            document.getElementById('pEmoji').value = personality.emoji;
-            document.getElementById('pDescription').value = personality.description;
-            document.getElementById('pStarterCode').value = personality.starterCode || '';
-            document.getElementById('pSystemInstruction').value = personality.systemInstruction;
-            pTemperature.value = personality.temperature;
-            tempValue.textContent = personality.temperature;
+            if (modalTitle) modalTitle.textContent = 'Editar Ejercicio';
+            const editId = document.getElementById('editPersonalityId');
+            if (editId) editId.value = personality.id;
+            const pNameEl = document.getElementById('pName');
+            if (pNameEl) pNameEl.value = personality.name || '';
+            const pEmojiEl = document.getElementById('pEmoji');
+            if (pEmojiEl) pEmojiEl.value = personality.emoji || '🧩';
+            const pDescEl = document.getElementById('pDescription');
+            if (pDescEl) pDescEl.value = personality.description || '';
+            const pCodeEl = document.getElementById('pStarterCode');
+            if (pCodeEl) pCodeEl.value = personality.starterCode || '';
+            const pSysEl = document.getElementById('pSystemInstruction');
+            if (pSysEl) pSysEl.value = personality.systemInstruction || '';
+            if (pTemperature) pTemperature.value = personality.temperature || 0.5;
+            if (tempValue) tempValue.textContent = personality.temperature || 0.5;
         } else {
-            modalTitle.textContent = 'Crear Nuevo Ejercicio';
-            personalityForm.reset();
-            document.getElementById('editPersonalityId').value = '';
-            document.getElementById('pStarterCode').value = `using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        // Código inicial...\n    }\n}`;
-            pTemperature.value = 0.5;
-            tempValue.textContent = '0.5';
+            if (modalTitle) modalTitle.textContent = 'Crear Nuevo Ejercicio';
+            personalityForm?.reset();
+            const editId = document.getElementById('editPersonalityId');
+            if (editId) editId.value = '';
+            const pCodeEl = document.getElementById('pStarterCode');
+            if (pCodeEl) pCodeEl.value = `using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        // Código inicial...\n    }\n}`;
+            if (pTemperature) pTemperature.value = 0.5;
+            if (tempValue) tempValue.textContent = '0.5';
         }
-        personalityModal.classList.add('active');
+        personalityModal?.classList.add('active');
     }
 
     function closePersonalityModal() {
-        personalityModal.classList.remove('active');
+        personalityModal?.classList.remove('active');
     }
 
     function appendUserMessage(text) {

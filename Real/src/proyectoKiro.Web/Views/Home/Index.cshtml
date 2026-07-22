@@ -137,28 +137,33 @@
             
             <div class="form-row">
                 <div class="form-group flex-1">
-                    <label for="inputEmoji">Ícono / Emoji</label>
-                    <input type="text" id="inputEmoji" placeholder="ej. 🔤" required value="💻">
+                    <label for="pEmoji">Ícono / Emoji</label>
+                    <input type="text" id="pEmoji" placeholder="ej. 🔤" required value="💻">
                 </div>
                 <div class="form-group flex-3">
-                    <label for="inputName">Nombre del Ejercicio</label>
-                    <input type="text" id="inputName" placeholder="ej. Ejercicio 4: Estructuras" required>
+                    <label for="pName">Nombre del Ejercicio</label>
+                    <input type="text" id="pName" placeholder="ej. Ejercicio 4: Estructuras" required>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="inputDescription">Descripción / Enunciado Breve</label>
-                <input type="text" id="inputDescription" placeholder="ej. Crea una estructura Alumno..." required>
+                <label for="pDescription">Descripción / Enunciado Breve</label>
+                <input type="text" id="pDescription" placeholder="ej. Crea una estructura Alumno..." required>
             </div>
 
             <div class="form-group">
-                <label for="inputStarterCode">Código Inicial de la Clase (C#)</label>
-                <textarea id="inputStarterCode" rows="4" placeholder="using System; ..."></textarea>
+                <label for="pStarterCode">Código Inicial de la Clase (C#)</label>
+                <textarea id="pStarterCode" rows="4" placeholder="using System; ..."></textarea>
             </div>
 
             <div class="form-group">
-                <label for="inputInstruction">Reglas & Restricciones para el Mentor</label>
-                <textarea id="inputInstruction" rows="3" placeholder="RESTRICCIÓN: No puedes utilizar métodos nativos..."></textarea>
+                <label for="pSystemInstruction">Reglas & Restricciones para el Mentor</label>
+                <textarea id="pSystemInstruction" rows="3" placeholder="RESTRICCIÓN: No puedes utilizar métodos nativos..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="pTemperature">Temperatura (Creatividad): <span id="tempValue">0.5</span></label>
+                <input type="range" id="pTemperature" min="0.0" max="1.0" step="0.1" value="0.5">
             </div>
 
             <div class="modal-footer">
