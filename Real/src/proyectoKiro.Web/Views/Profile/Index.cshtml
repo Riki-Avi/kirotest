@@ -1,0 +1,54 @@
+<h1>Perfil del Usuario</h1>
+<div id="userInfo">Cargando datos...</div>
+<br/>
+<button id="logoutBtn">Cerrar sesión</button>
+<br/><br/>
+<a href="/">Volver al Workspace</a>
+
+<script src="https://cdn.jsdelivr.net/npm/@@supabase/supabase-js@2"></script>
+<script>
+    const SUPABASE_URL = "https://bzaifpevfuwlaznmhiee.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_xoU3gGiIKuchm6oTBhr8EQ_eb7sUD2a";
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // Si hace clic en cerrar sesión, lo mandamos al Login
+    document.getElementById('logoutBtn').onclick = async () => {
+        await supabaseClient.auth.signOut();
+        window.location.href = '/Auth/Login';
+    };
+
+    // Verificar que esté logueado al entrar a /Profile
+    supabaseClient.auth.onAuthStateChange(async (event, session) => {
+        if (session?.user) {
+            const metadata = session.user.user_metadata;
+            document.getElementById('userInfo').innerHTML = `
+                <p><b>Nombre:</b> ${metadata.full_name || 'Sin Nombre'}</p>
+                <p><b>Email:</b> ${session.user.email}</p>
+                <img src="${metadata.avatar_url}" width="60" style="border-radius:50%;" />
+            `;
+
+            // 🚀 LLAMADA A TU ENDPOINT DE C# PARA GUARDAR EN POSTGRESQL
+            try {
+                const response = await fetch('/Auth/SyncUser', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        id: session.user.id,
+                        email: session.user.email,
+                        nombreUsuario: metadata.full_name || session.user.email,
+                        avatar: metadata.avatar_url || ''
+                    })
+                });
+
+                const data = await response.json();
+                console.log("Respuesta de tu backend C#:", data);
+            } catch (err) {
+                console.error("Error al guardar usuario en BD:", err);
+            }
+
+        } else {
+            // Si no hay sesión, lo mandamos de vuelta al Login
+            window.location.href = '/Auth/Login';
+        }
+    });
+</script>

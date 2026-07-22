@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using proyectoKiro.Infrastructure.Data;
 using proyectoKiro.Infrastructure.Services;
+using proyectoKiro.Domain.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +10,7 @@ builder.Services.AddSingleton<PersonalityService>();
 builder.Services.AddSingleton<WhisperService>();
 builder.Services.AddHttpClient<GeminiService>();
 builder.Services.AddHttpClient<Judge0Service>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 // Registrar MVC (Controllers + Views Views/{Controller}/{Action}.cshtml) y Razor Pages
 builder.Services.AddControllersWithViews()

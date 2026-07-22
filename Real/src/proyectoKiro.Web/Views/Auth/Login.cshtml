@@ -1,0 +1,33 @@
+<button id="googleLoginBtn">Iniciar sesión con Google</button>
+
+<script src="https://cdn.jsdelivr.net/npm/@@supabase/supabase-js@2"></script>
+
+<script>
+    const SUPABASE_URL = "https://bzaifpevfuwlaznmhiee.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_xoU3gGiIKuchm6oTBhr8EQ_eb7sUD2a";
+    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    document.getElementById('googleLoginBtn').onclick = async () => {
+        try {
+            const { error } = await supabaseClient.auth.signInWithOAuth({
+                provider: 'google',
+                options: { 
+                    // Redirige directamente al Perfil al tener éxito en Google
+                    redirectTo: window.location.origin + '/Profile' 
+                }
+            });
+
+            if (error) throw error;
+        } catch (err) {
+            console.error("Error al autenticar:", err.message);
+            alert("Ocurrió un error al iniciar sesión: " + err.message);
+        }
+    };
+
+    // Si el usuario abre /Auth/Login teniendo ya la sesión activa, lo mandamos a Perfil
+    supabaseClient.auth.onAuthStateChange((event, session) => {
+        if (session?.user) {
+            window.location.href = '/Profile';
+        }
+    });
+</script>

@@ -9,4 +9,8 @@ public class Submission
     public bool Passed { get; set; }
     public string Output { get; set; } = string.Empty;
     public DateTime SubmittedAt { get; set; } = DateTime.UtcNow;
+
+    //
+    public string? UserId { get; set;}
+    public User? User {get; set;}
 }
