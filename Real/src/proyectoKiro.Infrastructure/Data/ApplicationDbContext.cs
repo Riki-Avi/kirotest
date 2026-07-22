@@ -12,10 +12,17 @@ public class ApplicationDbContext : DbContext
     public DbSet<Exercise> Exercises => Set<Exercise>();
     public DbSet<Personality> Personalities => Set<Personality>();
     public DbSet<Submission> Submissions => Set<Submission>();
+    public DbSet<User> Users => Set<User>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<Submission>()
+            .HasOne(s => s.User)
+            .WithMany(u => u.Submissions)
+            .HasForeignKey(s => s.UserId)
+            .OnDelete(DeleteBehavior.SetNull);
 
         modelBuilder.Entity<Exercise>().HasData(
             new Exercise
@@ -24,8 +31,7 @@ public class ApplicationDbContext : DbContext
                 Title = "Ejercicio 1: Invertir Cadena",
                 Description = "Crea un algoritmo que invierta una cadena de texto sin usar funciones nativas como Array.Reverse() ni LINQ.",
                 InitialCode = "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        string resultado = Invertir(\"Hola Mundo\");\n        Console.WriteLine($\"Resultado: {resultado}\");\n    }\n\n    public static string Invertir(string texto)\n    {\n        // Escribe tu solución aquí\n        return \"\";\n    }\n}",
-                MentorRules = "RESTRICCIÓN: No puedes utilizar métodos nativos como 'Array.Reverse()' ni LINQ.",
-                CreatedAt = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc)
+                MentorRules = "RESTRICCIÓN: No puedes utilizar métodos nativos como 'Array.Reverse()' ni LINQ."
             }
         );
 

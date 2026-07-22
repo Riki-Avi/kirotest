@@ -6,8 +6,7 @@ public class Exercise
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public string InitialCode { get; set; } = string.Empty;
-    public string MentorRules { get; set; } = string.Empty;
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public string MentorRules { get; set; } = string.Empty; //chekearlo bien
 
     public ICollection<Submission> Submissions { get; set; } = new List<Submission>();
 }
