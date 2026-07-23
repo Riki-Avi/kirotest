@@ -41,10 +41,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const modelSelect = document.getElementById('modelSelect');
     const customJudge0UrlInput = document.getElementById('customJudge0Url');
 
-    // Mobile Sidebar
+    // Sidebar drawer y paneles redimensionables
     const sidebar = document.getElementById('sidebar');
+    const sidebarBackdrop = document.getElementById('sidebarBackdrop');
     const openSidebarBtn = document.getElementById('openSidebarBtn');
     const closeSidebarBtn = document.getElementById('closeSidebarBtn');
+    const splitView = document.querySelector('.split-view');
+    const chatPanel = document.querySelector('.chat-panel');
+    const chatPanelCollapsedTab = document.getElementById('chatPanelCollapsedTab');
+    const editorPanel = document.querySelector('.editor-panel');
+    const terminalPanel = document.querySelector('.terminal-panel');
+    const monacoContainer = document.getElementById('monacoEditorContainer');
+    const workspaceDivider = document.getElementById('workspaceDivider');
+    const editorTerminalDivider = document.getElementById('editorTerminalDivider');
 
     // Cargar configuraciones guardadas
     customApiKeyInput.value = localStorage.getItem('gemini_api_key') || '';
@@ -438,8 +447,244 @@ ${currentCode}
     closeSettingsModalBtn?.addEventListener('click', () => settingsModal?.classList.remove('active'));
     cancelSettingsBtn?.addEventListener('click', () => settingsModal?.classList.remove('active'));
 
-    openSidebarBtn?.addEventListener('click', () => sidebar.classList.add('open'));
-    closeSidebarBtn?.addEventListener('click', () => sidebar.classList.remove('open'));
+    function setSidebarOpen(isOpen, restoreFocus = false) {
+        if (!sidebar) return;
+
+        sidebar.classList.toggle('open', isOpen);
+        sidebar.setAttribute('aria-hidden', String(!isOpen));
+        sidebarBackdrop?.classList.toggle('active', isOpen);
+        openSidebarBtn?.setAttribute('aria-expanded', String(isOpen));
+
+        if (isOpen) {
+            window.setTimeout(() => closeSidebarBtn?.focus(), 50);
+        } else if (restoreFocus) {
+            openSidebarBtn?.focus();
+        }
+    }
+
+    const openSidebar = () => setSidebarOpen(true);
+    const closeSidebar = (restoreFocus = true) => setSidebarOpen(false, restoreFocus);
+
+    openSidebarBtn?.addEventListener('click', openSidebar);
+    closeSidebarBtn?.addEventListener('click', () => closeSidebar());
+    sidebarBackdrop?.addEventListener('click', () => closeSidebar());
+
+    document.addEventListener('keydown', (event) => {
+        const hasActiveModal = document.querySelector('.modal-backdrop.active');
+        if (event.key === 'Escape' && sidebar?.classList.contains('open') && !hasActiveModal) {
+            closeSidebar();
+        }
+    });
+
+    let monacoLayoutFrame = 0;
+
+    function scheduleMonacoLayout() {
+        if (monacoLayoutFrame) return;
+        monacoLayoutFrame = window.requestAnimationFrame(() => {
+            monacoLayoutFrame = 0;
+            window.KiroEditor?.getInstance()?.layout();
+        });
+    }
+
+    function clamp(value, min, max) {
+        return Math.min(Math.max(value, min), max);
+    }
+
+    const CHAT_MIN_WIDTH = 260;
+    const CHAT_COLLAPSE_THRESHOLD = 220;
+    const CHAT_COLLAPSED_WIDTH = 44;
+    let lastExpandedChatWidth = 0;
+
+    function getChatWidthBounds() {
+        const totalWidth = splitView?.getBoundingClientRect().width || 0;
+        const dividerWidth = workspaceDivider?.offsetWidth || 0;
+        return {
+            min: CHAT_MIN_WIDTH,
+            max: Math.max(CHAT_MIN_WIDTH, totalWidth - dividerWidth - 420)
+        };
+    }
+
+    function setChatPanelCollapsed(isCollapsed, restoreWidth = lastExpandedChatWidth) {
+        if (!splitView || !chatPanel || !workspaceDivider || !chatPanelCollapsedTab) return;
+
+        if (isCollapsed && window.innerWidth > 900) {
+            const currentWidth = chatPanel.getBoundingClientRect().width;
+            if (currentWidth > CHAT_COLLAPSED_WIDTH + 1) {
+                lastExpandedChatWidth = currentWidth;
+            }
+            chatPanel.classList.add('is-collapsed');
+            splitView.style.setProperty('--chat-panel-width', `${CHAT_COLLAPSED_WIDTH}px`);
+            chatPanelCollapsedTab.setAttribute('aria-expanded', 'false');
+            workspaceDivider.setAttribute('aria-valuenow', '0');
+            workspaceDivider.setAttribute('aria-label', 'Arrastrar o usar flecha derecha para restaurar el tutor');
+        } else {
+            chatPanel.classList.remove('is-collapsed');
+            chatPanelCollapsedTab.setAttribute('aria-expanded', 'true');
+            workspaceDivider.setAttribute('aria-label', 'Redimensionar panel del tutor');
+
+            if (window.innerWidth > 900) {
+                const bounds = getChatWidthBounds();
+                const fallbackWidth = splitView.getBoundingClientRect().width * 0.42;
+                const expandedWidth = clamp(restoreWidth || fallbackWidth, bounds.min, bounds.max);
+                lastExpandedChatWidth = expandedWidth;
+                splitView.style.setProperty('--chat-panel-width', `${expandedWidth}px`);
+                const percentage = Math.round((expandedWidth / splitView.getBoundingClientRect().width) * 100);
+                workspaceDivider.setAttribute('aria-valuenow', String(percentage));
+            }
+        }
+
+        scheduleMonacoLayout();
+    }
+
+    function setChatPanelWidth(width, allowCollapse = true) {
+        if (!splitView || !chatPanel || !workspaceDivider || window.innerWidth <= 900) return;
+
+        if (allowCollapse && width <= CHAT_COLLAPSE_THRESHOLD) {
+            setChatPanelCollapsed(true);
+            return;
+        }
+
+        const bounds = getChatWidthBounds();
+        const clampedWidth = clamp(width, bounds.min, bounds.max);
+        chatPanel.classList.remove('is-collapsed');
+        chatPanelCollapsedTab?.setAttribute('aria-expanded', 'true');
+        workspaceDivider.setAttribute('aria-label', 'Redimensionar panel del tutor');
+        splitView.style.setProperty('--chat-panel-width', `${clampedWidth}px`);
+        lastExpandedChatWidth = clampedWidth;
+        const percentage = Math.round((clampedWidth / splitView.getBoundingClientRect().width) * 100);
+        workspaceDivider.setAttribute('aria-valuenow', String(percentage));
+        scheduleMonacoLayout();
+    }
+
+    chatPanelCollapsedTab?.addEventListener('click', () => {
+        setChatPanelCollapsed(false);
+        window.setTimeout(() => workspaceDivider?.focus(), 220);
+    });
+
+    function getTerminalHeightBounds() {
+        const panelHeight = editorPanel?.getBoundingClientRect().height || 0;
+        const editorHeaderHeight = editorPanel?.querySelector('.editor-header')?.offsetHeight || 0;
+        const dividerHeight = editorTerminalDivider?.offsetHeight || 0;
+        return {
+            min: 110,
+            max: Math.max(110, panelHeight - editorHeaderHeight - dividerHeight - 160)
+        };
+    }
+
+    function setTerminalPanelHeight(height) {
+        if (!editorPanel || !terminalPanel || !editorTerminalDivider) return;
+        const bounds = getTerminalHeightBounds();
+        const clampedHeight = clamp(height, bounds.min, bounds.max);
+        editorPanel.style.setProperty('--terminal-panel-height', `${clampedHeight}px`);
+        const percentage = Math.round((clampedHeight / editorPanel.getBoundingClientRect().height) * 100);
+        editorTerminalDivider.setAttribute('aria-valuenow', String(percentage));
+        scheduleMonacoLayout();
+    }
+
+    function startPointerResize(event, handle, bodyClass, onMove) {
+        if (event.button !== 0) return;
+        event.preventDefault();
+        handle.setPointerCapture(event.pointerId);
+        handle.classList.add('is-dragging');
+        document.body.classList.add(bodyClass);
+
+        const move = (moveEvent) => {
+            if (moveEvent.pointerId !== event.pointerId) return;
+            onMove(moveEvent);
+        };
+
+        const finish = (finishEvent) => {
+            if (finishEvent.pointerId !== event.pointerId) return;
+            handle.removeEventListener('pointermove', move);
+            handle.removeEventListener('pointerup', finish);
+            handle.removeEventListener('pointercancel', finish);
+            handle.classList.remove('is-dragging');
+            document.body.classList.remove(bodyClass);
+            if (handle.hasPointerCapture(event.pointerId)) {
+                handle.releasePointerCapture(event.pointerId);
+            }
+            scheduleMonacoLayout();
+        };
+
+        handle.addEventListener('pointermove', move);
+        handle.addEventListener('pointerup', finish);
+        handle.addEventListener('pointercancel', finish);
+    }
+
+    workspaceDivider?.addEventListener('pointerdown', (event) => {
+        if (!splitView || window.innerWidth <= 900) return;
+        const splitRect = splitView.getBoundingClientRect();
+        startPointerResize(event, workspaceDivider, 'is-resizing-horizontal', (moveEvent) => {
+            setChatPanelWidth(moveEvent.clientX - splitRect.left);
+        });
+    });
+
+    editorTerminalDivider?.addEventListener('pointerdown', (event) => {
+        if (!editorPanel) return;
+        const editorRect = editorPanel.getBoundingClientRect();
+        startPointerResize(event, editorTerminalDivider, 'is-resizing-vertical', (moveEvent) => {
+            setTerminalPanelHeight(editorRect.bottom - moveEvent.clientY);
+        });
+    });
+
+    workspaceDivider?.addEventListener('keydown', (event) => {
+        if (!chatPanel || window.innerWidth <= 900 || !['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+        event.preventDefault();
+
+        if (chatPanel.classList.contains('is-collapsed')) {
+            if (event.key === 'ArrowRight') {
+                setChatPanelCollapsed(false);
+            }
+            return;
+        }
+
+        const currentWidth = chatPanel.getBoundingClientRect().width;
+        if (event.key === 'ArrowLeft' && currentWidth <= CHAT_MIN_WIDTH + 1) {
+            setChatPanelCollapsed(true);
+            return;
+        }
+
+        const direction = event.key === 'ArrowLeft' ? -1 : 1;
+        setChatPanelWidth(currentWidth + direction * 24);
+    });
+
+    editorTerminalDivider?.addEventListener('keydown', (event) => {
+        if (!terminalPanel || !['ArrowUp', 'ArrowDown'].includes(event.key)) return;
+        event.preventDefault();
+        const direction = event.key === 'ArrowUp' ? 1 : -1;
+        setTerminalPanelHeight(terminalPanel.getBoundingClientRect().height + direction * 24);
+    });
+
+    workspaceDivider?.addEventListener('dblclick', () => {
+        setChatPanelCollapsed(false, splitView?.getBoundingClientRect().width * 0.42);
+    });
+
+    editorTerminalDivider?.addEventListener('dblclick', () => {
+        editorPanel?.style.removeProperty('--terminal-panel-height');
+        editorTerminalDivider.setAttribute('aria-valuenow', '30');
+        scheduleMonacoLayout();
+    });
+
+    window.addEventListener('resize', () => {
+        if (window.innerWidth > 900 && chatPanel) {
+            if (chatPanel.classList.contains('is-collapsed')) {
+                splitView?.style.setProperty('--chat-panel-width', `${CHAT_COLLAPSED_WIDTH}px`);
+            } else {
+                setChatPanelWidth(chatPanel.getBoundingClientRect().width, false);
+            }
+        } else if (chatPanel?.classList.contains('is-collapsed')) {
+            setChatPanelCollapsed(false);
+        }
+        if (terminalPanel) {
+            setTerminalPanelHeight(terminalPanel.getBoundingClientRect().height);
+        }
+        scheduleMonacoLayout();
+    });
+
+    if (window.ResizeObserver && monacoContainer) {
+        const monacoResizeObserver = new ResizeObserver(scheduleMonacoLayout);
+        monacoResizeObserver.observe(monacoContainer);
+    }
 
     resetStarterCodeBtn?.addEventListener('click', () => {
         if (activePersonality && monacoEditor) {
@@ -854,7 +1099,7 @@ ${currentCode}
             card.addEventListener('click', (e) => {
                 if (e.target.closest('.p-actions')) return;
                 selectPersonality(p);
-                if (window.innerWidth <= 768) sidebar.classList.remove('open');
+                closeSidebar(false);
             });
 
             if (p.isCustom) {

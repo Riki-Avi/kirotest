@@ -4,13 +4,13 @@
 
 <div class="app-container">
     <!-- Sidebar Personalidades / Ejercicios -->
-    <aside class="sidebar" id="sidebar">
+    <aside class="sidebar" id="sidebar" aria-hidden="true">
         <div class="sidebar-header">
             <div class="brand">
                 <div class="brand-icon">⚡</div>
                 <h2>Kiro Code Lab</h2>
             </div>
-            <button class="btn-icon mobile-close" id="closeSidebarBtn">✕</button>
+            <button class="btn-icon mobile-close" id="closeSidebarBtn" type="button" aria-label="Cerrar menú lateral">✕</button>
         </div>
 
         <div class="personalities-section">
@@ -31,11 +31,13 @@
         </div>
     </aside>
 
+    <button class="sidebar-backdrop" id="sidebarBackdrop" type="button" tabindex="-1" aria-label="Cerrar menú lateral"></button>
+
     <!-- Main Workspace (Chat Mentor + Monaco Editor) -->
     <div class="workspace-main">
         <!-- Header Bar -->
         <header class="chat-header">
-            <button class="btn-icon mobile-menu-btn" id="openSidebarBtn">☰</button>
+            <button class="btn-icon mobile-menu-btn" id="openSidebarBtn" type="button" aria-label="Abrir menú lateral" aria-controls="sidebar" aria-expanded="false">☰</button>
             
             <div class="active-personality-info" id="activePersonalityDisplay">
                 <span class="active-emoji" id="activeEmoji">🔤</span>
@@ -63,6 +65,19 @@
         <div class="split-view">
             <!-- Left Panel: Gemini Mentor Chat -->
             <div class="chat-panel">
+                <button
+                    class="chat-panel-collapsed-tab"
+                    id="chatPanelCollapsedTab"
+                    type="button"
+                    aria-label="Restaurar panel del tutor"
+                    aria-controls="chatMessages"
+                    aria-expanded="true"
+                    title="Restaurar Tutor IA">
+                    <span class="collapsed-tab-icon" aria-hidden="true">💬</span>
+                    <span class="collapsed-tab-label">Tutor IA</span>
+                    <span class="collapsed-tab-arrow" aria-hidden="true">›</span>
+                </button>
+
                 <div class="panel-header">
                     <span>💬 Tutor & Evaluador IA (Gemini 3.5)</span>
                 </div>
@@ -92,6 +107,18 @@
                 </footer>
             </div>
 
+            <div
+                class="resize-handle workspace-resize-handle"
+                id="workspaceDivider"
+                role="separator"
+                aria-label="Redimensionar panel del tutor"
+                aria-orientation="vertical"
+                aria-valuemin="20"
+                aria-valuemax="70"
+                aria-valuenow="42"
+                tabindex="0">
+            </div>
+
             <!-- Right Panel: Monaco Editor & Judge0 Output Console -->
             <div class="editor-panel">
                 <div class="panel-header editor-header">
@@ -103,6 +130,18 @@
 
                 <!-- Editor Container -->
                 <div id="monacoEditorContainer" class="monaco-container"></div>
+
+                <div
+                    class="resize-handle terminal-resize-handle"
+                    id="editorTerminalDivider"
+                    role="separator"
+                    aria-label="Redimensionar editor y terminal"
+                    aria-orientation="horizontal"
+                    aria-valuemin="15"
+                    aria-valuemax="65"
+                    aria-valuenow="30"
+                    tabindex="0">
+                </div>
 
                 <!-- Judge0 Terminal Console Output & Test Suite View -->
                 <div class="terminal-panel">
