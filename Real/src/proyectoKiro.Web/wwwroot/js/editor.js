@@ -1,10 +1,18 @@
 // editor.js — Módulo de gestión de Monaco Editor y persistencia de código
 window.KiroEditor = (function () {
+    const storageKeyPrefix = 'kiro_code_';
     let monacoInstance = null;
+    let activeExerciseId = null;
+
+    function getStorageKey(exerciseId) {
+        return `${storageKeyPrefix}${exerciseId}`;
+    }
 
     function init(containerId, initialCode = '') {
+        if (monacoInstance) return monacoInstance;
+
         const container = document.getElementById(containerId);
-        if (!container || typeof monaco === 'undefined') return;
+        if (!container || typeof monaco === 'undefined') return null;
 
         monacoInstance = monaco.editor.create(container, {
             value: initialCode || '// Escribe tu código C# aquí...\n',
@@ -18,13 +26,10 @@ window.KiroEditor = (function () {
             smoothScrolling: true
         });
 
-        // Persistir automáticamente en LocalStorage por ejercicio
-        monacoInstance.onDidChangeModelContent(() => {
-            const activeId = window.activePersonalityId;
-            if (activeId) {
-                localStorage.setItem(`kiro_code_${activeId}`, monacoInstance.getValue());
-            }
-        });
+        monacoInstance.onDidChangeModelContent(saveCurrentCode);
+        window.addEventListener('beforeunload', saveCurrentCode);
+
+        return monacoInstance;
     }
 
     function getValue() {
@@ -33,20 +38,37 @@ window.KiroEditor = (function () {
 
     function setValue(code) {
         if (monacoInstance) {
-            monacoInstance.setValue(code);
+            monacoInstance.setValue(code || '');
         }
     }
 
-    function loadSavedOrStarterCode(exerciseId, starterCode) {
-        const saved = localStorage.getItem(`kiro_code_${exerciseId}`);
-        setValue(saved !== null ? saved : starterCode);
+    function saveCurrentCode() {
+        if (!monacoInstance || activeExerciseId === null) return;
+
+        localStorage.setItem(
+            getStorageKey(activeExerciseId),
+            monacoInstance.getValue()
+        );
+    }
+
+    function loadSavedOrStarterCode(exerciseId, starterCode = '') {
+        if (!monacoInstance || exerciseId === null || exerciseId === undefined) return;
+
+        // Guardar el ejercicio anterior antes de cambiar el ID activo.
+        saveCurrentCode();
+
+        activeExerciseId = String(exerciseId);
+        const savedCode = localStorage.getItem(getStorageKey(activeExerciseId));
+        setValue(savedCode !== null ? savedCode : starterCode);
     }
 
     return {
         init,
         getValue,
         setValue,
+        saveCurrentCode,
         loadSavedOrStarterCode,
+        getActiveExerciseId: () => activeExerciseId,
         getInstance: () => monacoInstance
     };
 })();
