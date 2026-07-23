@@ -768,27 +768,23 @@ ${currentCode}
         }
     });
 
-    // Inicializar Monaco Editor via loader
+    // Inicializar una única instancia de Monaco mediante KiroEditor.
     function initMonacoEditor() {
-        if (window.require) {
-            window.require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs' } });
-            window.require(['vs/editor/editor.main'], () => {
-                monacoEditor = monaco.editor.create(document.getElementById('monacoEditorContainer'), {
-                    value: `using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine("¡Bienvenido a Kiro Code Lab!");\n    }\n}`,
-                    language: 'csharp',
-                    theme: 'vs-dark',
-                    automaticLayout: true,
-                    fontSize: 14,
-                    fontFamily: "'Fira Code', monospace",
-                    minimap: { enabled: false },
-                    scrollBeyondLastLine: false
-                });
+        const container = document.getElementById('monacoEditorContainer');
+        if (!container || !window.require || !window.KiroEditor) return;
 
-                if (activePersonality && activePersonality.starterCode) {
-                    monacoEditor.setValue(activePersonality.starterCode);
-                }
-            });
-        }
+        window.require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs' } });
+        window.require(['vs/editor/editor.main'], () => {
+            window.KiroEditor.init('monacoEditorContainer');
+            monacoEditor = window.KiroEditor.getInstance();
+
+            if (activePersonality) {
+                window.KiroEditor.loadSavedOrStarterCode(
+                    activePersonality.id,
+                    activePersonality.starterCode || '// Escribe tu código C# aquí...\n'
+                );
+            }
+        });
     }
 
     async function fetchPersonalities() {
@@ -882,13 +878,17 @@ ${currentCode}
 
     function selectPersonality(p) {
         activePersonality = p;
+        window.activePersonalityId = p.id;
         activeEmoji.textContent = p.emoji;
         activeName.textContent = p.name;
         activeDesc.textContent = p.description;
 
-        // Precargar código en Monaco Editor
-        if (monacoEditor && p.starterCode) {
-            monacoEditor.setValue(p.starterCode);
+        // Recuperar el código guardado de este ejercicio o usar su código inicial.
+        if (monacoEditor) {
+            window.KiroEditor.loadSavedOrStarterCode(
+                p.id,
+                p.starterCode || '// Escribe tu código C# aquí...\n'
+            );
         }
 
         renderPersonalitiesList();
