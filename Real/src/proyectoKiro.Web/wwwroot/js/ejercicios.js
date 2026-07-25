@@ -19,6 +19,7 @@ window.KiroEjercicios = (function () {
 
         container.innerHTML = '';
         list.forEach(item => {
+            const isCompleted = window.KiroSubmissions?.isExerciseCompleted(item);
             const card = document.createElement('div');
             card.className = `personality-card ${activeItem?.id === item.id ? 'active' : ''}`;
             card.innerHTML = `
@@ -26,6 +27,7 @@ window.KiroEjercicios = (function () {
                 <div class="p-details">
                     <div class="p-header">
                         <span class="p-name">${escapeHtml(item.name || '')}</span>
+                        ${isCompleted ? '<span class="p-badge-done" title="Ejercicio completado">✅</span>' : ''}
                         ${item.isCustom ? '<span class="p-badge">Custom</span>' : ''}
                     </div>
                     <div class="p-desc">${escapeHtml(item.description || '')}</div>
@@ -42,7 +44,7 @@ window.KiroEjercicios = (function () {
     }
 
     function escapeHtml(str) {
-        return str
+        return (str || '')
             .replace(/&/g, "&amp;")
             .replace(/</g, "&lt;")
             .replace(/>/g, "&gt;")

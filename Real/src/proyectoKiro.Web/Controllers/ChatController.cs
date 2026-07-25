@@ -20,6 +20,7 @@ namespace proyectoKiro.Web.Controllers
             _whisperService = whisperService;
         }
 
+        [HttpPost]
         [HttpPost("send")]
         public async Task<IActionResult> SendMessage([FromBody] ChatSendRequest request)
         {

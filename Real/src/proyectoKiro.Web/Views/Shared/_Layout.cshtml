@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <!-- Highlight.js CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/tokyo-night-dark.min.css">
-    <link rel="stylesheet" href="~/css/style.css">
+    <link rel="stylesheet" href="~/css/style.css" asp-append-version="true">
 </head>
 <body>
     @RenderBody()
@@ -27,7 +27,7 @@
         env.allowLocalModels = false;
         window.WhisperPipeline = pipeline;
     </script>
-    <script src="~/js/app.js?v=20260723-storage-fix"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>

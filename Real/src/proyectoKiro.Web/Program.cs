@@ -11,6 +11,7 @@ builder.Services.AddSingleton<WhisperService>();
 builder.Services.AddHttpClient<GeminiService>();
 builder.Services.AddHttpClient<Judge0Service>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ISubmissionService, SubmissionService>();
 
 // Registrar MVC (Controllers + Views Views/{Controller}/{Action}.cshtml) y Razor Pages
 builder.Services.AddControllersWithViews()

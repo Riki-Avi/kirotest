@@ -48,83 +48,64 @@
             </div>
 
             <div class="header-actions">
-                <button class="btn-test" id="runTestsBtn" title="Ejecutar la suite de pruebas automatizadas del ejercicio">
-                    🧪 Correr Tests
+                <button class="btn-success hidden" id="completeExerciseBtn" title="Guardar ejercicio completado en tu perfil">
+                    ✅ Completar Ejercicio
                 </button>
                 <button class="btn-run" id="runJudge0Btn" title="Compilar y ejecutar en Judge0 API">
-                    ▶ Compilar en Judge0
+                    ▶ Compilar
+                </button>
+                <button class="btn-test" id="runTestsBtn" title="Ejecutar la suite de pruebas automatizadas del ejercicio">
+                    Correr Tests
                 </button>
                 <button class="btn-outline" id="sendCodeToMentorBtn" title="Enviar el código actual de Monaco al Mentor Gemini">
-                    🤖 Revisar con IA
+                    Revisar
                 </button>
-                <button class="btn-outline" id="clearChatBtn">🗑️</button>
+                <a href="/Profile" class="btn-outline" id="profileBtn" title="Ir a Mi Perfil" style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                    👤 Mi Perfil
+                </a>
+                @* <button class="btn-outline" id="clearChatBtn">🗑️</button>  la ia puso esto para borrar el chat pero lo veo inutil por las dudas lo comento porque la funcionalidad esta pero me da paja buscar xd*@
             </div>
         </header>
 
-        <!-- Split Content: Left Chat Mentor, Right Monaco Editor -->
-        <div class="split-view">
-            <!-- Left Panel: Gemini Mentor Chat -->
-            <div class="chat-panel">
+        <!-- Split Content: Left Exercise, Center Editor/Terminal, Right AI Tutor -->
+        <div class="split-view three-columns">
+            <!-- Column 1: Exercise Description Panel -->
+            <div class="exercise-panel" id="exercisePanel">
                 <button
-                    class="chat-panel-collapsed-tab"
-                    id="chatPanelCollapsedTab"
+                    class="panel-collapsed-tab left-collapsed-tab"
+                    id="exercisePanelCollapsedTab"
                     type="button"
-                    aria-label="Restaurar panel del tutor"
-                    aria-controls="chatMessages"
-                    aria-expanded="true"
-                    title="Restaurar Tutor IA">
-                    <span class="collapsed-tab-icon" aria-hidden="true">💬</span>
-                    <span class="collapsed-tab-label">Tutor IA</span>
-                    <span class="collapsed-tab-arrow" aria-hidden="true">›</span>
+                    title="Restaurar Enunciado del Ejercicio">
+                    <span class="collapsed-tab-icon">📘</span>
+                    <span class="collapsed-tab-label">Enunciado</span>
+                    <span class="collapsed-tab-arrow">›</span>
                 </button>
 
                 <div class="panel-header">
-                    <span>💬 Tutor & Evaluador IA (Gemini 3.5)</span>
+                    <span>📘 Enunciado del Ejercicio</span>
+                    <div class="font-size-controls">
+                        <button type="button" class="btn-font-size" id="decreaseExerciseFontBtn" title="Disminuir tamaño de letra">A-</button>
+                        <button type="button" class="btn-font-size" id="increaseExerciseFontBtn" title="Aumentar tamaño de letra">A+</button>
+                    </div>
                 </div>
-                <div class="chat-messages" id="chatMessages">
-                    <!-- Mensajes y welcome card dinámicos -->
+                <div class="exercise-content" id="exerciseContent">
+                    <!-- Detalle formateado del ejercicio -->
                 </div>
-
-                <footer class="chat-input-container">
-                    <form id="chatForm" class="input-form">
-                        <textarea 
-                            id="messageInput" 
-                            placeholder="Escribe o habla por micrófono para consultar al mentor..." 
-                            rows="1"
-                            required
-                        ></textarea>
-                        <button type="button" class="btn-mic" id="micBtn" title="Hablar por micrófono">
-                            🎙️
-                        </button>
-                        <button type="submit" class="btn-send" id="sendBtn">
-                            <span>Enviar</span>
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <line x1="22" y1="2" x2="11" y2="13"></line>
-                                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                            </svg>
-                        </button>
-                    </form>
-                </footer>
             </div>
 
-            <div
-                class="resize-handle workspace-resize-handle"
-                id="workspaceDivider"
-                role="separator"
-                aria-label="Redimensionar panel del tutor"
-                aria-orientation="vertical"
-                aria-valuemin="20"
-                aria-valuemax="70"
-                aria-valuenow="42"
-                tabindex="0">
-            </div>
+            <!-- Resizer 1: Left Resizer (Exercise <-> Editor) -->
+            <div class="resize-handle workspace-resize-handle" id="leftDivider" role="separator" aria-label="Redimensionar enunciado"></div>
 
-            <!-- Right Panel: Monaco Editor & Judge0 Output Console -->
+            <!-- Column 2: Monaco Editor & Judge0 Output Console -->
             <div class="editor-panel">
                 <div class="panel-header editor-header">
-                    <span>📝 Editor de Código C# (Monaco Editor)</span>
+                    <span>💻 Editor de Código C#</span>
                     <div class="editor-actions">
-                        <button class="btn-sm" id="resetStarterCodeBtn">↺ Resetear Clase</button>
+                        <div class="font-size-controls">
+                            <button type="button" class="btn-font-size" id="decreaseEditorFontBtn" title="Disminuir tamaño de letra">A-</button>
+                            <button type="button" class="btn-font-size" id="increaseEditorFontBtn" title="Aumentar tamaño de letra">A+</button>
+                        </div>
+                        <button class="btn-sm" id="resetStarterCodeBtn">Resetear Código</button>
                     </div>
                 </div>
 
@@ -153,12 +134,60 @@
                         <span class="status-badge" id="judge0StatusBadge">Esperando ejecución...</span>
                     </div>
                     <div class="terminal-content">
-                        <pre class="terminal-output" id="terminalOutput">Haz clic en '▶ Compilar en Judge0' para ejecutar o '🧪 Correr Tests' para validar el ejercicio.</pre>
+                        <pre class="terminal-output" id="terminalOutput">Haz clic en '▶ Compilar' para ejecutar o 'Correr Tests' para validar el ejercicio.</pre>
                         <div class="test-results-container hidden" id="testResultsContainer">
-                            <p class="test-placeholder">Presiona <strong>'🧪 Correr Tests'</strong> para validar los casos de prueba del ejercicio.</p>
+                            <p class="test-placeholder">Presiona <strong>'Correr Tests'</strong> para validar los casos de prueba del ejercicio.</p>
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <!-- Resizer 2: Right Resizer (Editor <-> Chat Tutor) -->
+            <div class="resize-handle workspace-resize-handle" id="rightDivider" role="separator" aria-label="Redimensionar tutor IA"></div>
+
+            <!-- Column 3: Gemini Mentor AI Chat Panel -->
+            <div class="chat-panel" id="chatPanel">
+                <button
+                    class="panel-collapsed-tab right-collapsed-tab"
+                    id="chatPanelCollapsedTab"
+                    type="button"
+                    title="Restaurar Tutor IA">
+                    <span class="collapsed-tab-icon">💬</span>
+                    <span class="collapsed-tab-label">Tutor IA</span>
+                    <span class="collapsed-tab-arrow">‹</span>
+                </button>
+
+                <div class="panel-header">
+                    <span>🤖 Tutor IA (Gemini)</span>
+                    <div class="font-size-controls">
+                        <button type="button" class="btn-font-size" id="decreaseChatFontBtn" title="Disminuir tamaño de letra">A-</button>
+                        <button type="button" class="btn-font-size" id="increaseChatFontBtn" title="Aumentar tamaño de letra">A+</button>
+                    </div>
+                </div>
+                <div class="chat-messages" id="chatMessages">
+                    <!-- Mensajes del chat con la IA -->
+                </div>
+
+                <footer class="chat-input-container">
+                    <form id="chatForm" class="input-form">
+                        <textarea 
+                            id="messageInput" 
+                            placeholder="Consulta al tutor IA sobre tu código o dudas..." 
+                            rows="1"
+                            required
+                        ></textarea>
+                        <button type="button" class="btn-mic" id="micBtn" title="Hablar por micrófono">
+                            🎙️
+                        </button>
+                        <button type="submit" class="btn-send" id="sendBtn">
+                            <span></span>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="22" y1="2" x2="11" y2="13"></line>
+                                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                            </svg>
+                        </button>
+                    </form>
+                </footer>
             </div>
         </div>
     </div>
@@ -213,6 +242,23 @@
     </div>
 </div>
 
+<div class="modal-backdrop" id="completeModal">
+    <div class="modal-card">
+        <div class="modal-header">
+            <h3>🎉 ¡Ejercicio Completado!</h3>
+            <button class="btn-icon" id="closeCompleteModalBtn">✕</button>
+        </div>
+        <div class="modal-body">
+            <p>Has superado todas las pruebas automatizadas de este ejercicio.</p>
+            <p>¿Deseas guardar este progreso y tu solución en tu perfil de usuario?</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn-secondary" id="cancelCompleteBtn">Cancelar</button>
+            <button type="button" class="btn-primary" id="confirmSaveProgressBtn">Guardar en Mi Perfil</button>
+        </div>
+    </div>
+</div>
+
 <!-- Modal Configuración -->
 <div class="modal-backdrop" id="settingsModal">
     <div class="modal-card">
@@ -248,9 +294,32 @@
 </div>
 
 @section Scripts {
-    <!-- Módulos JavaScript para el Editor -->
-    <script src="~/js/editor.js?v=20260723-storage-fix"></script>
-    <script src="~/js/ejercicios.js"></script>
-    <script src="~/js/mentor.js"></script>
-    <script src="~/js/tests.js"></script>
+    <!-- Supabase JS Client para la sesión de usuario -->
+    <script src="https://cdn.jsdelivr.net/npm/@@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = "https://bzaifpevfuwlaznmhiee.supabase.co";
+        const SUPABASE_ANON_KEY = "sb_publishable_xoU3gGiIKuchm6oTBhr8EQ_eb7sUD2a";
+        window.supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        window.supabaseClient.auth.onAuthStateChange((event, session) => {
+            if (session?.user) {
+                window.currentUserId = session.user.id;
+                if (typeof window.onUserAuthenticated === 'function') {
+                    window.onUserAuthenticated(session.user.id);
+                }
+            }
+        });
+    </script>
+
+    <!-- Módulos Vanilla JS de Kiro -->
+    <script src="~/js/editor.js" asp-append-version="true"></script>
+    <script src="~/js/ejercicios.js" asp-append-version="true"></script>
+    <script src="~/js/modules/ui.js" asp-append-version="true"></script>
+    <script src="~/js/modules/chat.js" asp-append-version="true"></script>
+    <script src="~/js/modules/voice.js" asp-append-version="true"></script>
+    <script src="~/js/modules/judge0.js" asp-append-version="true"></script>
+    <script src="~/js/modules/submissions.js" asp-append-version="true"></script>
+    <script src="~/js/modules/modals.js" asp-append-version="true"></script>
+    <!-- Orquestador Principal -->
+    <script src="~/js/main.js" asp-append-version="true"></script>
 }
