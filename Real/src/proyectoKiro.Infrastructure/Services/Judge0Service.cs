@@ -88,7 +88,7 @@ namespace proyectoKiro.Infrastructure.Services
             }
         }
 
-        public async Task<TestSuiteRunResponse> ExecuteTestSuiteAsync(string sourceCode, Personality personality, string? customJudge0Url)
+        public async Task<TestSuiteRunResponse> ExecuteTestSuiteAsync(string sourceCode, Personality personality, string? customJudge0Url, int languageId = 51)
         {
             if (personality.TestCases == null || personality.TestCases.Count == 0)
             {
@@ -99,34 +99,74 @@ namespace proyectoKiro.Infrastructure.Services
                 };
             }
 
-            // Preparar el código del usuario renombrando su Main() para que no colisione con el KiroTestRunner
-            var safeUserCode = sourceCode.Replace("static void Main", "static void UserMainOriginal");
+            if (languageId <= 0) languageId = 51;
 
             var sb = new StringBuilder();
-            sb.AppendLine(safeUserCode);
-            sb.AppendLine();
-            sb.AppendLine("public class KiroTestRunnerHarness");
-            sb.AppendLine("{");
-            sb.AppendLine("    public static void Main()");
-            sb.AppendLine("    {");
 
-            foreach (var test in personality.TestCases)
+            string langKey = (languageId == 62 || languageId == 91) ? "java" : ((languageId == 74) ? "typescript" : "csharp");
+
+            if (languageId == 62 || languageId == 91) // Java
             {
-                sb.AppendLine("        try {");
-                sb.AppendLine($"            var output_{test.Id} = Convert.ToString({test.MethodCall});");
-                sb.AppendLine($"            Console.WriteLine($\"KIRO_TEST_RES:{test.Id}:{{output_{test.Id}}}\");");
-                sb.AppendLine("        } catch(Exception ex) {");
-                sb.AppendLine($"            Console.WriteLine($\"KIRO_TEST_ERR:{test.Id}:{{ex.Message}}\");");
-                sb.AppendLine("        }");
+                var safeUserCode = sourceCode.Replace("public static void main", "public static void userMainOriginal");
+                sb.AppendLine(safeUserCode);
+                sb.AppendLine();
+                sb.AppendLine("public class Main {");
+                sb.AppendLine("    public static void main(String[] args) {");
+                foreach (var test in personality.TestCases)
+                {
+                    var call = (test.MethodCalls != null && test.MethodCalls.TryGetValue("java", out var c) && !string.IsNullOrWhiteSpace(c)) ? c : test.MethodCall;
+                    sb.AppendLine("        try {");
+                    sb.AppendLine($"            String output_{test.Id} = String.valueOf({call});");
+                    sb.AppendLine($"            System.out.println(\"KIRO_TEST_RES:{test.Id}:\" + output_{test.Id});");
+                    sb.AppendLine("        } catch(Exception ex) {");
+                    sb.AppendLine($"            System.out.println(\"KIRO_TEST_ERR:{test.Id}:\" + ex.getMessage());");
+                    sb.AppendLine("        }");
+                }
+                sb.AppendLine("    }");
+                sb.AppendLine("}");
             }
-
-            sb.AppendLine("    }");
-            sb.AppendLine("}");
+            else if (languageId == 74) // TypeScript / JavaScript
+            {
+                sb.AppendLine(sourceCode);
+                sb.AppendLine();
+                foreach (var test in personality.TestCases)
+                {
+                    var call = (test.MethodCalls != null && test.MethodCalls.TryGetValue("typescript", out var c) && !string.IsNullOrWhiteSpace(c)) ? c : test.MethodCall;
+                    sb.AppendLine("try {");
+                    sb.AppendLine($"    const output_{test.Id} = String({call});");
+                    sb.AppendLine($"    console.log('KIRO_TEST_RES:{test.Id}:' + output_{test.Id});");
+                    sb.AppendLine("} catch(ex) {");
+                    sb.AppendLine($"    console.log('KIRO_TEST_ERR:{test.Id}:' + (ex.message || ex));");
+                    sb.AppendLine("}");
+                }
+            }
+            else // C# (51)
+            {
+                var safeUserCode = sourceCode.Replace("static void Main", "static void UserMainOriginal");
+                sb.AppendLine(safeUserCode);
+                sb.AppendLine();
+                sb.AppendLine("public class KiroTestRunnerHarness");
+                sb.AppendLine("{");
+                sb.AppendLine("    public static void Main()");
+                sb.AppendLine("    {");
+                foreach (var test in personality.TestCases)
+                {
+                    var call = (test.MethodCalls != null && test.MethodCalls.TryGetValue("csharp", out var c) && !string.IsNullOrWhiteSpace(c)) ? c : test.MethodCall;
+                    sb.AppendLine("        try {");
+                    sb.AppendLine($"            var output_{test.Id} = Convert.ToString({call});");
+                    sb.AppendLine($"            Console.WriteLine($\"KIRO_TEST_RES:{test.Id}:{{output_{test.Id}}}\");");
+                    sb.AppendLine("        } catch(Exception ex) {");
+                    sb.AppendLine($"            Console.WriteLine($\"KIRO_TEST_ERR:{test.Id}:{{ex.Message}}\");");
+                    sb.AppendLine("        }");
+                }
+                sb.AppendLine("    }");
+                sb.AppendLine("}");
+            }
 
             var compileRequest = new Judge0CompileRequest
             {
                 SourceCode = sb.ToString(),
-                LanguageId = 51,
+                LanguageId = languageId,
                 CustomJudge0Url = customJudge0Url
             };
 

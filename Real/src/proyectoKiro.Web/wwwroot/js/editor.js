@@ -1,11 +1,18 @@
-// editor.js — Módulo de gestión de Monaco Editor y persistencia de código
+// editor.js — Módulo de gestión de Monaco Editor, soporte Multi-lenguaje (C#, Java, TypeScript) y persistencia
 window.KiroEditor = (function () {
     const storageKeyPrefix = 'kiro_code_';
     let monacoInstance = null;
     let activeExerciseId = null;
+    let currentLanguage = localStorage.getItem('kiro_editor_language') || 'csharp';
 
-    function getStorageKey(exerciseId) {
-        return `${storageKeyPrefix}${exerciseId}`;
+    const languageMap = {
+        'csharp': { monaco: 'csharp', judge0Id: 51, name: 'C#' },
+        'java': { monaco: 'java', judge0Id: 62, name: 'Java' },
+        'typescript': { monaco: 'typescript', judge0Id: 74, name: 'TypeScript' }
+    };
+
+    function getStorageKey(exerciseId, lang = currentLanguage) {
+        return `${storageKeyPrefix}${exerciseId}_${lang}`;
     }
 
     function init(containerId, initialCode = '', onReady) {
@@ -32,10 +39,11 @@ window.KiroEditor = (function () {
         if (monacoInstance || typeof monaco === 'undefined') return;
 
         const savedFontSize = parseInt(localStorage.getItem('kiro_editor_font_size') || '14', 10);
+        const monacoLang = languageMap[currentLanguage]?.monaco || 'csharp';
 
         monacoInstance = monaco.editor.create(container, {
-            value: initialCode || '// Escribe tu código C# aquí...\n',
-            language: 'csharp',
+            value: initialCode || '// Escribe tu código aquí...\n',
+            language: monacoLang,
             theme: 'vs-dark',
             automaticLayout: true,
             fontSize: savedFontSize,
@@ -70,19 +78,64 @@ window.KiroEditor = (function () {
         return clampedSize;
     }
 
+    function setLanguage(lang) {
+        if (!languageMap[lang]) lang = 'csharp';
+        currentLanguage = lang;
+
+        if (monacoInstance && typeof monaco !== 'undefined') {
+            const model = monacoInstance.getModel();
+            if (model) {
+                monaco.editor.setModelLanguage(model, languageMap[lang].monaco);
+            }
+        }
+        localStorage.setItem('kiro_editor_language', lang);
+    }
+
+    function getCurrentLanguage() {
+        return currentLanguage;
+    }
+
+    function getJudge0LanguageId() {
+        return languageMap[currentLanguage]?.judge0Id || 51;
+    }
+
     function saveCurrentCode() {
         if (!monacoInstance || activeExerciseId === null) return;
 
         localStorage.setItem(
-            getStorageKey(activeExerciseId),
+            getStorageKey(activeExerciseId, currentLanguage),
             monacoInstance.getValue()
         );
     }
 
-    function loadSavedOrStarterCode(exerciseId, starterCode = '') {
+    function loadSavedOrStarterCode(exerciseId, starterCode = '', exerciseObj = null) {
         activeExerciseId = String(exerciseId);
-        const savedCode = localStorage.getItem(getStorageKey(activeExerciseId));
-        setValue(savedCode !== null ? savedCode : starterCode);
+        const savedCode = localStorage.getItem(getStorageKey(activeExerciseId, currentLanguage));
+
+        if (savedCode !== null) {
+            setValue(savedCode);
+        } else {
+            const defaultCode = getStarterCodeForLanguage(exerciseObj, starterCode, currentLanguage);
+            setValue(defaultCode);
+        }
+    }
+
+    function getStarterCodeForLanguage(exerciseObj, defaultCode, lang) {
+        if (exerciseObj && exerciseObj.starterCodes && exerciseObj.starterCodes[lang]) {
+            return exerciseObj.starterCodes[lang];
+        }
+
+        if (lang === 'csharp') return defaultCode || exerciseObj?.starterCode || '// Tu solución en C#...\n';
+
+        if (lang === 'java') {
+            return `using System;\n// O usa la estructura estándar de Java:\npublic class Program\n{\n    public static void main(String[] args)\n    {\n        System.out.println("Solución en Java");\n    }\n}\n`;
+        }
+
+        if (lang === 'typescript') {
+            return `// Solución en TypeScript\n\nfunction solucionar(): void {\n    console.log("Solución en TypeScript");\n}\n\nsolucionar();\n`;
+        }
+
+        return defaultCode || '// Escribe tu solución aquí...\n';
     }
 
     return {
@@ -90,8 +143,12 @@ window.KiroEditor = (function () {
         getValue,
         setValue,
         setFontSize,
+        setLanguage,
+        getCurrentLanguage,
+        getJudge0LanguageId,
         saveCurrentCode,
         loadSavedOrStarterCode,
+        getStarterCodeForLanguage,
         getActiveExerciseId: () => activeExerciseId,
         getInstance: () => monacoInstance
     };

@@ -18,13 +18,23 @@ public class SubmissionsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Save([FromBody] SaveSubmissionRequest request)
     {
-        var result = await _submissionService.SaveSubmissionAsync(request);
-        if (!result.Success)
+        try
         {
-            return BadRequest(result);
+            var result = await _submissionService.SaveSubmissionAsync(request);
+            if (!result.Success)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
         }
-
-        return Ok(result);
+        catch (Exception ex)
+        {
+            return StatusCode(500, new SaveSubmissionResponse
+            {
+                Success = false,
+                Message = $"Error al guardar entrega en base de datos: {ex.Message}"
+            });
+        }
     }
 
     [HttpGet("user/{userId}")]

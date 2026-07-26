@@ -5,50 +5,70 @@
     "name": "Ejercicio 1: Suma de Elementos",
     "avatar": "",
     "description": "Dado un arreglo de enteros y un número objetivo (target), devuelve la suma de todos los números menores al target.",
-    "systemInstruction": "Eres un Evaluador y Mentor Interactivo para el Ejercicio: 'Suma de Elementos en C#'.\n\nENUNCIADO DEL EJERCICIO:\nCrea un método `int SumaMenores(int[] numeros, int target)` que reciba un arreglo de enteros y un número objetivo, y devuelva la suma de todos los elementos del arreglo que sean estrictamente menores al target.\n\nEjemplo: SumaMenores([1, 5, 3, 8, 2], 5) → 6 (porque 1+3+2=6)\n\nCONCEPTO A EVALUAR: Bucles básicos, condicionales simples, acumuladores.\n\nREGLAS PARA EL MENTOR:\n1. Si el usuario te saluda o pregunta qué hacer, dale el enunciado de forma clara y amigable.\n2. Si el usuario envía código:\n   - Si tiene errores, dale pistas progresivas: '¿Has inicializado tu variable acumuladora correctamente?'\n   - Si la solución es correcta, felicítalo y pregunta: '¿Qué complejidad temporal tiene tu solución? ¿Se puede hacer en una sola pasada?'\n3. Nunca reveles la solución directa.",
+    "systemInstruction": "Eres un Evaluador y Mentor Interactivo para el Ejercicio: 'Suma de Elementos'.\n\nENUNCIADO DEL EJERCICIO:\nCrea una función/método `SumaMenores` que reciba un arreglo de enteros y un número objetivo, y devuelva la suma de todos los elementos del arreglo que sean estrictamente menores al target.\n\nEjemplo: SumaMenores([1, 5, 3, 8, 2], 5) → 6 (porque 1+3+2=6)\n\nCONCEPTO A EVALUAR: Bucles básicos, condicionales simples, acumuladores.\n\nREGLAS PARA EL MENTOR:\n1. Si el usuario te saluda o pregunta qué hacer, dale el enunciado de forma clara y amigable.\n2. Si el usuario envía código:\n   - Si tiene errores, dale pistas progresivas.\n   - Si la solución es correcta, felicítalo y pregunta por su complejidad temporal.",
     "temperature": 0.5,
     "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        int[] numeros = {1, 5, 3, 8, 2};\n        int resultado = SumaMenores(numeros, 5);\n        Console.WriteLine($\"Resultado: {resultado}\");\n    }\n\n    public static int SumaMenores(int[] numeros, int target)\n    {\n        // Tu solución aquí\n        return 0;\n    }\n}",
+    "starterCodes": {
+      "csharp": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        int[] numeros = {1, 5, 3, 8, 2};\n        int resultado = SumaMenores(numeros, 5);\n        Console.WriteLine($\"Resultado: {resultado}\");\n    }\n\n    public static int SumaMenores(int[] numeros, int target)\n    {\n        // Tu solución en C# aquí\n        return 0;\n    }\n}",
+      "java": "public class Program\n{\n    public static void main(String[] args)\n    {\n        int[] numeros = {1, 5, 3, 8, 2};\n        int resultado = sumaMenores(numeros, 5);\n        System.out.println(\"Resultado: \" + resultado);\n    }\n\n    public static int sumaMenores(int[] numeros, int target)\n    {\n        // Tu solución en Java aquí\n        return 0;\n    }\n}",
+      "typescript": "function sumaMenores(numeros: number[], target: number): number {\n    // Tu solución en TypeScript aquí\n    return 0;\n}\n\nconsole.log(\"Resultado:\", sumaMenores([1, 5, 3, 8, 2], 5));"
+    },
     "isCustom": false,
     "testCases": [
       {
         "id": "1",
-        "name": "",
         "description": "Caso básico [1,5,3,8,2] con target 5",
-        "input": "",
         "expectedOutput": "6",
-        "methodCall": "Program.SumaMenores(new int[]{1,5,3,8,2}, 5)"
+        "methodCall": "Program.SumaMenores(new int[]{1,5,3,8,2}, 5)",
+        "methodCalls": {
+          "csharp": "Program.SumaMenores(new int[]{1,5,3,8,2}, 5)",
+          "java": "Program.sumaMenores(new int[]{1,5,3,8,2}, 5)",
+          "typescript": "sumaMenores([1,5,3,8,2], 5)"
+        }
       },
       {
         "id": "2",
-        "name": "",
         "description": "Todos menores al target [1,2,3] con target 10",
-        "input": "",
         "expectedOutput": "6",
-        "methodCall": "Program.SumaMenores(new int[]{1,2,3}, 10)"
+        "methodCall": "Program.SumaMenores(new int[]{1,2,3}, 10)",
+        "methodCalls": {
+          "csharp": "Program.SumaMenores(new int[]{1,2,3}, 10)",
+          "java": "Program.sumaMenores(new int[]{1,2,3}, 10)",
+          "typescript": "sumaMenores([1,2,3], 10)"
+        }
       },
       {
         "id": "3",
-        "name": "",
         "description": "Ninguno menor al target [10,20,30] con target 5",
-        "input": "",
         "expectedOutput": "0",
-        "methodCall": "Program.SumaMenores(new int[]{10,20,30}, 5)"
+        "methodCall": "Program.SumaMenores(new int[]{10,20,30}, 5)",
+        "methodCalls": {
+          "csharp": "Program.SumaMenores(new int[]{10,20,30}, 5)",
+          "java": "Program.sumaMenores(new int[]{10,20,30}, 5)",
+          "typescript": "sumaMenores([10,20,30], 5)"
+        }
       },
       {
         "id": "4",
-        "name": "",
         "description": "Arreglo vacío con target 5",
-        "input": "",
         "expectedOutput": "0",
-        "methodCall": "Program.SumaMenores(new int[]{}, 5)"
+        "methodCall": "Program.SumaMenores(new int[]{}, 5)",
+        "methodCalls": {
+          "csharp": "Program.SumaMenores(new int[]{}, 5)",
+          "java": "Program.sumaMenores(new int[]{}, 5)",
+          "typescript": "sumaMenores([], 5)"
+        }
       },
       {
         "id": "5",
-        "name": "",
         "description": "Con negativos [-3, -1, 4, 7] con target 0",
-        "input": "",
         "expectedOutput": "-4",
-        "methodCall": "Program.SumaMenores(new int[]{-3,-1,4,7}, 0)"
+        "methodCall": "Program.SumaMenores(new int[]{-3,-1,4,7}, 0)",
+        "methodCalls": {
+          "csharp": "Program.SumaMenores(new int[]{-3,-1,4,7}, 0)",
+          "java": "Program.sumaMenores(new int[]{-3,-1,4,7}, 0)",
+          "typescript": "sumaMenores([-3,-1,4,7], 0)"
+        }
       }
     ]
   },
@@ -58,50 +78,70 @@
     "name": "Ejercicio 2: Palíndromo",
     "avatar": "",
     "description": "Determina si una cadena se lee igual de izquierda a derecha que de derecha a izquierda, ignorando mayúsculas y espacios.",
-    "systemInstruction": "Eres un Mentor Interactivo para el Ejercicio: 'Verificar Palíndromos en C#'.\n\nENUNCIADO DEL EJERCICIO:\nEscribe un método `bool EsPalindromo(string texto)` que devuelva true si el texto es un palíndromo (se lee igual al derecho y al revés), ignorando mayúsculas, minúsculas y espacios.\n\nEjemplo: EsPalindromo(\"Anita lava la tina\") → true\n\nCONCEPTO A EVALUAR: Manipulación de strings, iteración bidireccional (dos punteros).\n\nREGLAS PARA EL MENTOR:\n1. Si el usuario te saluda, dale el enunciado claro.\n2. Si envía código:\n   - Evalúa si maneja correctamente: mayúsculas, espacios, cadenas vacías.\n   - Pista: '¿Has considerado cómo afecta la puntuación o los espacios antes de comparar los caracteres?'\n   - Si usa .Reverse(), sugiérele la técnica de dos punteros para O(1) memoria extra.\n3. Nunca reveles la solución directa.",
+    "systemInstruction": "Eres un Mentor Interactivo para el Ejercicio: 'Verificar Palíndromos'.\n\nENUNCIADO DEL EJERCICIO:\nEscribe un método/función `EsPalindromo(texto)` que devuelva true si el texto es un palíndromo (se lee igual al derecho y al revés), ignorando mayúsculas, minúsculas y espacios.\n\nEjemplo: EsPalindromo(\"Anita lava la tina\") → true",
     "temperature": 0.5,
-    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine($\"Anita lava la tina: {EsPalindromo(\"Anita lava la tina\")}\");\n        Console.WriteLine($\"Hola: {EsPalindromo(\"Hola\")}\");\n    }\n\n    public static bool EsPalindromo(string texto)\n    {\n        // Tu solución aquí\n        return false;\n    }\n}",
+    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine($\"Anita lava la tina: {EsPalindromo(\"Anita lava la tina\")}\");\n    }\n\n    public static bool EsPalindromo(string texto)\n    {\n        // Tu solución aquí\n        return false;\n    }\n}",
+    "starterCodes": {
+      "csharp": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine($\"Anita lava la tina: {EsPalindromo(\"Anita lava la tina\")}\");\n    }\n\n    public static bool EsPalindromo(string texto)\n    {\n        // Tu solución en C# aquí\n        return false;\n    }\n}",
+      "java": "public class Program\n{\n    public static void main(String[] args)\n    {\n        System.out.println(\"Anita lava la tina: \" + esPalindromo(\"Anita lava la tina\"));\n    }\n\n    public static boolean esPalindromo(String texto)\n    {\n        // Tu solución en Java aquí\n        return false;\n    }\n}",
+      "typescript": "function esPalindromo(texto: string): boolean {\n    // Tu solución en TypeScript aquí\n    return false;\n}\n\nconsole.log(esPalindromo(\"Anita lava la tina\"));"
+    },
     "isCustom": false,
     "testCases": [
       {
         "id": "1",
-        "name": "",
         "description": "Frase palíndromo con espacios",
-        "input": "",
         "expectedOutput": "True",
-        "methodCall": "Program.EsPalindromo(\"Anita lava la tina\")"
+        "methodCall": "Program.EsPalindromo(\"Anita lava la tina\")",
+        "methodCalls": {
+          "csharp": "Program.EsPalindromo(\"Anita lava la tina\")",
+          "java": "Program.esPalindromo(\"Anita lava la tina\")",
+          "typescript": "esPalindromo(\"Anita lava la tina\")"
+        }
       },
       {
         "id": "2",
-        "name": "",
         "description": "Palabra palíndromo con mayúscula",
-        "input": "",
         "expectedOutput": "True",
-        "methodCall": "Program.EsPalindromo(\"Neuquen\")"
+        "methodCall": "Program.EsPalindromo(\"Neuquen\")",
+        "methodCalls": {
+          "csharp": "Program.EsPalindromo(\"Neuquen\")",
+          "java": "Program.esPalindromo(\"Neuquen\")",
+          "typescript": "esPalindromo(\"Neuquen\")"
+        }
       },
       {
         "id": "3",
-        "name": "",
         "description": "Palabra NO palíndromo",
-        "input": "",
         "expectedOutput": "False",
-        "methodCall": "Program.EsPalindromo(\"Programacion\")"
+        "methodCall": "Program.EsPalindromo(\"Programacion\")",
+        "methodCalls": {
+          "csharp": "Program.EsPalindromo(\"Programacion\")",
+          "java": "Program.esPalindromo(\"Programacion\")",
+          "typescript": "esPalindromo(\"Programacion\")"
+        }
       },
       {
         "id": "4",
-        "name": "",
         "description": "Cadena vacía (es palíndromo trivial)",
-        "input": "",
         "expectedOutput": "True",
-        "methodCall": "Program.EsPalindromo(\"\")"
+        "methodCall": "Program.EsPalindromo(\"\")",
+        "methodCalls": {
+          "csharp": "Program.EsPalindromo(\"\")",
+          "java": "Program.esPalindromo(\"\")",
+          "typescript": "esPalindromo(\"\")"
+        }
       },
       {
         "id": "5",
-        "name": "",
         "description": "Un solo carácter",
-        "input": "",
         "expectedOutput": "True",
-        "methodCall": "Program.EsPalindromo(\"a\")"
+        "methodCall": "Program.EsPalindromo(\"a\")",
+        "methodCalls": {
+          "csharp": "Program.EsPalindromo(\"a\")",
+          "java": "Program.esPalindromo(\"a\")",
+          "typescript": "esPalindromo(\"a\")"
+        }
       }
     ]
   },
@@ -111,50 +151,48 @@
     "name": "Ejercicio 3: El Número Mayor",
     "avatar": "",
     "description": "Encuentra el número más grande en un arreglo no ordenado sin usar funciones nativas como Max().",
-    "systemInstruction": "Eres un Evaluador para el Ejercicio: 'Encontrar el Número Mayor en C#'.\n\nENUNCIADO DEL EJERCICIO:\nEscribe un método `int EncontrarMaximo(int[] numeros)` que reciba un arreglo de enteros y devuelva el valor más grande. NO puedes usar métodos como .Max() ni LINQ.\n\nEjemplo: EncontrarMaximo([3, 7, 2, 9, 1]) → 9\n\nCONCEPTO A EVALUAR: Recorrido secuencial O(n), variable de rastreo.\n\nREGLAS PARA EL MENTOR:\n1. Si el usuario ordena el arreglo, dile: 'Funciona, pero ordenar es O(n log n). ¿Podrías hacerlo en una sola pasada O(n)?'\n2. Pista clave: 'En lugar de ordenar todo el arreglo, ¿qué pasa si guardas el valor máximo visto hasta el momento mientras lo recorres?'\n3. Evalúa si inicializa el máximo correctamente (¿qué pasa con números negativos?).\n4. Nunca reveles la solución directa.",
+    "systemInstruction": "Eres un Evaluador para el Ejercicio: 'Encontrar el Número Mayor'.\n\nENUNCIADO DEL EJERCICIO:\nEscribe un método `EncontrarMaximo(numeros)` que reciba un arreglo de enteros y devuelva el valor más grande. NO puedes usar métodos como .Max() ni LINQ.",
     "temperature": 0.5,
-    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        int[] numeros = {3, 7, 2, 9, 1};\n        Console.WriteLine($\"Máximo: {EncontrarMaximo(numeros)}\");\n    }\n\n    public static int EncontrarMaximo(int[] numeros)\n    {\n        // Tu solución aquí (sin usar .Max() ni LINQ)\n        return 0;\n    }\n}",
+    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        int[] numeros = {3, 7, 2, 9, 1};\n        Console.WriteLine($\"Máximo: {EncontrarMaximo(numeros)}\");\n    }\n\n    public static int EncontrarMaximo(int[] numeros)\n    {\n        // Tu solución aquí\n        return 0;\n    }\n}",
+    "starterCodes": {
+      "csharp": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        int[] numeros = {3, 7, 2, 9, 1};\n        Console.WriteLine($\"Máximo: {EncontrarMaximo(numeros)}\");\n    }\n\n    public static int EncontrarMaximo(int[] numeros)\n    {\n        // Tu solución en C# aquí\n        return 0;\n    }\n}",
+      "java": "public class Program\n{\n    public static void main(String[] args)\n    {\n        int[] numeros = {3, 7, 2, 9, 1};\n        System.out.println(\"Máximo: \" + encontrarMaximo(numeros));\n    }\n\n    public static int encontrarMaximo(int[] numeros)\n    {\n        // Tu solución en Java aquí\n        return 0;\n    }\n}",
+      "typescript": "function encontrarMaximo(numeros: number[]): number {\n    // Tu solución en TypeScript aquí\n    return 0;\n}\n\nconsole.log(\"Máximo:\", encontrarMaximo([3, 7, 2, 9, 1]));"
+    },
     "isCustom": false,
     "testCases": [
       {
         "id": "1",
-        "name": "",
         "description": "Caso básico [3,7,2,9,1]",
-        "input": "",
         "expectedOutput": "9",
-        "methodCall": "Program.EncontrarMaximo(new int[]{3,7,2,9,1})"
+        "methodCall": "Program.EncontrarMaximo(new int[]{3,7,2,9,1})",
+        "methodCalls": {
+          "csharp": "Program.EncontrarMaximo(new int[]{3,7,2,9,1})",
+          "java": "Program.encontrarMaximo(new int[]{3,7,2,9,1})",
+          "typescript": "encontrarMaximo([3,7,2,9,1])"
+        }
       },
       {
         "id": "2",
-        "name": "",
         "description": "Todos negativos [-5,-2,-8,-1]",
-        "input": "",
         "expectedOutput": "-1",
-        "methodCall": "Program.EncontrarMaximo(new int[]{-5,-2,-8,-1})"
+        "methodCall": "Program.EncontrarMaximo(new int[]{-5,-2,-8,-1})",
+        "methodCalls": {
+          "csharp": "Program.EncontrarMaximo(new int[]{-5,-2,-8,-1})",
+          "java": "Program.encontrarMaximo(new int[]{-5,-2,-8,-1})",
+          "typescript": "encontrarMaximo([-5,-2,-8,-1])"
+        }
       },
       {
         "id": "3",
-        "name": "",
         "description": "Un solo elemento [42]",
-        "input": "",
         "expectedOutput": "42",
-        "methodCall": "Program.EncontrarMaximo(new int[]{42})"
-      },
-      {
-        "id": "4",
-        "name": "",
-        "description": "Elementos iguales [5,5,5,5]",
-        "input": "",
-        "expectedOutput": "5",
-        "methodCall": "Program.EncontrarMaximo(new int[]{5,5,5,5})"
-      },
-      {
-        "id": "5",
-        "name": "",
-        "description": "Máximo al final [1,2,3,4,100]",
-        "input": "",
-        "expectedOutput": "100",
-        "methodCall": "Program.EncontrarMaximo(new int[]{1,2,3,4,100})"
+        "methodCall": "Program.EncontrarMaximo(new int[]{42})",
+        "methodCalls": {
+          "csharp": "Program.EncontrarMaximo(new int[]{42})",
+          "java": "Program.encontrarMaximo(new int[]{42})",
+          "typescript": "encontrarMaximo([42])"
+        }
       }
     ]
   },
@@ -164,58 +202,37 @@
     "name": "Ejercicio 4: Validar Paréntesis",
     "avatar": "",
     "description": "Determina si una cadena con paréntesis (), {} y [] está correctamente balanceada usando una Pila (Stack).",
-    "systemInstruction": "Eres un Mentor para el Ejercicio: 'Validar Paréntesis en C#'.\n\nENUNCIADO DEL EJERCICIO:\nEscribe un método `bool ParentesisValidos(string s)` que reciba una cadena conteniendo solo los caracteres '(', ')', '{', '}', '[', ']' y devuelva true si está correctamente balanceada.\n\nEjemplo: ParentesisValidos(\"()[]{}\") → true\nEjemplo: ParentesisValidos(\"(]\") → false\nEjemplo: ParentesisValidos(\"{[]}\") → true\n\nCONCEPTO A EVALUAR: Estructura LIFO (Stack/Pila), mapeo de caracteres.\n\nREGLAS PARA EL MENTOR:\n1. Si el usuario no sabe por dónde empezar, sugiérele: 'Piensa en una pila: cada vez que encuentras una apertura, la apilas. Cada vez que encuentras un cierre, ¿qué deberías verificar?'\n2. Pista progresiva: 'Si encuentras un carácter de cierre pero tu pila de aperturas está vacía, ¿qué significa eso para la validez de la cadena?'\n3. Al final, pregunta: '¿Qué pasa si después de procesar toda la cadena la pila no está vacía?'\n4. Nunca reveles la solución directa.",
+    "systemInstruction": "Eres un Mentor para el Ejercicio: 'Validar Paréntesis'.",
     "temperature": 0.5,
-    "starterCode": "using System;\nusing System.Collections.Generic;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine(ParentesisValidos(\"()[]{}\"));\n        Console.WriteLine(ParentesisValidos(\"(]\"));\n        Console.WriteLine(ParentesisValidos(\"{[]}\"));\n    }\n\n    public static bool ParentesisValidos(string s)\n    {\n        // Tu solución aquí (usa un Stack)\n        return false;\n    }\n}",
+    "starterCode": "using System;\nusing System.Collections.Generic;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine(ParentesisValidos(\"()[]{}\"));\n    }\n\n    public static bool ParentesisValidos(string s)\n    {\n        return false;\n    }\n}",
+    "starterCodes": {
+      "csharp": "using System;\nusing System.Collections.Generic;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine(ParentesisValidos(\"()[]{}\"));\n    }\n\n    public static bool ParentesisValidos(string s)\n    {\n        return false;\n    }\n}",
+      "java": "import java.util.Stack;\n\npublic class Program\n{\n    public static void main(String[] args)\n    {\n        System.out.println(parentesisValidos(\"()[]{}\"));\n    }\n\n    public static boolean parentesisValidos(String s)\n    {\n        return false;\n    }\n}",
+      "typescript": "function parentesisValidos(s: string): boolean {\n    return false;\n}\n\nconsole.log(parentesisValidos(\"()[]{}\"));"
+    },
     "isCustom": false,
     "testCases": [
       {
         "id": "1",
-        "name": "",
         "description": "Pares simples ()[]{}\"",
-        "input": "",
         "expectedOutput": "True",
-        "methodCall": "Program.ParentesisValidos(\"()[]{}\")"
+        "methodCall": "Program.ParentesisValidos(\"()[]{}\")",
+        "methodCalls": {
+          "csharp": "Program.ParentesisValidos(\"()[]{}\")",
+          "java": "Program.parentesisValidos(\"()[]{}\")",
+          "typescript": "parentesisValidos(\"()[]{}\")"
+        }
       },
       {
         "id": "2",
-        "name": "",
         "description": "Mismatch (]",
-        "input": "",
         "expectedOutput": "False",
-        "methodCall": "Program.ParentesisValidos(\"(]\")"
-      },
-      {
-        "id": "3",
-        "name": "",
-        "description": "Anidado válido {[]}",
-        "input": "",
-        "expectedOutput": "True",
-        "methodCall": "Program.ParentesisValidos(\"{[]}\")"
-      },
-      {
-        "id": "4",
-        "name": "",
-        "description": "Cadena vacía (trivialmente válida)",
-        "input": "",
-        "expectedOutput": "True",
-        "methodCall": "Program.ParentesisValidos(\"\")"
-      },
-      {
-        "id": "5",
-        "name": "",
-        "description": "Solo apertura (((",
-        "input": "",
-        "expectedOutput": "False",
-        "methodCall": "Program.ParentesisValidos(\"(((\")"
-      },
-      {
-        "id": "6",
-        "name": "",
-        "description": "Complejo válido ({[()]})",
-        "input": "",
-        "expectedOutput": "True",
-        "methodCall": "Program.ParentesisValidos(\"({[()]})\")"
+        "methodCall": "Program.ParentesisValidos(\"(]\")",
+        "methodCalls": {
+          "csharp": "Program.ParentesisValidos(\"(]\")",
+          "java": "Program.parentesisValidos(\"(]\")",
+          "typescript": "parentesisValidos(\"(]\")"
+        }
       }
     ]
   },
@@ -225,315 +242,43 @@
     "name": "Ejercicio 5: Número Único",
     "avatar": "",
     "description": "En un arreglo donde cada número aparece dos veces excepto uno, encuentra el elemento que aparece solo una vez.",
-    "systemInstruction": "Eres un Mentor para el Ejercicio: 'Número Único (Single Number) en C#'.\n\nENUNCIADO DEL EJERCICIO:\nEscribe un método `int NumeroUnico(int[] numeros)` que reciba un arreglo donde cada elemento aparece exactamente dos veces excepto uno, y devuelva ese elemento único.\n\nEjemplo: NumeroUnico([2,2,1]) → 1\nEjemplo: NumeroUnico([4,1,2,1,2]) → 4\n\nCONCEPTO A EVALUAR: Optimización de memoria. Solución ideal con XOR en O(n) tiempo y O(1) espacio.\n\nREGLAS PARA EL MENTOR:\n1. Si usa un diccionario/HashSet para contar frecuencias, dile: 'Funciona y es O(n), pero usa O(n) memoria extra. ¿Podrías hacerlo con O(1) de memoria?'\n2. Pista clave: 'Investiga cómo funciona el operador XOR (^). ¿Qué pasa cuando haces XOR de un número consigo mismo? ¿Y XOR con 0?'\n3. Propiedad a descubrir: a ^ a = 0, a ^ 0 = a, XOR es asociativo y conmutativo.\n4. Nunca reveles la solución directa.",
+    "systemInstruction": "Eres un Mentor para el Ejercicio: 'Número Único'.",
     "temperature": 0.5,
-    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine(NumeroUnico(new int[]{2, 2, 1}));\n        Console.WriteLine(NumeroUnico(new int[]{4, 1, 2, 1, 2}));\n    }\n\n    public static int NumeroUnico(int[] numeros)\n    {\n        // Tu solución aquí\n        return 0;\n    }\n}",
+    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine(NumeroUnico(new int[]{2, 2, 1}));\n    }\n\n    public static int NumeroUnico(int[] numeros)\n    {\n        return 0;\n    }\n}",
+    "starterCodes": {
+      "csharp": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine(NumeroUnico(new int[]{2, 2, 1}));\n    }\n\n    public static int NumeroUnico(int[] numeros)\n    {\n        return 0;\n    }\n}",
+      "java": "public class Program\n{\n    public static void main(String[] args)\n    {\n        System.out.println(numeroUnico(new int[]{2, 2, 1}));\n    }\n\n    public static int numeroUnico(int[] numeros)\n    {\n        return 0;\n    }\n}",
+      "typescript": "function numeroUnico(numeros: number[]): number {\n    return 0;\n}\n\nconsole.log(numeroUnico([2, 2, 1]));"
+    },
     "isCustom": false,
     "testCases": [
       {
         "id": "1",
-        "name": "",
         "description": "Caso básico [2,2,1]",
-        "input": "",
         "expectedOutput": "1",
-        "methodCall": "Program.NumeroUnico(new int[]{2,2,1})"
-      },
-      {
-        "id": "2",
-        "name": "",
-        "description": "Único al inicio [4,1,2,1,2]",
-        "input": "",
-        "expectedOutput": "4",
-        "methodCall": "Program.NumeroUnico(new int[]{4,1,2,1,2})"
-      },
-      {
-        "id": "3",
-        "name": "",
-        "description": "Un solo elemento [99]",
-        "input": "",
-        "expectedOutput": "99",
-        "methodCall": "Program.NumeroUnico(new int[]{99})"
-      },
-      {
-        "id": "4",
-        "name": "",
-        "description": "Números grandes [1000000,1,1000000,3,3]",
-        "input": "",
-        "expectedOutput": "1",
-        "methodCall": "Program.NumeroUnico(new int[]{1000000,1,1000000,3,3})"
-      }
-    ]
-  },
-  {
-    "id": "exercise-06-anagram",
-    "emoji": "🔀",
-    "name": "Ejercicio 6: Anagramas",
-    "avatar": "",
-    "description": "Dadas dos cadenas, determina si una es un anagrama de la otra (contienen las mismas letras en distinto orden).",
-    "systemInstruction": "Eres un Mentor para el Ejercicio: 'Validar Anagramas en C#'.\n\nENUNCIADO DEL EJERCICIO:\nEscribe un método `bool SonAnagramas(string s, string t)` que devuelva true si ambas cadenas son anagramas entre sí (contienen exactamente las mismas letras con la misma frecuencia), false en caso contrario. Ignora mayúsculas/minúsculas.\n\nEjemplo: SonAnagramas(\"anagram\", \"nagaram\") → true\nEjemplo: SonAnagramas(\"rat\", \"car\") → false\n\nCONCEPTO A EVALUAR: Conteo de frecuencias (Hash Maps/Diccionarios) vs Ordenamiento.\n\nREGLAS PARA EL MENTOR:\n1. Si el usuario ordena las cadenas y compara: 'Funciona, pero es O(n log n). ¿Podrías hacerlo en O(n) contando cuántas veces aparece cada letra en ambas cadenas?'\n2. Pista: 'Un diccionario que cuente las frecuencias de cada carácter en la primera cadena, y luego reste con la segunda, debería quedar en 0 para todas las letras.'\n3. Edge case: ¿Qué pasa si las cadenas tienen longitudes diferentes?\n4. Nunca reveles la solución directa.",
-    "temperature": 0.5,
-    "starterCode": "using System;\nusing System.Collections.Generic;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine(SonAnagramas(\"anagram\", \"nagaram\"));\n        Console.WriteLine(SonAnagramas(\"rat\", \"car\"));\n    }\n\n    public static bool SonAnagramas(string s, string t)\n    {\n        // Tu solución aquí\n        return false;\n    }\n}",
-    "isCustom": false,
-    "testCases": [
-      {
-        "id": "1",
-        "name": "",
-        "description": "Anagramas válidos (anagram/nagaram)",
-        "input": "",
-        "expectedOutput": "True",
-        "methodCall": "Program.SonAnagramas(\"anagram\", \"nagaram\")"
-      },
-      {
-        "id": "2",
-        "name": "",
-        "description": "No son anagramas (rat/car)",
-        "input": "",
-        "expectedOutput": "False",
-        "methodCall": "Program.SonAnagramas(\"rat\", \"car\")"
-      },
-      {
-        "id": "3",
-        "name": "",
-        "description": "Mayúsculas mixtas (Listen/Silent)",
-        "input": "",
-        "expectedOutput": "True",
-        "methodCall": "Program.SonAnagramas(\"Listen\", \"Silent\")"
-      },
-      {
-        "id": "4",
-        "name": "",
-        "description": "Longitudes diferentes (ab/abc)",
-        "input": "",
-        "expectedOutput": "False",
-        "methodCall": "Program.SonAnagramas(\"ab\", \"abc\")"
-      },
-      {
-        "id": "5",
-        "name": "",
-        "description": "Cadenas vacías",
-        "input": "",
-        "expectedOutput": "True",
-        "methodCall": "Program.SonAnagramas(\"\", \"\")"
-      }
-    ]
-  },
-  {
-    "id": "exercise-07-reverse-linked-list",
-    "emoji": "🔗",
-    "name": "Ejercicio 7: Invertir Lista Enlazada",
-    "avatar": "",
-    "description": "Dada la cabeza de una lista enlazada simple, invierte la lista y devuelve la nueva cabeza.",
-    "systemInstruction": "Eres un Mentor para el Ejercicio: 'Invertir Lista Enlazada en C#'.\n\nENUNCIADO DEL EJERCICIO:\nSe te proporciona la clase `ListNode` con propiedades `Val` (int) y `Next` (ListNode). Escribe un método `ListNode Invertir(ListNode head)` que invierta la lista enlazada y devuelva la nueva cabeza.\n\nEjemplo: 1→2→3→4→5 se convierte en 5→4→3→2→1\n\nCONCEPTO A EVALUAR: Manipulación de punteros/referencias, iteración con tres variables.\n\nREGLAS PARA EL MENTOR:\n1. Pista inicial: 'Necesitas llevar un registro del nodo anterior (prev), el nodo actual (current), y el siguiente (next) antes de cambiar el enlace.'\n2. Si el usuario se confunde: 'Dibuja los punteros en papel. En cada paso: guarda next, apunta current.Next a prev, avanza prev y current.'\n3. Si lo hace recursivo, pregúntale: '¿Cuál es la complejidad espacial de tu solución recursiva vs la iterativa?'\n4. Evalúa el caso base: ¿qué pasa con lista vacía o un solo nodo?\n5. Nunca reveles la solución directa.",
-    "temperature": 0.5,
-    "starterCode": "using System;\n\npublic class ListNode\n{\n    public int Val;\n    public ListNode Next;\n    public ListNode(int val = 0, ListNode next = null)\n    {\n        Val = val;\n        Next = next;\n    }\n}\n\npublic class Program\n{\n    public static void Main()\n    {\n        // Crear lista: 1 -> 2 -> 3 -> 4 -> 5\n        var head = new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5)))));\n        var result = Invertir(head);\n        PrintList(result);\n    }\n\n    public static ListNode Invertir(ListNode head)\n    {\n        // Tu solución aquí\n        return head;\n    }\n\n    public static void PrintList(ListNode node)\n    {\n        while (node != null)\n        {\n            Console.Write(node.Val + (node.Next != null ? \"->\" : \"\"));\n            node = node.Next;\n        }\n        Console.WriteLine();\n    }\n\n    // Helper para tests: convierte lista a string\n    public static string ListToString(ListNode node)\n    {\n        var sb = new System.Text.StringBuilder();\n        while (node != null)\n        {\n            sb.Append(node.Val);\n            if (node.Next != null) sb.Append(\"->\");\n            node = node.Next;\n        }\n        return sb.ToString();\n    }\n}",
-    "isCustom": false,
-    "testCases": [
-      {
-        "id": "1",
-        "name": "",
-        "description": "Lista 1->2->3->4->5",
-        "input": "",
-        "expectedOutput": "5->4->3->2->1",
-        "methodCall": "Program.ListToString(Program.Invertir(new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5)))))))"
-      },
-      {
-        "id": "2",
-        "name": "",
-        "description": "Lista de dos nodos 1->2",
-        "input": "",
-        "expectedOutput": "2->1",
-        "methodCall": "Program.ListToString(Program.Invertir(new ListNode(1, new ListNode(2))))"
-      },
-      {
-        "id": "3",
-        "name": "",
-        "description": "Un solo nodo [7]",
-        "input": "",
-        "expectedOutput": "7",
-        "methodCall": "Program.ListToString(Program.Invertir(new ListNode(7)))"
-      },
-      {
-        "id": "4",
-        "name": "",
-        "description": "Lista nula",
-        "input": "",
-        "expectedOutput": "",
-        "methodCall": "Program.ListToString(Program.Invertir(null))"
-      }
-    ]
-  },
-  {
-    "id": "exercise-08-max-subarray",
-    "emoji": "📈",
-    "name": "Ejercicio 8: Suma Máxima de Subarreglo",
-    "avatar": "",
-    "description": "Encuentra el subarreglo contiguo con la suma máxima (Algoritmo de Kadane).",
-    "systemInstruction": "Eres un Mentor para el Ejercicio: 'Suma Máxima de Subarreglo (Kadane) en C#'.\n\nENUNCIADO DEL EJERCICIO:\nEscribe un método `int MaxSubArray(int[] nums)` que encuentre el subarreglo contiguo (con al menos un elemento) que tiene la suma más grande y devuelva dicha suma.\n\nEjemplo: MaxSubArray([-2,1,-3,4,-1,2,1,-5,4]) → 6 (el subarreglo [4,-1,2,1] tiene la suma máxima)\n\nCONCEPTO A EVALUAR: Programación dinámica básica, evitar fuerza bruta O(n²).\n\nREGLAS PARA EL MENTOR:\n1. Si el usuario usa doble bucle (fuerza bruta O(n²)), dile: 'Funciona, pero ¿podrías hacerlo en una sola pasada O(n)?'\n2. Pista clave: 'Si la suma acumulada actual se vuelve negativa, ya no contribuye a un futuro subarreglo de suma máxima. ¿Deberías reiniciar tu suma en ese punto?'\n3. Algoritmo de Kadane: mantén dos variables — suma actual y suma máxima global.\n4. Edge case: ¿Qué pasa si todos los números son negativos?\n5. Nunca reveles la solución directa.",
-    "temperature": 0.5,
-    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        int[] nums = {-2, 1, -3, 4, -1, 2, 1, -5, 4};\n        Console.WriteLine($\"Suma máxima: {MaxSubArray(nums)}\");\n    }\n\n    public static int MaxSubArray(int[] nums)\n    {\n        // Tu solución aquí (intenta hacerlo en O(n))\n        return 0;\n    }\n}",
-    "isCustom": false,
-    "testCases": [
-      {
-        "id": "1",
-        "name": "",
-        "description": "Caso clásico [-2,1,-3,4,-1,2,1,-5,4]",
-        "input": "",
-        "expectedOutput": "6",
-        "methodCall": "Program.MaxSubArray(new int[]{-2,1,-3,4,-1,2,1,-5,4})"
-      },
-      {
-        "id": "2",
-        "name": "",
-        "description": "Un solo elemento [1]",
-        "input": "",
-        "expectedOutput": "1",
-        "methodCall": "Program.MaxSubArray(new int[]{1})"
-      },
-      {
-        "id": "3",
-        "name": "",
-        "description": "Todos negativos [-3,-2,-1,-4]",
-        "input": "",
-        "expectedOutput": "-1",
-        "methodCall": "Program.MaxSubArray(new int[]{-3,-2,-1,-4})"
-      },
-      {
-        "id": "4",
-        "name": "",
-        "description": "Todos positivos [1,2,3,4]",
-        "input": "",
-        "expectedOutput": "10",
-        "methodCall": "Program.MaxSubArray(new int[]{1,2,3,4})"
-      },
-      {
-        "id": "5",
-        "name": "",
-        "description": "Negativo al medio [5,-9,6]",
-        "input": "",
-        "expectedOutput": "6",
-        "methodCall": "Program.MaxSubArray(new int[]{5,-9,6})"
-      }
-    ]
-  },
-  {
-    "id": "exercise-09-climbing-stairs",
-    "emoji": "🪜",
-    "name": "Ejercicio 9: Escalando Escaleras",
-    "avatar": "",
-    "description": "Calcula de cuántas formas distintas puedes subir n escalones si puedes dar pasos de 1 o 2 escalones a la vez.",
-    "systemInstruction": "Eres un Mentor para el Ejercicio: 'Escalando Escaleras (Climbing Stairs) en C#'.\n\nENUNCIADO DEL EJERCICIO:\nEscribe un método `int SubirEscaleras(int n)` que devuelva la cantidad de formas distintas de llegar al escalón n, pudiendo subir 1 o 2 escalones en cada paso.\n\nEjemplo: SubirEscaleras(2) → 2 (1+1 ó 2)\nEjemplo: SubirEscaleras(3) → 3 (1+1+1, 1+2, 2+1)\n\nCONCEPTO A EVALUAR: Sucesión de Fibonacci aplicada, Programación Dinámica, Memoización.\n\nREGLAS PARA EL MENTOR:\n1. Si el usuario usa recursión pura sin memo: 'Funciona pero es exponencial O(2^n). ¿Notas que estás recalculando los mismos subproblemas muchas veces?'\n2. Pista clave: '¿Te das cuenta de que para llegar al escalón 5, solo pudiste venir del escalón 4 o del escalón 3? La respuesta es la suma de las formas de llegar a esos dos escalones previos.'\n3. Guíalo hacia: memo (top-down) o tabulación (bottom-up) o simplemente dos variables.\n4. Pregunta final: '¿Cuánta memoria necesita tu solución? ¿Podrías usar solo O(1) espacio extra?'\n5. Nunca reveles la solución directa.",
-    "temperature": 0.5,
-    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine($\"n=2: {SubirEscaleras(2)} formas\");\n        Console.WriteLine($\"n=3: {SubirEscaleras(3)} formas\");\n        Console.WriteLine($\"n=5: {SubirEscaleras(5)} formas\");\n    }\n\n    public static int SubirEscaleras(int n)\n    {\n        // Tu solución aquí\n        return 0;\n    }\n}",
-    "isCustom": false,
-    "testCases": [
-      {
-        "id": "1",
-        "name": "",
-        "description": "n=1 (solo 1 forma)",
-        "input": "",
-        "expectedOutput": "1",
-        "methodCall": "Program.SubirEscaleras(1)"
-      },
-      {
-        "id": "2",
-        "name": "",
-        "description": "n=2 (2 formas: 1+1 ó 2)",
-        "input": "",
-        "expectedOutput": "2",
-        "methodCall": "Program.SubirEscaleras(2)"
-      },
-      {
-        "id": "3",
-        "name": "",
-        "description": "n=3 (3 formas)",
-        "input": "",
-        "expectedOutput": "3",
-        "methodCall": "Program.SubirEscaleras(3)"
-      },
-      {
-        "id": "4",
-        "name": "",
-        "description": "n=5 (8 formas)",
-        "input": "",
-        "expectedOutput": "8",
-        "methodCall": "Program.SubirEscaleras(5)"
-      },
-      {
-        "id": "5",
-        "name": "",
-        "description": "n=10 (89 formas)",
-        "input": "",
-        "expectedOutput": "89",
-        "methodCall": "Program.SubirEscaleras(10)"
-      }
-    ]
-  },
-  {
-    "id": "exercise-10-merge-intervals",
-    "emoji": "📊",
-    "name": "Ejercicio 10: Fusión de Intervalos",
-    "avatar": "",
-    "description": "Dado un arreglo de intervalos, fusiona todos los intervalos superpuestos y devuelve los intervalos resultantes.",
-    "systemInstruction": "Eres un Mentor para el Ejercicio: 'Fusión de Intervalos (Merge Intervals) en C#'.\n\nENUNCIADO DEL EJERCICIO:\nEscribe un método `int[][] FusionarIntervalos(int[][] intervals)` que reciba un arreglo de intervalos [inicio, fin] y devuelva un arreglo con los intervalos fusionados (sin superposiciones).\n\nEjemplo: FusionarIntervalos([[1,3],[2,6],[8,10],[15,18]]) → [[1,6],[8,10],[15,18]]\nEjemplo: FusionarIntervalos([[1,4],[4,5]]) → [[1,5]]\n\nCONCEPTO A EVALUAR: Ordenamiento inicial O(n log n) seguido de fusión lineal O(n).\n\nREGLAS PARA EL MENTOR:\n1. Pista inicial: 'Antes de intentar fusionarlos, ¿qué pasaría si primero ordenas la lista basándote en el punto de inicio de cada intervalo?'\n2. Pista de fusión: 'Después de ordenar, recorre los intervalos. Si el inicio del actual es menor o igual al fin del último intervalo fusionado, extiende el fin. Si no, es un nuevo intervalo.'\n3. Si usa fuerza bruta comparando todos con todos: 'Eso es O(n²). Ordenar primero te permite hacerlo en una sola pasada después.'\n4. Edge cases: ¿Un solo intervalo? ¿Intervalos ya sin superposición?\n5. Nunca reveles la solución directa.",
-    "temperature": 0.5,
-    "starterCode": "using System;\nusing System.Collections.Generic;\nusing System.Linq;\n\npublic class Program\n{\n    public static void Main()\n    {\n        int[][] intervals = new int[][] {\n            new int[]{1,3},\n            new int[]{2,6},\n            new int[]{8,10},\n            new int[]{15,18}\n        };\n        var result = FusionarIntervalos(intervals);\n        Console.WriteLine(FormatIntervals(result));\n    }\n\n    public static int[][] FusionarIntervalos(int[][] intervals)\n    {\n        // Tu solución aquí\n        return intervals;\n    }\n\n    public static string FormatIntervals(int[][] intervals)\n    {\n        var parts = intervals.Select(i => $\"[{i[0]},{i[1]}]\");\n        return \"[\" + string.Join(\",\", parts) + \"]\";\n    }\n}",
-    "isCustom": false,
-    "testCases": [
-      {
-        "id": "1",
-        "name": "",
-        "description": "Caso clásico [[1,3],[2,6],[8,10],[15,18]]",
-        "input": "",
-        "expectedOutput": "[1,6],[8,10],[15,18]",
-        "methodCall": "Program.FormatIntervals(Program.FusionarIntervalos(new int[][]{new int[]{1,3},new int[]{2,6},new int[]{8,10},new int[]{15,18}}))"
-      },
-      {
-        "id": "2",
-        "name": "",
-        "description": "Intervalos que se tocan [[1,4],[4,5]]",
-        "input": "",
-        "expectedOutput": "[1,5]",
-        "methodCall": "Program.FormatIntervals(Program.FusionarIntervalos(new int[][]{new int[]{1,4},new int[]{4,5}}))"
-      },
-      {
-        "id": "3",
-        "name": "",
-        "description": "Un solo intervalo [[1,1]]",
-        "input": "",
-        "expectedOutput": "[1,1]",
-        "methodCall": "Program.FormatIntervals(Program.FusionarIntervalos(new int[][]{new int[]{1,1}}))"
-      },
-      {
-        "id": "4",
-        "name": "",
-        "description": "Sin superposición [[1,2],[5,6],[9,10]]",
-        "input": "",
-        "expectedOutput": "[1,2],[5,6],[9,10]",
-        "methodCall": "Program.FormatIntervals(Program.FusionarIntervalos(new int[][]{new int[]{1,2},new int[]{5,6},new int[]{9,10}}))"
+        "methodCall": "Program.NumeroUnico(new int[]{2,2,1})",
+        "methodCalls": {
+          "csharp": "Program.NumeroUnico(new int[]{2,2,1})",
+          "java": "Program.numeroUnico(new int[]{2,2,1})",
+          "typescript": "numeroUnico([2,2,1])"
+        }
       }
     ]
   },
   {
     "id": "default-csharp-dev",
     "emoji": "💻",
-    "name": "Desarrollador C# Senior",
+    "name": "Desarrollador Senior Multi-lenguaje",
     "avatar": "",
-    "description": "Experto en C#, .NET 10, clean code, patrones de diseño y arquitectura de software.",
-    "systemInstruction": "Eres un arquitecto y desarrollador de software Senior especializado en C# y la plataforma .NET. Respondes con explicaciones claras, código limpio de producción, buenas prácticas y sugerencias de arquitectura modernas. Si el alumno te pide ayuda con un ejercicio, guíalo con pistas y conceptos, no le des la respuesta directa a menos que insista.",
+    "description": "Experto en C#, Java, TypeScript, clean code y patrones de diseño.",
+    "systemInstruction": "Eres un arquitecto de software Senior. Respondes con explicaciones claras y código limpio en el lenguaje consultado.",
     "temperature": 0.4,
-    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine(\"¡Hola Mundo desde C# y .NET 10!\");\n    }\n}",
-    "isCustom": false,
-    "testCases": []
-  },
-  {
-    "id": "default-teacher",
-    "emoji": "📚",
-    "name": "Profesor Paciente",
-    "avatar": "",
-    "description": "Explica conceptos complejos paso a paso con analogías sencillas.",
-    "systemInstruction": "Eres un profesor universitario sumamente paciente, pedagógico y empático. Tu objetivo es explicar cualquier concepto de programación de forma muy clara, usando ejemplos cotidianos y analogías. Si el alumno te envía código, analizalo paso a paso y explica qué hace cada línea como si fuera la primera vez que programa.",
-    "temperature": 0.6,
-    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine(\"Escribe aquí tu código para consultar al profesor...\");\n    }\n}",
+    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine(\"¡Hola Mundo!\");\n    }\n}",
+    "starterCodes": {
+      "csharp": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine(\"¡Hola Mundo desde C#!\");\n    }\n}",
+      "java": "public class Program\n{\n    public static void main(String[] args)\n    {\n        System.out.println(\"¡Hola Mundo desde Java!\");\n    }\n}",
+      "typescript": "console.log(\"¡Hola Mundo desde TypeScript!\");"
+    },
     "isCustom": false,
     "testCases": []
   }

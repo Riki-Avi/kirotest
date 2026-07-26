@@ -1,4 +1,4 @@
-// modals.js — Módulo de gestión de modales (Crear/Editar Ejercicio, Configuración APIs, Completar Ejercicio)
+// modals.js — Módulo de gestión de modales (Crear/Editar Ejercicio, Configuración APIs, Completar Ejercicio, Iniciar Sesión Requerido)
 window.KiroModals = (function () {
     const personalityModal = document.getElementById('personalityModal');
     const modalTitle = document.getElementById('modalTitle');
@@ -17,6 +17,7 @@ window.KiroModals = (function () {
     const customJudge0UrlInput = document.getElementById('customJudge0Url');
 
     const completeModal = document.getElementById('completeModal');
+    const authRequiredModal = document.getElementById('authRequiredModal');
 
     function openPersonalityModal(personality = null) {
         if (!personalityModal) return;
@@ -66,12 +67,22 @@ window.KiroModals = (function () {
         completeModal?.classList.remove('active');
     }
 
+    function openAuthRequiredModal() {
+        authRequiredModal?.classList.add('active');
+    }
+
+    function closeAuthRequiredModal() {
+        authRequiredModal?.classList.remove('active');
+    }
+
     return {
         openPersonalityModal,
         closePersonalityModal,
         openSettingsModal,
         closeSettingsModal,
         openCompleteModal,
-        closeCompleteModal
+        closeCompleteModal,
+        openAuthRequiredModal,
+        closeAuthRequiredModal
     };
 })();

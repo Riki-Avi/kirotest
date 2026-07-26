@@ -11,6 +11,7 @@ public class Personality
     public double Temperature { get; set; } = 0.7;
     public string StarterCode { get; set; } = string.Empty;
     public bool IsCustom { get; set; }
+    public Dictionary<string, string>? StarterCodes { get; set; }
     public List<TestCaseItem> TestCases { get; set; } = new();
 }
 
@@ -22,4 +23,5 @@ public class TestCaseItem
     public string Input { get; set; } = string.Empty;
     public string ExpectedOutput { get; set; } = string.Empty;
     public string MethodCall { get; set; } = string.Empty;
+    public Dictionary<string, string>? MethodCalls { get; set; }
 }

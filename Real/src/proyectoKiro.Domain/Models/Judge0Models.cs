@@ -70,6 +70,9 @@ namespace proyectoKiro.Domain.Models
         [JsonPropertyName("sourceCode")]
         public string SourceCode { get; set; } = string.Empty;
 
+        [JsonPropertyName("languageId")]
+        public int LanguageId { get; set; } = 51;
+
         [JsonPropertyName("customJudge0Url")]
         public string? CustomJudge0Url { get; set; }
     }

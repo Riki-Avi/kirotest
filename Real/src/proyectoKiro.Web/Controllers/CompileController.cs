@@ -53,7 +53,7 @@ namespace proyectoKiro.Web.Controllers
                 });
             }
 
-            var result = await _judge0Service.ExecuteTestSuiteAsync(request.SourceCode, personality, request.CustomJudge0Url);
+            var result = await _judge0Service.ExecuteTestSuiteAsync(request.SourceCode, personality, request.CustomJudge0Url, request.LanguageId);
             return Ok(result);
         }
     }

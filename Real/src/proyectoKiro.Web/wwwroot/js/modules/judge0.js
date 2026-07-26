@@ -18,7 +18,7 @@ window.KiroJudge0 = (function () {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     sourceCode: sourceCode,
-                    languageId: 51,
+                    languageId: window.KiroEditor?.getJudge0LanguageId() || 51,
                     customJudge0Url: localStorage.getItem('judge0_url') || 'https://ce.judge0.com'
                 })
             });
@@ -68,6 +68,7 @@ window.KiroJudge0 = (function () {
                 body: JSON.stringify({
                     personalityId: activePersonality.id,
                     sourceCode: sourceCode,
+                    languageId: window.KiroEditor?.getJudge0LanguageId() || 51,
                     customJudge0Url: localStorage.getItem('judge0_url') || 'https://ce.judge0.com'
                 })
             });

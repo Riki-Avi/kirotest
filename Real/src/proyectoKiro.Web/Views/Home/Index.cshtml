@@ -13,8 +13,11 @@
         <a href="/editor" class="btn-primary" style="padding: 16px 32px; font-size: 1.1rem; text-decoration: none; border-radius: 10px; font-weight: 600; display: flex; align-items: center; gap: 8px;">
             💻 Entrar al Editor & Ejercicios
         </a>
-        <a href="/Auth/Login" class="btn-secondary" style="padding: 16px 32px; font-size: 1.1rem; text-decoration: none; border-radius: 10px; font-weight: 600; display: flex; align-items: center; gap: 8px;">
-            🔑 Iniciar Sesión con Google
+        <a href="/Auth/Login" class="btn-secondary" id="loginHomeBtn" style="padding: 16px 32px; font-size: 1.1rem; text-decoration: none; border-radius: 10px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px;">
+            🔑 Continuar con Google
+        </a>
+        <a href="/Profile" class="btn-secondary hidden" id="profileHomeBtn" style="padding: 16px 32px; font-size: 1.1rem; text-decoration: none; border-radius: 10px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px;">
+            👤 Mi Perfil
         </a>
     </div>
 
@@ -36,3 +39,24 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/@@supabase/supabase-js@2"></script>
+    <script>
+        const SUPABASE_URL = "https://bzaifpevfuwlaznmhiee.supabase.co";
+        const SUPABASE_ANON_KEY = "sb_publishable_xoU3gGiIKuchm6oTBhr8EQ_eb7sUD2a";
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        supabaseClient.auth.onAuthStateChange((event, session) => {
+            const loginBtn = document.getElementById('loginHomeBtn');
+            const profileBtn = document.getElementById('profileHomeBtn');
+            if (session?.user) {
+                if (loginBtn) loginBtn.style.display = 'none';
+                if (profileBtn) profileBtn.classList.remove('hidden');
+            } else {
+                if (loginBtn) loginBtn.style.display = 'inline-flex';
+                if (profileBtn) profileBtn.classList.add('hidden');
+            }
+        });
+    </script>
+}

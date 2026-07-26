@@ -13,6 +13,42 @@ document.addEventListener('DOMContentLoaded', async () => {
     const completeExerciseBtn = document.getElementById('completeExerciseBtn');
     const confirmSaveProgressBtn = document.getElementById('confirmSaveProgressBtn');
     const resetStarterCodeBtn = document.getElementById('resetStarterCodeBtn');
+    const profileBtn = document.getElementById('profileBtn');
+    const loginHeaderBtn = document.getElementById('loginHeaderBtn');
+
+    function updateAuthHeaderUI(userObj) {
+        const headerAvatar = document.getElementById('headerUserAvatar');
+        const headerLabel = document.getElementById('headerProfileLabel');
+
+        if (window.currentUserId) {
+            profileBtn?.classList.remove('hidden');
+            loginHeaderBtn?.classList.add('hidden');
+
+            const metadata = userObj?.user_metadata || window.currentUserMetadata || {};
+            const googlePhotoUrl = metadata.picture 
+                || metadata.avatar_url 
+                || userObj?.identities?.[0]?.identity_data?.picture 
+                || userObj?.identities?.[0]?.identity_data?.avatar_url;
+
+            if (headerAvatar && googlePhotoUrl) {
+                headerAvatar.src = googlePhotoUrl;
+                headerAvatar.style.display = 'inline-block';
+                if (headerLabel) headerLabel.textContent = 'Mi Perfil';
+            }
+        } else {
+            profileBtn?.classList.add('hidden');
+            loginHeaderBtn?.classList.remove('hidden');
+        }
+    }
+
+    function requireUserAuth(callback) {
+        if (!window.currentUserId) {
+            window.KiroModals?.openAuthRequiredModal();
+            return false;
+        }
+        if (callback) callback();
+        return true;
+    }
 
     // 1. Inicializar UI, Resizers y Monaco Editor
     window.KiroUI?.initUI();
@@ -25,8 +61,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
-    // 2. Cargar Entregas del Usuario (Si hay sesión)
+    // 2. Cargar Entregas del Usuario (Si hay sesión activa)
     await window.KiroSubmissions?.fetchUserSubmissions();
+    updateAuthHeaderUI();
 
     // 3. Cargar Lista de Ejercicios / Personalidades
     const personalities = await window.KiroEjercicios?.fetchAll() || [];
@@ -37,7 +74,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     // Callback cuando Supabase restaura la sesión de usuario
-    window.onUserAuthenticated = async (userId) => {
+    window.onUserAuthenticated = async (userId, userObj) => {
+        window.currentUserId = userId;
+        updateAuthHeaderUI(userObj);
         await window.KiroSubmissions?.fetchUserSubmissions();
         window.KiroEjercicios?.renderList('personalitiesList', activePersonality, onSelectPersonality);
         if (activePersonality) {
@@ -66,6 +105,24 @@ document.addEventListener('DOMContentLoaded', async () => {
             .replace(/'/g, "&#039;");
     }
 
+    const languageSelect = document.getElementById('languageSelect');
+    if (languageSelect) {
+        languageSelect.value = window.KiroEditor?.getCurrentLanguage() || 'csharp';
+
+        languageSelect.addEventListener('change', (e) => {
+            const selectedLang = e.target.value;
+            window.KiroEditor?.setLanguage(selectedLang);
+
+            if (activePersonality) {
+                window.KiroEditor?.loadSavedOrStarterCode(
+                    activePersonality.id,
+                    activePersonality.starterCode || '',
+                    activePersonality
+                );
+            }
+        });
+    }
+
     function onSelectPersonality(p) {
         activePersonality = p;
         const activeEmoji = document.getElementById('activeEmoji');
@@ -80,7 +137,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         window.KiroEditor?.loadSavedOrStarterCode(
             p.id,
-            p.starterCode || '// Escribe tu código C# aquí...\n'
+            p.starterCode || '',
+            p
         );
 
         window.KiroSubmissions?.checkExerciseCompletion(p, completeExerciseBtn);
@@ -88,13 +146,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         window.KiroChat?.renderCurrentChatHistory(p, chatHistories);
     }
 
-    // 4. Conectar Eventos de la Cabecera y Botones de Acción
+    // 4. Conectar Eventos con Verificación de Autenticación (Auth Guard)
     runJudge0Btn?.addEventListener('click', () => {
+        if (!requireUserAuth()) return;
         const code = window.KiroEditor?.getValue();
         if (code) window.KiroJudge0?.compileCode(code);
     });
 
     runTestsBtn?.addEventListener('click', () => {
+        if (!requireUserAuth()) return;
         const code = window.KiroEditor?.getValue();
         if (code && activePersonality) {
             window.KiroJudge0?.runTestSuite(code, activePersonality, (isAllPassed) => {
@@ -106,21 +166,26 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     sendCodeToMentorBtn?.addEventListener('click', () => {
+        if (!requireUserAuth()) return;
         const code = window.KiroEditor?.getValue();
         if (code && activePersonality && messageInput) {
-            messageInput.value = `Por favor revisa mi código C# actual para el ejercicio "${activePersonality.name}":\n\n\`\`\`csharp\n${code}\n\`\`\`\n\n¿Es correcto? ¿Tengo algún error de lógica o sintaxis?`;
+            const curLang = window.KiroEditor?.getCurrentLanguage() || 'csharp';
+            messageInput.value = `Por favor revisa mi código ${curLang.toUpperCase()} actual para el ejercicio "${activePersonality.name}":\n\n\`\`\`${curLang}\n${code}\n\`\`\`\n\n¿Es correcto? ¿Tengo algún error de lógica o sintaxis?`;
             chatForm?.dispatchEvent(new Event('submit'));
         }
     });
 
     resetStarterCodeBtn?.addEventListener('click', () => {
         if (activePersonality) {
-            window.KiroEditor?.setValue(activePersonality.starterCode || '');
+            const curLang = window.KiroEditor?.getCurrentLanguage() || 'csharp';
+            const defaultCode = window.KiroEditor?.getStarterCodeForLanguage(activePersonality, activePersonality.starterCode, curLang);
+            window.KiroEditor?.setValue(defaultCode);
         }
     });
 
     chatForm?.addEventListener('submit', (e) => {
         e.preventDefault();
+        if (!requireUserAuth()) return;
         const text = messageInput?.value;
         if (text && activePersonality) {
             messageInput.value = '';
@@ -129,24 +194,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     // 5. Modales & Guardado de Entregas en Perfil
-    completeExerciseBtn?.addEventListener('click', () => window.KiroModals?.openCompleteModal());
+    completeExerciseBtn?.addEventListener('click', () => {
+        if (!requireUserAuth()) return;
+        window.KiroModals?.openCompleteModal();
+    });
+
     document.getElementById('closeCompleteModalBtn')?.addEventListener('click', () => window.KiroModals?.closeCompleteModal());
     document.getElementById('cancelCompleteBtn')?.addEventListener('click', () => window.KiroModals?.closeCompleteModal());
 
     confirmSaveProgressBtn?.addEventListener('click', async () => {
+        if (!requireUserAuth()) return;
         const code = window.KiroEditor?.getValue();
         let userId = window.currentUserId;
-
-        if (!userId && window.supabaseClient) {
-            const { data } = await window.supabaseClient.auth.getSession();
-            userId = data?.session?.user?.id;
-        }
-
-        if (!userId) {
-            window.KiroUI?.showToast('⚠️ Debes iniciar sesión para guardar tu progreso');
-            window.location.href = '/Auth/Login';
-            return;
-        }
 
         confirmSaveProgressBtn.disabled = true;
         confirmSaveProgressBtn.textContent = '⏳ Guardando...';
@@ -172,6 +231,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('openNewPersonalityModalBtn')?.addEventListener('click', () => window.KiroModals?.openPersonalityModal());
     document.getElementById('closePersonalityModalBtn')?.addEventListener('click', () => window.KiroModals?.closePersonalityModal());
     document.getElementById('cancelPersonalityBtn')?.addEventListener('click', () => window.KiroModals?.closePersonalityModal());
+
+    // Eventos del modal de autenticación requerida
+    document.getElementById('closeAuthRequiredModalBtn')?.addEventListener('click', () => window.KiroModals?.closeAuthRequiredModal());
+    document.getElementById('cancelAuthRequiredBtn')?.addEventListener('click', () => window.KiroModals?.closeAuthRequiredModal());
 
     // 6. Voz / Micrófono
     window.KiroVoice?.init();

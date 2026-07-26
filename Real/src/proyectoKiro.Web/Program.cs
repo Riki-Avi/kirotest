@@ -51,4 +51,19 @@ app.MapControllerRoute(
 app.MapRazorPages();
 app.MapControllers();
 
+// Sincronizar automáticamente los 10 ejercicios desde personalities.json a la BD en Supabase
+using (var scope = app.Services.CreateScope())
+{
+    try
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        var personalityService = scope.ServiceProvider.GetRequiredService<PersonalityService>();
+        await DbSeeder.SeedAsync(dbContext, personalityService);
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"[Seed Exception]: {ex.Message}");
+    }
+}
+
 app.Run();

@@ -19,6 +19,12 @@ public class AuthController : Controller
         return View();
     }
 
+    [HttpGet]
+    public IActionResult Register()
+    {
+        return RedirectToAction("Login");
+    }
+
     [HttpPost]
     public async Task<IActionResult> SyncUser([FromBody] SyncUserRequest request)
     {
