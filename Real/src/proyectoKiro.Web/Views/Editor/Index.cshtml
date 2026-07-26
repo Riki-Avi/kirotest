@@ -86,7 +86,13 @@
                 </button>
 
                 <div class="panel-header">
-                    <span>📘 Enunciado del Ejercicio</span>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span>📘 Enunciado del Ejercicio</span>
+                        <div class="exercise-nav-btns" style="display: flex; gap: 4px; margin-left: 4px;">
+                            <button type="button" class="btn-font-size" id="prevExerciseBtn" title="Ejercicio Anterior">◀</button>
+                            <button type="button" class="btn-font-size" id="nextExerciseBtn" title="Ejercicio Siguiente">▶</button>
+                        </div>
+                    </div>
                     <div class="font-size-controls">
                         <button type="button" class="btn-font-size" id="decreaseExerciseFontBtn" title="Disminuir tamaño de letra">A-</button>
                         <button type="button" class="btn-font-size" id="increaseExerciseFontBtn" title="Aumentar tamaño de letra">A+</button>
@@ -105,7 +111,7 @@
                 <div class="panel-header editor-header">
                     <div style="display: flex; align-items: center; gap: 10px;">
                         <span id="editorPanelTitle">💻 Editor de Código</span>
-                        <select id="languageSelect" class="btn-sm" style="background: rgba(255, 255, 255, 0.08); border: 1px solid var(--border-color); color: var(--text-main); font-weight: 600; padding: 4px 10px; border-radius: 6px; cursor: pointer; outline: none;">
+                        <select id="languageSelect" class="lang-select-custom">
                             <option value="csharp" selected>⚡ C#</option>
                             <option value="java">☕ Java</option>
                             <option value="typescript">📘 TypeScript</option>

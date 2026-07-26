@@ -15,6 +15,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     const resetStarterCodeBtn = document.getElementById('resetStarterCodeBtn');
     const profileBtn = document.getElementById('profileBtn');
     const loginHeaderBtn = document.getElementById('loginHeaderBtn');
+    const prevExerciseBtn = document.getElementById('prevExerciseBtn');
+    const nextExerciseBtn = document.getElementById('nextExerciseBtn');
 
     function updateAuthHeaderUI(userObj) {
         const headerAvatar = document.getElementById('headerUserAvatar');
@@ -123,6 +125,38 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     }
 
+    function updateExerciseNavState() {
+        if (!personalities || personalities.length === 0 || !activePersonality) return;
+        const index = personalities.findIndex(x => x.id === activePersonality.id);
+
+        if (prevExerciseBtn) {
+            prevExerciseBtn.disabled = index <= 0;
+            prevExerciseBtn.style.opacity = index <= 0 ? '0.4' : '1';
+            prevExerciseBtn.style.cursor = index <= 0 ? 'not-allowed' : 'pointer';
+        }
+        if (nextExerciseBtn) {
+            nextExerciseBtn.disabled = index >= personalities.length - 1;
+            nextExerciseBtn.style.opacity = index >= personalities.length - 1 ? '0.4' : '1';
+            nextExerciseBtn.style.cursor = index >= personalities.length - 1 ? 'not-allowed' : 'pointer';
+        }
+    }
+
+    prevExerciseBtn?.addEventListener('click', () => {
+        if (!personalities || personalities.length === 0 || !activePersonality) return;
+        const index = personalities.findIndex(x => x.id === activePersonality.id);
+        if (index > 0) {
+            onSelectPersonality(personalities[index - 1]);
+        }
+    });
+
+    nextExerciseBtn?.addEventListener('click', () => {
+        if (!personalities || personalities.length === 0 || !activePersonality) return;
+        const index = personalities.findIndex(x => x.id === activePersonality.id);
+        if (index >= 0 && index < personalities.length - 1) {
+            onSelectPersonality(personalities[index + 1]);
+        }
+    });
+
     function onSelectPersonality(p) {
         activePersonality = p;
         const activeEmoji = document.getElementById('activeEmoji');
@@ -144,6 +178,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         window.KiroSubmissions?.checkExerciseCompletion(p, completeExerciseBtn);
         window.KiroEjercicios?.renderList('personalitiesList', p, onSelectPersonality);
         window.KiroChat?.renderCurrentChatHistory(p, chatHistories);
+        updateExerciseNavState();
     }
 
     // 4. Conectar Eventos con Verificación de Autenticación (Auth Guard)

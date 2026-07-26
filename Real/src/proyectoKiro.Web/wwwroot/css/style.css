@@ -1202,3 +1202,30 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--a
     align-items: center;
     gap: 8px;
 }
+
+/* Custom Dark Language Selector Dropdown */
+.lang-select-custom {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border-color, rgba(255, 255, 255, 0.12));
+    color: var(--text-main, #F8FAFC);
+    font-weight: 600;
+    font-size: 12px;
+    font-family: var(--font-sans);
+    padding: 5px 12px;
+    border-radius: var(--radius-sm, 8px);
+    cursor: pointer;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.lang-select-custom:hover {
+    background: rgba(255, 255, 255, 0.14);
+    border-color: var(--accent-primary, #6366F1);
+}
+
+.lang-select-custom option {
+    background-color: #151C2C;
+    color: #F8FAFC;
+    padding: 10px;
+    font-size: 13px;
+}

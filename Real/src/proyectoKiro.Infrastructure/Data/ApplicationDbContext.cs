@@ -38,6 +38,7 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Personality>(b =>
         {
             b.Ignore(p => p.TestCases);
+            b.Ignore(p => p.StarterCodes);
             b.HasData(
                 new Personality
                 {
