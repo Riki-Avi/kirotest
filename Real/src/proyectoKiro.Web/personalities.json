@@ -264,5 +264,183 @@
         }
       }
     ]
+  },
+  {
+    "id": "exercise-06-fibonacci",
+    "emoji": "🔢",
+    "name": "Ejercicio 6: Serie de Fibonacci",
+    "avatar": "",
+    "description": "Dado un entero `n`, calcula y retorna el n-ésimo número de la serie de Fibonacci.\n\nLa secuencia se define como: F(0) = 0, F(1) = 1, y F(n) = F(n-1) + F(n-2) para n > 1.\n\n**Ejemplo 1:**\n- **Entrada:** `n = 2`  \n- **Salida:** `1`  \n- **Explicación:** F(2) = F(1) + F(0) = 1 + 0 = 1.\n\n**Ejemplo 2:**\n- **Entrada:** `n = 4`  \n- **Salida:** `3`  \n- **Explicación:** La secuencia es 0, 1, 1, 2, 3.\n\n**Ejemplo 3:**\n- **Entrada:** `n = 6`  \n- **Salida:** `8`",
+    "systemInstruction": "Eres un Mentor Interactivo para el Ejercicio: 'Serie de Fibonacci'.",
+    "temperature": 0.5,
+    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine($\"Fibonacci(6): {Fibonacci(6)}\");\n    }\n\n    public static int Fibonacci(int n)\n    {\n        // Tu solución aquí\n        return 0;\n    }\n}",
+    "starterCodes": {
+      "csharp": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine($\"Fibonacci(6): {Fibonacci(6)}\");\n    }\n\n    public static int Fibonacci(int n)\n    {\n        // Tu solución en C# aquí\n        return 0;\n    }\n}",
+      "java": "public class Program\n{\n    public static void main(String[] args)\n    {\n        System.out.println(\"Fibonacci(6): \" + fibonacci(6));\n    }\n\n    public static int fibonacci(int n)\n    {\n        // Tu solución en Java aquí\n        return 0;\n    }\n}",
+      "typescript": "function fibonacci(n: number): number {\n    // Tu solución en TypeScript aquí\n    return 0;\n}\n\nconsole.log(\"Fibonacci(6):\", fibonacci(6));"
+    },
+    "isCustom": false,
+    "testCases": [
+      {
+        "id": "1",
+        "description": "Fibonacci de 2",
+        "expectedOutput": "1",
+        "methodCall": "Program.Fibonacci(2)",
+        "methodCalls": {
+          "csharp": "Program.Fibonacci(2)",
+          "java": "Program.fibonacci(2)",
+          "typescript": "fibonacci(2)"
+        }
+      },
+      {
+        "id": "2",
+        "description": "Fibonacci de 6",
+        "expectedOutput": "8",
+        "methodCall": "Program.Fibonacci(6)",
+        "methodCalls": {
+          "csharp": "Program.Fibonacci(6)",
+          "java": "Program.fibonacci(6)",
+          "typescript": "fibonacci(6)"
+        }
+      }
+    ]
+  },
+  {
+    "id": "exercise-07-reverse-words",
+    "emoji": "🔀",
+    "name": "Ejercicio 7: Invertir Palabras",
+    "avatar": "",
+    "description": "Dada una cadena de texto `texto`, invierte el orden de las palabras contenidas en ella.\n\nUna palabra se define como una secuencia de caracteres no espaciales. Debes retornar una cadena con las palabras en orden inverso separadas por un solo espacio.\n\n**Ejemplo 1:**\n- **Entrada:** `texto = \"hola mundo\"`  \n- **Salida:** `\"mundo hola\"`  \n\n**Ejemplo 2:**\n- **Entrada:** `texto = \"kiro code lab\"`  \n- **Salida:** `\"lab code kiro\"`  \n\n**Ejemplo 3:**\n- **Entrada:** `texto = \"csharp\"`  \n- **Salida:** `\"csharp\"`",
+    "systemInstruction": "Eres un Mentor Interactivo para el Ejercicio: 'Invertir Palabras'.",
+    "temperature": 0.5,
+    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine(InvertirPalabras(\"hola mundo\"));\n    }\n\n    public static string InvertirPalabras(string texto)\n    {\n        // Tu solución aquí\n        return \"\";\n    }\n}",
+    "starterCodes": {
+      "csharp": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine(InvertirPalabras(\"hola mundo\"));\n    }\n\n    public static string InvertirPalabras(string texto)\n    {\n        // Tu solución en C# aquí\n        return \"\";\n    }\n}",
+      "java": "public class Program\n{\n    public static void main(String[] args)\n    {\n        System.out.println(invertirPalabras(\"hola mundo\"));\n    }\n\n    public static String invertirPalabras(String texto)\n    {\n        // Tu solución en Java aquí\n        return \"\";\n    }\n}",
+      "typescript": "function invertirPalabras(texto: string): string {\n    // Tu solución en TypeScript aquí\n    return \"\";\n}\n\nconsole.log(invertirPalabras(\"hola mundo\"));"
+    },
+    "isCustom": false,
+    "testCases": [
+      {
+        "id": "1",
+        "description": "hola mundo -> mundo hola",
+        "expectedOutput": "mundo hola",
+        "methodCall": "Program.InvertirPalabras(\"hola mundo\")",
+        "methodCalls": {
+          "csharp": "Program.InvertirPalabras(\"hola mundo\")",
+          "java": "Program.invertirPalabras(\"hola mundo\")",
+          "typescript": "invertirPalabras(\"hola mundo\")"
+        }
+      }
+    ]
+  },
+  {
+    "id": "exercise-08-factorial",
+    "emoji": "🧮",
+    "name": "Ejercicio 8: Factorial de un Número",
+    "avatar": "",
+    "description": "Dado un entero no negativo `n`, calcula y retorna el factorial de `n` (n!).\n\nEl factorial de un número n es el producto de todos los enteros positivos menores o iguales a n. Por definición, 0! = 1.\n\n**Ejemplo 1:**\n- **Entrada:** `n = 5`  \n- **Salida:** `120`  \n- **Explicación:** 5! = 5 * 4 * 3 * 2 * 1 = 120.\n\n**Ejemplo 2:**\n- **Entrada:** `n = 0`  \n- **Salida:** `1`  \n\n**Ejemplo 3:**\n- **Entrada:** `n = 3`  \n- **Salida:** `6`",
+    "systemInstruction": "Eres un Mentor Interactivo para el Ejercicio: 'Factorial de un Número'.",
+    "temperature": 0.5,
+    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine($\"Factorial(5): {Factorial(5)}\");\n    }\n\n    public static int Factorial(int n)\n    {\n        // Tu solución aquí\n        return 1;\n    }\n}",
+    "starterCodes": {
+      "csharp": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine($\"Factorial(5): {Factorial(5)}\");\n    }\n\n    public static int Factorial(int n)\n    {\n        // Tu solución en C# aquí\n        return 1;\n    }\n}",
+      "java": "public class Program\n{\n    public static void main(String[] args)\n    {\n        System.out.println(\"Factorial(5): \" + factorial(5));\n    }\n\n    public static int factorial(int n)\n    {\n        // Tu solución en Java aquí\n        return 1;\n    }\n}",
+      "typescript": "function factorial(n: number): number {\n    // Tu solución en TypeScript aquí\n    return 1;\n}\n\nconsole.log(\"Factorial(5):\", factorial(5));"
+    },
+    "isCustom": false,
+    "testCases": [
+      {
+        "id": "1",
+        "description": "Factorial de 5",
+        "expectedOutput": "120",
+        "methodCall": "Program.Factorial(5)",
+        "methodCalls": {
+          "csharp": "Program.Factorial(5)",
+          "java": "Program.factorial(5)",
+          "typescript": "factorial(5)"
+        }
+      },
+      {
+        "id": "2",
+        "description": "Factorial de 0",
+        "expectedOutput": "1",
+        "methodCall": "Program.Factorial(0)",
+        "methodCalls": {
+          "csharp": "Program.Factorial(0)",
+          "java": "Program.factorial(0)",
+          "typescript": "factorial(0)"
+        }
+      }
+    ]
+  },
+  {
+    "id": "exercise-09-two-sum-target",
+    "emoji": "✌️",
+    "name": "Ejercicio 9: Pareja de Suma Target",
+    "avatar": "",
+    "description": "Dado un arreglo de enteros `numeros` y un entero `target`, retorna un arreglo con los dos índices de los elementos que suman exactamente `target`.\n\nPuedes asumir que cada entrada tiene exactamente una solución y no puedes usar el mismo elemento dos veces.\n\n**Ejemplo 1:**\n- **Entrada:** `numeros = [2, 7, 11, 15]`, `target = 9`  \n- **Salida:** `[0, 1]`  \n- **Explicación:** numeros[0] + numeros[1] = 2 + 7 = 9.\n\n**Ejemplo 2:**\n- **Entrada:** `numeros = [3, 2, 4]`, `target = 6`  \n- **Salida:** `[1, 2]`  \n\n**Ejemplo 3:**\n- **Entrada:** `numeros = [3, 3]`, `target = 6`  \n- **Salida:** `[0, 1]`",
+    "systemInstruction": "Eres un Mentor Interactivo para el Ejercicio: 'Pareja de Suma Target'.",
+    "temperature": 0.5,
+    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        int[] resultado = DosSuma(new int[]{2, 7, 11, 15}, 9);\n        Console.WriteLine($\"[{resultado[0]}, {resultado[1]}]\");\n    }\n\n    public static int[] DosSuma(int[] numeros, int target)\n    {\n        // Tu solución aquí\n        return new int[]{0, 0};\n    }\n}",
+    "starterCodes": {
+      "csharp": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        int[] resultado = DosSuma(new int[]{2, 7, 11, 15}, 9);\n        Console.WriteLine($\"[{resultado[0]}, {resultado[1]}]\");\n    }\n\n    public static int[] DosSuma(int[] numeros, int target)\n    {\n        // Tu solución en C# aquí\n        return new int[]{0, 0};\n    }\n}",
+      "java": "import java.util.Arrays;\n\npublic class Program\n{\n    public static void main(String[] args)\n    {\n        int[] resultado = dosSuma(new int[]{2, 7, 11, 15}, 9);\n        System.out.println(Arrays.toString(resultado));\n    }\n\n    public static int[] dosSuma(int[] numeros, int target)\n    {\n        // Tu solución en Java aquí\n        return new int[]{0, 0};\n    }\n}",
+      "typescript": "function dosSuma(numeros: number[], target: number): number[] {\n    // Tu solución en TypeScript aquí\n    return [0, 0];\n}\n\nconsole.log(dosSuma([2, 7, 11, 15], 9));"
+    },
+    "isCustom": false,
+    "testCases": [
+      {
+        "id": "1",
+        "description": "Caso básico [2,7,11,15] target 9",
+        "expectedOutput": "[0, 1]",
+        "methodCall": "Program.DosSuma(new int[]{2,7,11,15}, 9)",
+        "methodCalls": {
+          "csharp": "Program.DosSuma(new int[]{2,7,11,15}, 9)",
+          "java": "Program.dosSuma(new int[]{2,7,11,15}, 9)",
+          "typescript": "dosSuma([2,7,11,15], 9)"
+        }
+      }
+    ]
+  },
+  {
+    "id": "exercise-10-anagram",
+    "emoji": "🔤",
+    "name": "Ejercicio 10: Anagrama Válido",
+    "avatar": "",
+    "description": "Dadas dos cadenas `s` y `t`, retorna `true` si `t` es un anagrama de `s`, o `false` en caso contrario.\n\nUn anagrama es una palabra formada al reordenar las letras de otra palabra diferente, usando todas las letras originales exactamente una vez.\n\n**Ejemplo 1:**\n- **Entrada:** `s = \"anagrama\"`, `t = \"nagarama\"`  \n- **Salida:** `true`  \n\n**Ejemplo 2:**\n- **Entrada:** `s = \"raton\"`, `t = \"torao\"`  \n- **Salida:** `false`  \n\n**Ejemplo 3:**\n- **Entrada:** `s = \"amor\"`, `t = \"roma\"`  \n- **Salida:** `true`",
+    "systemInstruction": "Eres un Mentor Interactivo para el Ejercicio: 'Anagrama Válido'.",
+    "temperature": 0.5,
+    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine(EsAnagrama(\"amor\", \"roma\"));\n    }\n\n    public static bool EsAnagrama(string s, string t)\n    {\n        // Tu solución aquí\n        return false;\n    }\n}",
+    "starterCodes": {
+      "csharp": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine(EsAnagrama(\"amor\", \"roma\"));\n    }\n\n    public static bool EsAnagrama(string s, string t)\n    {\n        // Tu solución en C# aquí\n        return false;\n    }\n}",
+      "java": "public class Program\n{\n    public static void main(String[] args)\n    {\n        System.out.println(esAnagrama(\"amor\", \"roma\"));\n    }\n\n    public static boolean esAnagrama(String s, String t)\n    {\n        // Tu solución en Java aquí\n        return false;\n    }\n}",
+      "typescript": "function esAnagrama(s: string, t: string): boolean {\n    // Tu solución en TypeScript aquí\n    return false;\n}\n\nconsole.log(esAnagrama(\"amor\", \"roma\"));"
+    },
+    "isCustom": false,
+    "testCases": [
+      {
+        "id": "1",
+        "description": "amor y roma son anagramas",
+        "expectedOutput": "True",
+        "methodCall": "Program.EsAnagrama(\"amor\", \"roma\")",
+        "methodCalls": {
+          "csharp": "Program.EsAnagrama(\"amor\", \"roma\")",
+          "java": "Program.esAnagrama(\"amor\", \"roma\")",
+          "typescript": "esAnagrama(\"amor\", \"roma\")"
+        }
+      },
+      {
+        "id": "2",
+        "description": "raton y torao NO son anagramas",
+        "expectedOutput": "False",
+        "methodCall": "Program.EsAnagrama(\"raton\", \"torao\")",
+        "methodCalls": {
+          "csharp": "Program.EsAnagrama(\"raton\", \"torao\")",
+          "java": "Program.esAnagrama(\"raton\", \"torao\")",
+          "typescript": "esAnagrama(\"raton\", \"torao\")"
+        }
+      }
+    ]
   }
 ]
