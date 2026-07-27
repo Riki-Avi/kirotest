@@ -209,6 +209,20 @@
                 </div>
 
                 <footer class="chat-input-container">
+                    <div class="quick-help-row" style="display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 6px; scrollbar-width: thin;">
+                        <button type="button" class="quick-help-btn" data-help-type="Understand" data-display-message="Entender el problema" style="font-size: 10.5px; padding: 4px 8px; border-radius: 4px; background: rgba(255, 69, 0, 0.08); border: 1px solid rgba(255, 69, 0, 0.25); color: var(--text-main); cursor: pointer; white-space: nowrap;">
+                            💡 Entender el problema
+                        </button>
+                        <button type="button" class="quick-help-btn" data-help-type="Hint" data-display-message="Dame una pista" style="font-size: 10.5px; padding: 4px 8px; border-radius: 4px; background: rgba(255, 69, 0, 0.08); border: 1px solid rgba(255, 69, 0, 0.25); color: var(--text-main); cursor: pointer; white-space: nowrap;">
+                            🎯 Dame una pista
+                        </button>
+                        <button type="button" class="quick-help-btn" data-help-type="AnalogousExample" data-display-message="Ejemplo análogo" style="font-size: 10.5px; padding: 4px 8px; border-radius: 4px; background: rgba(255, 69, 0, 0.08); border: 1px solid rgba(255, 69, 0, 0.25); color: var(--text-main); cursor: pointer; white-space: nowrap;">
+                            🧩 Ejemplo análogo
+                        </button>
+                        <button type="button" class="quick-help-btn" data-help-type="DocSearch" data-display-message="¿En qué parte del curso se habló de esto? (Docs Microsoft C#)" style="font-size: 10.5px; padding: 4px 8px; border-radius: 4px; background: rgba(255, 69, 0, 0.15); border: 1px solid #FF4500; color: #FF4500; font-weight: 600; cursor: pointer; white-space: nowrap;">
+                            📚 ¿Qué estudiar de C#? (Docs Microsoft)
+                        </button>
+                    </div>
                     <form id="chatForm" class="input-form">
                         <textarea 
                             id="messageInput" 

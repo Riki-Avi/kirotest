@@ -237,6 +237,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
+    document.querySelectorAll('.quick-help-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (!requireUserAuth()) return;
+            const helpType = btn.getAttribute('data-help-type');
+            const displayMsg = btn.getAttribute('data-display-message');
+            if (helpType && displayMsg && activePersonality) {
+                window.KiroChat?.sendQuickHelp(helpType, displayMsg, activePersonality, chatHistories);
+            }
+        });
+    });
+
     // 5. Modales & Guardado de Entregas en Perfil
     completeExerciseBtn?.addEventListener('click', () => {
         window.KiroModals?.openCompleteModal();

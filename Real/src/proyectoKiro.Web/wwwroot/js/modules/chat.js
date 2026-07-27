@@ -50,7 +50,7 @@ window.KiroChat = (function () {
                 <div class="welcome-card" style="padding: 20px 10px; text-align: center;">
                     <div class="welcome-icon" style="font-size: 32px; margin-bottom: 8px;">🤖</div>
                     <h3 style="font-size: 14px; margin-bottom: 6px;">Tutor IA Listo</h3>
-                    <p style="font-size: 12px; color: var(--text-muted);">Puedes hacerme preguntas sobre tu código C#, pedirme pistas o explicaciones conceptuales.</p>
+                    <p style="font-size: 12px; color: var(--text-muted);">Puedes hacerme preguntas sobre tu código C#, pedirme pistas o consultar recursos de Microsoft C# Learn.</p>
                 </div>
             `;
             return;
@@ -97,7 +97,7 @@ window.KiroChat = (function () {
                     history: currentHistory,
                     intensity: intensityVal,
                     customApiKey: localStorage.getItem('gemini_api_key') || null,
-                    model: localStorage.getItem('gemini_model') || 'gemini-3.5-flash'
+                    model: localStorage.getItem('gemini_model') || 'gemini-3.5-flash-lite'
                 })
             });
 
@@ -125,6 +125,68 @@ window.KiroChat = (function () {
         }
     }
 
+    async function sendQuickHelp(helpType, displayMessage, activePersonality, chatHistories) {
+        if (!activePersonality) return;
+
+        appendUserMessage(displayMessage);
+
+        const typingEl = document.createElement('div');
+        typingEl.className = 'message-row model typing';
+        typingEl.innerHTML = `
+            <div class="avatar">🤖</div>
+            <div class="bubble"><em>Consultando al Tutor IA...</em></div>
+        `;
+        chatMessages.appendChild(typingEl);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        const currentHistory = (chatHistories[activePersonality.id] || []).map(h => ({
+            role: h.role,
+            message: h.message
+        }));
+
+        const currentCode = window.KiroEditor ? window.KiroEditor.getValue() : null;
+        const intensitySelect = document.getElementById('aiIntensitySelect');
+        const intensityVal = intensitySelect ? intensitySelect.value : (localStorage.getItem('ai_intensity') || 'normal');
+
+        try {
+            const res = await fetch('/api/chat/quick-help', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    personalityId: activePersonality.id,
+                    helpType: helpType,
+                    currentCode: currentCode,
+                    history: currentHistory,
+                    intensity: intensityVal,
+                    customApiKey: localStorage.getItem('gemini_api_key') || null,
+                    model: localStorage.getItem('gemini_model') || 'gemini-3.5-flash-lite'
+                })
+            });
+
+            if (!res.ok) {
+                const textErr = await res.text();
+                throw new Error(`HTTP ${res.status}: ${textErr || res.statusText}`);
+            }
+
+            const data = await res.json();
+            typingEl.remove();
+
+            if (data.success) {
+                appendModelMessage(data.response);
+                if (!chatHistories[activePersonality.id]) {
+                    chatHistories[activePersonality.id] = [];
+                }
+                chatHistories[activePersonality.id].push({ role: 'user', message: displayMessage });
+                chatHistories[activePersonality.id].push({ role: 'model', message: data.response });
+            } else {
+                appendErrorMessage(data.errorMessage || 'Error al comunicarse con Gemini.');
+            }
+        } catch (err) {
+            typingEl.remove();
+            appendErrorMessage('Error de red al consultar ayuda rápida: ' + err.message);
+        }
+    }
+
     function escapeHtml(str) {
         return (str || '')
             .replace(/&/g, "&amp;")
@@ -139,6 +201,7 @@ window.KiroChat = (function () {
         appendModelMessage,
         appendErrorMessage,
         renderCurrentChatHistory,
-        sendPrompt
+        sendPrompt,
+        sendQuickHelp
     };
 })();

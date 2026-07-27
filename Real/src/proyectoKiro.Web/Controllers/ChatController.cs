@@ -48,6 +48,35 @@ namespace proyectoKiro.Web.Controllers
             return Ok(result);
         }
 
+        [HttpPost("quick-help")]
+        public async Task<IActionResult> QuickHelp([FromBody] QuickHelpRequest request, [FromServices] QuickHelpPromptService quickHelpPromptService)
+        {
+            var personality = _personalityService.GetById(request.PersonalityId);
+            if (personality == null)
+            {
+                personality = _personalityService.GetAll().FirstOrDefault() ?? new Personality
+                {
+                    Name = "Ejercicio de Código",
+                    SystemInstruction = "Eres un mentor socrático y amigable.",
+                    Temperature = 0.5
+                };
+            }
+
+            var promptText = quickHelpPromptService.BuildPrompt(request.HelpType, personality, request.CurrentCode);
+            var sendRequest = new ChatSendRequest
+            {
+                PersonalityId = request.PersonalityId,
+                Message = promptText,
+                History = request.History,
+                CustomApiKey = request.CustomApiKey,
+                Model = request.Model,
+                Intensity = request.Intensity
+            };
+
+            var result = await _geminiService.SendMessageAsync(sendRequest, personality);
+            return Ok(result);
+        }
+
         [HttpGet("models")]
         public async Task<IActionResult> GetModels([FromQuery] string? apiKey)
         {
