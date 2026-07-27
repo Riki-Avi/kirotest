@@ -22,7 +22,8 @@ builder.Services.AddControllersWithViews()
 builder.Services.AddRazorPages();
 
 // Registrar DbContext con PostgreSQL (Supabase)
-var connectionString = builder.Configuration.GetConnectionString("SupabaseConnection") 
+var connectionString = Environment.GetEnvironmentVariable("SUPABASE_CONNECTION_STRING")
+    ?? builder.Configuration.GetConnectionString("SupabaseConnection") 
     ?? "Host=localhost;Database=proyectoKiroDb;Username=postgres;Password=postgres;";
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
