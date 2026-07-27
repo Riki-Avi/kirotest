@@ -27,10 +27,18 @@ namespace proyectoKiro.Infrastructure.Services
 
                 var endpoint = $"{baseUrl}/submissions?wait=true";
 
+                var targetLangId = request.LanguageId > 0 ? request.LanguageId : 51;
+                var sourceCodeToRun = request.SourceCode;
+
+                if (targetLangId == 62 || targetLangId == 91) // Java
+                {
+                    sourceCodeToRun = System.Text.RegularExpressions.Regex.Replace(sourceCodeToRun, @"public\s+class\s+", "class ");
+                }
+
                 var payload = new
                 {
-                    source_code = request.SourceCode,
-                    language_id = request.LanguageId > 0 ? request.LanguageId : 51, // 51 = C#
+                    source_code = sourceCodeToRun,
+                    language_id = targetLangId, // 51 = C#, 62 = Java, 74 = TypeScript
                     stdin = request.Stdin ?? ""
                 };
 
@@ -107,7 +115,8 @@ namespace proyectoKiro.Infrastructure.Services
 
             if (languageId == 62 || languageId == 91) // Java
             {
-                var safeUserCode = sourceCode.Replace("public static void main", "public static void userMainOriginal");
+                var safeUserCode = System.Text.RegularExpressions.Regex.Replace(sourceCode, @"public\s+class\s+", "class ");
+                safeUserCode = safeUserCode.Replace("public static void main", "public static void userMainOriginal");
                 sb.AppendLine(safeUserCode);
                 sb.AppendLine();
                 sb.AppendLine("public class Main {");

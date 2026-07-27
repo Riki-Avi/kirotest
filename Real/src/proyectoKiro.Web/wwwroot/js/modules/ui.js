@@ -123,6 +123,8 @@ window.KiroUI = (function () {
         function applyChatFontSize(size) {
             chatFontSize = Math.max(11, Math.min(24, size));
             if (chatMessages) chatMessages.style.fontSize = `${chatFontSize}px`;
+            const messageInput = document.getElementById('messageInput');
+            if (messageInput) messageInput.style.fontSize = `${chatFontSize}px`;
             localStorage.setItem('kiro_chat_font_size', String(chatFontSize));
         }
 

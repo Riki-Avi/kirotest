@@ -128,7 +128,7 @@ window.KiroEditor = (function () {
         if (lang === 'csharp') return defaultCode || exerciseObj?.starterCode || '// Tu solución en C#...\n';
 
         if (lang === 'java') {
-            return `using System;\n// O usa la estructura estándar de Java:\npublic class Program\n{\n    public static void main(String[] args)\n    {\n        System.out.println("Solución en Java");\n    }\n}\n`;
+            return `// Solución en Java\nclass Program\n{\n    public static void main(String[] args)\n    {\n        System.out.println("Solución en Java");\n    }\n}\n`;
         }
 
         if (lang === 'typescript') {

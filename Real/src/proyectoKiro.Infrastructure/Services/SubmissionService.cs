@@ -26,6 +26,20 @@ public class SubmissionService : ISubmissionService
             };
         }
 
+        // Asegurar que el usuario existe en la tabla Users (evita FK violation)
+        var userExists = await _context.Users.AnyAsync(u => u.Id == request.UserId);
+        if (!userExists)
+        {
+            _context.Users.Add(new User
+            {
+                Id = request.UserId,
+                Email = "",
+                NombreUsuario = "Usuario",
+                CreatedAt = DateTime.UtcNow
+            });
+            await _context.SaveChangesAsync();
+        }
+
         int exerciseId = 1;
         if (!int.TryParse(request.ExerciseId, out exerciseId))
         {

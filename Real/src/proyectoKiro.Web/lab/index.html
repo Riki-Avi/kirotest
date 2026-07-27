@@ -1,13 +1,9 @@
-@{
-    Layout = null;
-    ViewData["Title"] = "CODELAB — Plataforma de Entrevistas Técnicas con IA";
-}
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>@ViewData["Title"]</title>
+  <title>CODELAB — Plataforma de Entrevistas Técnicas con IA</title>
   <meta name="description" content="Plataforma interactiva para practicar ejercicios de entrevistas de código con un tutor IA con contexto completo.">
   
   <!-- Google Fonts -->
@@ -15,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
   
-  <link rel="stylesheet" href="~/css/home.css" asp-append-version="true">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <!-- Fixed Canvas Background for Scroll-driven Matraz Pouring & Code Matrix Animation -->
@@ -56,10 +52,6 @@
       </div>
     </div>
 
-    <a href="/editor" class="nav-btn">EDITOR</a>
-    <a href="/Auth/Login" class="nav-btn" id="navLoginBtn">INGRESAR</a>
-    <a href="/Profile" class="nav-btn" id="navProfileBtn" style="display: none;">PERFIL</a>
-
     <button class="nav-btn menu-btn" id="menu-toggle-btn">
       MENU
     </button>
@@ -73,9 +65,6 @@
       <div class="hero-container">
         <h1 class="hero-title" id="dragonfly-title">CODELAB</h1>
         <p class="hero-subtitle">ENTREVISTAS TÉCNICAS &bull; ASISTENCIA IA EN TIEMPO REAL</p>
-        <div style="margin-top: 1.5rem; display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; position: relative; z-index: 30;">
-          <a href="/editor" class="primary-btn">💻 ENTRAR AL EDITOR</a>
-        </div>
       </div>
 
       <div class="bottom-indicator" id="scroll-indicator">
@@ -87,7 +76,7 @@
       </div>
     </section>
 
-    <!-- SECTION 2: EDITORIAL ABOUT -->
+    <!-- SECTION 2: EDITORIAL ABOUT (Matching Image 1 style) -->
     <section class="section editorial-section" id="about">
       <div class="editorial-container">
         <!-- Section Header Badge & Title -->
@@ -122,19 +111,19 @@
           <div class="feature-card">
             <div class="card-num">01 //</div>
             <h3>Ejercicios Reales FAANG</h3>
-            <p>Problemas actualizados de Algoritmos, Estructuras de Datos y Programación Dinámica evaluados en pruebas técnicas reales en C#.</p>
+            <p>Problemas actualizados de Algoritmos, Estructuras de Datos y Programación Dinámica evaluados en pruebas técnicas reales.</p>
           </div>
 
           <div class="feature-card highlighted-card">
             <div class="card-num">02 //</div>
             <h3>Tutor IA con Contexto Total</h3>
-            <p>El asistente conoce el enunciado, tus variables y tus errores, brindándote pistas inteligentes con Gemini 3.5 sin revelarte la solución de golpe.</p>
+            <p>El asistente conoce el enunciado, tus variables y tus errores, brindándote pistas inteligentes sin revelarte la solución de golpe.</p>
           </div>
 
           <div class="feature-card">
             <div class="card-num">03 //</div>
-            <h3>Análisis & Compilación Remota</h3>
-            <p>Ejecución de código en tiempo real con Judge0 API y validación automatizada de casos de prueba.</p>
+            <h3>Análisis de Complejidad</h3>
+            <p>Recibe retroalimentación instantánea de tiempo de ejecución y espacio en memoria antes de enviar tu propuesta.</p>
           </div>
         </div>
       </div>
@@ -152,23 +141,21 @@
             <span class="mac-dot red"></span>
             <span class="mac-dot yellow"></span>
             <span class="mac-dot green"></span>
-            <span class="window-title">TwoSumSolution.cs — CODELAB AI Workspace</span>
+            <span class="window-title">two_sum_problem.js — CODELAB AI Workspace</span>
           </div>
 
           <div class="editor-body">
             <div class="code-pane">
-              <pre><code><span class="kwd">public class</span> <span class="fn">Solution</span> {
-  <span class="kwd">public int</span>[] <span class="fn">TwoSum</span>(<span class="kwd">int</span>[] nums, <span class="kwd">int</span> target) {
-    <span class="kwd">var</span> map = <span class="kwd">new</span> Dictionary&lt;<span class="kwd">int</span>, <span class="kwd">int</span>&gt;();
-    <span class="kwd">for</span> (<span class="kwd">int</span> i = 0; i &lt; nums.Length; i++) {
-      <span class="kwd">int</span> diff = target - nums[i];
-      <span class="kwd">if</span> (map.ContainsKey(diff)) {
-        <span class="kwd">return new int</span>[] { map[diff], i };
-      }
-      map[nums[i]] = i;
+              <pre><code><span class="kwd">function</span> <span class="fn">twoSum</span>(nums, target) {
+  <span class="kwd">const</span> map = <span class="kwd">new</span> Map();
+  <span class="kwd">for</span> (<span class="kwd">let</span> i = 0; i &lt; nums.length; i++) {
+    <span class="kwd">const</span> diff = target - nums[i];
+    <span class="kwd">if</span> (map.has(diff)) {
+      <span class="kwd">return</span> [map.get(diff), i];
     }
-    <span class="kwd">return</span> Array.Empty&lt;<span class="kwd">int</span>&gt;();
+    map.set(nums[i], i);
   }
+  <span class="kwd">return</span> [];
 }</code></pre>
             </div>
 
@@ -178,8 +165,8 @@
                 <span class="ai-name">CODELAB Tutor (Context Active)</span>
               </div>
               <div class="ai-message-bubble">
-                <p>¡Excelente optimización en C# usando <code>Dictionary</code>! Complejidad reducida a <code>O(n)</code>.</p>
-                <p class="hint-box">💡 <strong>Pista de Entrevista:</strong> ¿Cómo manejarías duplicados en el array?</p>
+                <p>¡Excelente optimización usando Hash Map! Complejidad reducida a <code>O(n)</code>.</p>
+                <p class="hint-box">💡 <strong>Pista de Entrevista:</strong> ¿Qué pasaría si la entrada ya estuviese ordenada?</p>
               </div>
             </div>
           </div>
@@ -207,24 +194,14 @@
     </div>
 
     <div class="drawer-body">
-      <!-- ASCII Sleeping Cat & Coffee Card -->
-      <div class="cat-cafe-card">
-        <pre class="ascii-art">
-       zZz
-      /\_/\       (  )  (   )
-     ( -.- )     (  )  (  )
-    /  "   " \   [==========]
-   (  | | |   )  |  COFFEE  |]
-   (__________)  \__________/
-        </pre>
-        <span class="cat-caption">MIAU... CODELAB FOCUS ZONE ☕</span>
-      </div>
-
       <div class="control-group">
         <h3>MODOS VISUALES ASCII</h3>
         <div class="button-grid">
           <button class="preset-btn active" data-preset="flask">01. MATRAZ DE LABORATORIO (3D)</button>
           <button class="preset-btn" data-preset="dragonfly">02. DRAGONFLY 3D</button>
+          <button class="preset-btn" data-preset="terrain">03. MATRIX TERRAIN</button>
+          <button class="preset-btn" data-preset="vortex">04. CYBER VORTEX</button>
+          <button class="preset-btn" data-preset="particles">05. POINT CLOUD</button>
         </div>
       </div>
 
@@ -245,40 +222,14 @@
       </div>
 
       <div class="control-group">
-        <h3>SINTETIZADOR DE RUIDO MARRÓN</h3>
-        <div class="benefit-box">
-          <strong>🧠 Beneficios del Ruido Marrón (Brown Noise):</strong>
-          Genera frecuencias graves profundas y envolventes que reducen la ansiedad, bloquean distracciones del entorno e inducen el estado de <em>hiperfoco (flow)</em> durante la programación.
-        </div>
-        <button class="audio-btn" id="audio-toggle-btn" style="margin-bottom: 1.2rem;">
-          <span class="audio-icon">&#9654;</span> ACTIVAR RUIDO MARRÓN (FOCUS)
+        <h3>SINTETIZADOR AMBIENTAL</h3>
+        <button class="audio-btn" id="audio-toggle-btn">
+          <span class="audio-icon">&#9654;</span> ACTIVAR SONIDO AMBIENTAL TECH
         </button>
-        <div class="slider-control">
-          <label for="volume-range">Volumen del Sonido Ambient</label>
-          <input type="range" id="volume-range" min="0" max="1" step="0.01" value="0.5">
-        </div>
       </div>
     </div>
   </aside>
 
-  <script src="~/js/home.js" asp-append-version="true"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@@supabase/supabase-js@2"></script>
-  <script>
-    const SUPABASE_URL = "https://bzaifpevfuwlaznmhiee.supabase.co";
-    const SUPABASE_ANON_KEY = "sb_publishable_xoU3gGiIKuchm6oTBhr8EQ_eb7sUD2a";
-    const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-    supabaseClient.auth.onAuthStateChange((event, session) => {
-      const loginBtn = document.getElementById('navLoginBtn');
-      const profileBtn = document.getElementById('navProfileBtn');
-      if (session?.user) {
-        if (loginBtn) loginBtn.style.display = 'none';
-        if (profileBtn) profileBtn.style.display = 'inline-block';
-      } else {
-        if (loginBtn) loginBtn.style.display = 'inline-block';
-        if (profileBtn) profileBtn.style.display = 'none';
-      }
-    });
-  </script>
+  <script src="app.js"></script>
 </body>
 </html>

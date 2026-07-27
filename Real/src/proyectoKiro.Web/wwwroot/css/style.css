@@ -910,10 +910,10 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--a
     border-radius: var(--radius-md);
     padding: 12px 14px;
     max-width: 88%;
-    font-size: 13px;
+    font-size: 1em;
 }
 .message-row.user .bubble { background: var(--accent-primary); color: #FFF; border: none; }
-.bubble pre { background: #0D1117; padding: 10px; border-radius: 6px; overflow-x: auto; margin: 8px 0; font-family: var(--font-mono); font-size: 12px; }
+.bubble pre { background: #0D1117; padding: 10px; border-radius: 6px; overflow-x: auto; margin: 8px 0; font-family: var(--font-mono); font-size: 0.9em; }
 
 /* Responsive */
 @media (max-width: 768px) {
