@@ -36,9 +36,12 @@ namespace proyectoKiro.Infrastructure.Services
                     };
                 }
 
-                var modelName = (!string.IsNullOrWhiteSpace(request.Model) 
+                var rawModel = (!string.IsNullOrWhiteSpace(request.Model) 
                     ? request.Model 
-                    : _configuration["Gemini:DefaultModel"] ?? "gemini-3.5-flash").Replace("models/", "");
+                    : _configuration["Gemini:DefaultModel"] ?? "gemini-1.5-flash").Replace("models/", "");
+
+                if (rawModel.Contains("3.5")) rawModel = "gemini-1.5-flash";
+                var modelName = rawModel;
 
                 var endpointUrl = $"https://generativelanguage.googleapis.com/v1beta/models/{modelName}:generateContent?key={apiKey}";
 
