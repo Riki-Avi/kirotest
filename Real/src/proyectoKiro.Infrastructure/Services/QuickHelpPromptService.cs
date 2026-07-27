@@ -61,10 +61,13 @@ namespace proyectoKiro.Infrastructure.Services
 
                 case QuickHelpType.DocSearch:
                     prompt.AppendLine("NIVEL 4 — RECURSOS Y SECCIÓN DE ESTUDIO (MICROSOFT C# LEARN):");
-                    prompt.AppendLine("- Identifica los conceptos fundamentales de C# / .NET involucrados en este ejercicio (ej. Bucles foreach, Arreglos System.Array, Métodos de String, Pilas Stack<T>, Conversión de tipos, etc.).");
-                    prompt.AppendLine("- Indica explícitamente en qué módulo o sección de la documentación oficial de Microsoft C# Learn (https://learn.microsoft.com/es-es/dotnet/csharp/) se estudia este tema.");
-                    prompt.AppendLine("- Proporciona los enlaces relevantes (ejemplo: https://learn.microsoft.com/es-es/dotnet/csharp/tour-of-csharp/ o https://learn.microsoft.com/es-es/dotnet/csharp/programming-guide/arrays/) e indica exactamente qué capítulo o concepto repasar.");
-                    prompt.AppendLine("- Explica brevemente por qué repasar esa sección teórica resolverá la duda sobre el ejercicio.");
+                    prompt.AppendLine("- Examina cuidadosamente el código actual del estudiante y las sentencias específicas que está escribiendo (ejemplo: si utiliza o necesita un bucle 'foreach', debes dirigirlo a la documentación de sentencias de iteración en lugar de a tipos de arreglos).");
+                    prompt.AppendLine("- Proporciona la URL oficial exacta y más relevante de Microsoft C# Learn:");
+                    prompt.AppendLine("  * Para bucles e iteraciones (foreach, for, while): https://learn.microsoft.com/es-es/dotnet/csharp/language-reference/statements/iteration-statements");
+                    prompt.AppendLine("  * Para matrices y arreglos (int[], System.Array): https://learn.microsoft.com/es-es/dotnet/csharp/language-reference/builtin-types/arrays");
+                    prompt.AppendLine("  * Para manipulación de texto y métodos de string: https://learn.microsoft.com/es-es/dotnet/csharp/how-to/modify-string-contents");
+                    prompt.AppendLine("  * Para colecciones genéricas (List<T>, Stack<T>): https://learn.microsoft.com/es-es/dotnet/api/system.collections.generic");
+                    prompt.AppendLine("- Explica brevemente qué capítulo o sección específica debe leer y cómo le servirá para completar su código.");
                     break;
             }
         }

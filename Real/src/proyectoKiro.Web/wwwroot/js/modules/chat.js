@@ -18,9 +18,18 @@ window.KiroChat = (function () {
         if (!chatMessages) return;
         const row = document.createElement('div');
         row.className = 'message-row model';
+        let rawHtml = typeof marked !== 'undefined' ? marked.parse(text) : escapeHtml(text);
+
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = rawHtml;
+        tempDiv.querySelectorAll('a').forEach(link => {
+            link.setAttribute('target', '_blank');
+            link.setAttribute('rel', 'noopener noreferrer');
+        });
+
         row.innerHTML = `
             <div class="avatar">🤖</div>
-            <div class="bubble markdown-body">${typeof marked !== 'undefined' ? marked.parse(text) : escapeHtml(text)}</div>
+            <div class="bubble markdown-body">${tempDiv.innerHTML}</div>
         `;
         chatMessages.appendChild(row);
         chatMessages.scrollTop = chatMessages.scrollHeight;
