@@ -17,7 +17,10 @@ namespace proyectoKiro.Infrastructure.Services
             _configuration = configuration;
         }
 
-        public async Task<ChatSendResponse> SendMessageAsync(ChatSendRequest request, Personality personality)
+        public async Task<ChatSendResponse> SendMessageAsync(
+            ChatSendRequest request,
+            Personality personality,
+            string? additionalSystemInstruction = null)
         {
             try
             {
@@ -57,6 +60,11 @@ namespace proyectoKiro.Infrastructure.Services
                     {
                         systemInstructionText += "\n\n[ESTILO DE RESPUESTA - DETALLADO]: Proporciona explicaciones conceptuales exhaustivas paso a paso, analogías y análisis de complejidad O(N), pero NUNCA incluyas la función de solución terminada en código. Deja que el alumno escriba el código.";
                     }
+                }
+
+                if (!string.IsNullOrWhiteSpace(additionalSystemInstruction))
+                {
+                    systemInstructionText += $"\n\n[INSTRUCCIONES PRIVADAS DE AYUDA RÁPIDA — PRIORIDAD ALTA]:\n{additionalSystemInstruction}";
                 }
 
                 // Construir la estructura de la solicitud

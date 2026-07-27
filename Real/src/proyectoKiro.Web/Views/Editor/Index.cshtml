@@ -209,6 +209,36 @@
                 </div>
 
                 <footer class="chat-input-container">
+                    <div class="quick-help-actions" role="group" aria-label="Ayudas rápidas para resolver el ejercicio">
+                        <button
+                            class="quick-help-btn"
+                            type="button"
+                            data-help-type="Understand"
+                            data-display-message="Boton 1"
+                            title="Explicar el ejercicio sin dar pistas ni código">
+                            <span class="quick-help-number" aria-hidden="true">1</span>
+                            <span>Entender</span>
+                        </button>
+                        <button
+                            class="quick-help-btn"
+                            type="button"
+                            data-help-type="Hint"
+                            data-display-message="Boton 2"
+                            title="Obtener una pista pequeña sin revelar la solución">
+                            <span class="quick-help-number" aria-hidden="true">2</span>
+                            <span>Pista</span>
+                        </button>
+                        <button
+                            class="quick-help-btn"
+                            type="button"
+                            data-help-type="AnalogousExample"
+                            data-display-message="Boton 3"
+                            title="Ver código de un problema diferente pero relacionado">
+                            <span class="quick-help-number" aria-hidden="true">3</span>
+                            <span>Ejemplo</span>
+                        </button>
+                    </div>
+
                     <form id="chatForm" class="input-form">
                         <textarea 
                             id="messageInput" 

@@ -11,12 +11,18 @@ namespace proyectoKiro.Web.Controllers
     {
         private readonly GeminiService _geminiService;
         private readonly PersonalityService _personalityService;
+        private readonly QuickHelpPromptService _quickHelpPromptService;
         private readonly WhisperService _whisperService;
 
-        public ChatController(GeminiService geminiService, PersonalityService personalityService, WhisperService whisperService)
+        public ChatController(
+            GeminiService geminiService,
+            PersonalityService personalityService,
+            QuickHelpPromptService quickHelpPromptService,
+            WhisperService whisperService)
         {
             _geminiService = geminiService;
             _personalityService = personalityService;
+            _quickHelpPromptService = quickHelpPromptService;
             _whisperService = whisperService;
         }
 
@@ -45,6 +51,51 @@ namespace proyectoKiro.Web.Controllers
             }
 
             var result = await _geminiService.SendMessageAsync(request, personality);
+            return Ok(result);
+        }
+
+        [HttpPost("quick-help")]
+        public async Task<IActionResult> SendQuickHelp([FromBody] QuickHelpRequest request)
+        {
+            if (!Enum.IsDefined(typeof(QuickHelpType), request.HelpType))
+            {
+                return BadRequest(new ChatSendResponse
+                {
+                    Success = false,
+                    ErrorMessage = "El tipo de ayuda rápida no es válido."
+                });
+            }
+
+            var personality = _personalityService.GetById(request.PersonalityId);
+            if (personality == null)
+            {
+                return NotFound(new ChatSendResponse
+                {
+                    Success = false,
+                    ErrorMessage = "No se encontró el ejercicio activo."
+                });
+            }
+
+            var quickHelpPrompt = _quickHelpPromptService.BuildPrompt(
+                request.HelpType,
+                personality,
+                request.CurrentCode,
+                request.Language);
+
+            var geminiRequest = new ChatSendRequest
+            {
+                PersonalityId = request.PersonalityId,
+                Message = quickHelpPrompt.UserContext,
+                History = NormalizeHistory(request.History),
+                CustomApiKey = request.CustomApiKey,
+                Model = request.Model,
+                Intensity = request.Intensity
+            };
+
+            var result = await _geminiService.SendMessageAsync(
+                geminiRequest,
+                personality,
+                quickHelpPrompt.SystemInstruction);
             return Ok(result);
         }
 
@@ -83,6 +134,26 @@ namespace proyectoKiro.Web.Controllers
 
             var text = await _geminiService.TranscribeAudioAsync(request.AudioBase64, request.AudioMimeType, request.CustomApiKey);
             return Ok(new { success = true, text, source = "Gemini" });
+        }
+
+        private static List<ChatMessageDto> NormalizeHistory(IEnumerable<ChatMessageDto>? history)
+        {
+            const int maxHistoryItems = 30;
+            const int maxMessageLength = 12000;
+
+            return (history ?? Enumerable.Empty<ChatMessageDto>())
+                .Where(item => item != null && !string.IsNullOrWhiteSpace(item.Message))
+                .TakeLast(maxHistoryItems)
+                .Select(item => new ChatMessageDto
+                {
+                    Role = string.Equals(item.Role, "user", StringComparison.OrdinalIgnoreCase)
+                        ? "user"
+                        : "model",
+                    Message = item.Message.Length <= maxMessageLength
+                        ? item.Message
+                        : item.Message[..maxMessageLength]
+                })
+                .ToList();
         }
     }
 }

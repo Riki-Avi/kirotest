@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace proyectoKiro.Domain.Models
@@ -109,6 +111,66 @@ namespace proyectoKiro.Domain.Models
         public List<ChatMessageDto> History { get; set; } = new();
         public string? CustomApiKey { get; set; }
         public string? Model { get; set; }
+        public string? Intensity { get; set; }
+    }
+
+    [JsonConverter(typeof(QuickHelpTypeJsonConverter))]
+    public enum QuickHelpType
+    {
+        Understand = 1,
+        Hint = 2,
+        AnalogousExample = 3
+    }
+
+    public sealed class QuickHelpTypeJsonConverter : JsonConverter<QuickHelpType>
+    {
+        public override QuickHelpType Read(
+            ref Utf8JsonReader reader,
+            Type typeToConvert,
+            JsonSerializerOptions options)
+        {
+            if (reader.TokenType != JsonTokenType.String ||
+                !Enum.TryParse<QuickHelpType>(reader.GetString(), ignoreCase: true, out var value) ||
+                !Enum.IsDefined(typeof(QuickHelpType), value))
+            {
+                throw new JsonException("El tipo de ayuda rápida debe ser Understand, Hint o AnalogousExample.");
+            }
+
+            return value;
+        }
+
+        public override void Write(
+            Utf8JsonWriter writer,
+            QuickHelpType value,
+            JsonSerializerOptions options)
+        {
+            writer.WriteStringValue(value.ToString());
+        }
+    }
+
+    public sealed class QuickHelpRequest
+    {
+        [Required]
+        [StringLength(100)]
+        public string PersonalityId { get; set; } = string.Empty;
+
+        public QuickHelpType HelpType { get; set; }
+
+        [StringLength(40000)]
+        public string? CurrentCode { get; set; }
+
+        [StringLength(30)]
+        public string? Language { get; set; }
+
+        public List<ChatMessageDto> History { get; set; } = new();
+
+        [StringLength(500)]
+        public string? CustomApiKey { get; set; }
+
+        [StringLength(100)]
+        public string? Model { get; set; }
+
+        [StringLength(20)]
         public string? Intensity { get; set; }
     }
 

@@ -1,6 +1,8 @@
 // chat.js — Módulo de gestión del Chat y comunicación con Tutor IA Gemini
 window.KiroChat = (function () {
     const chatMessages = document.getElementById('chatMessages');
+    let renderedPersonalityId = null;
+    let requestPending = false;
 
     function appendUserMessage(text) {
         if (!chatMessages) return;
@@ -40,6 +42,7 @@ window.KiroChat = (function () {
 
     function renderCurrentChatHistory(activePersonality, chatHistories) {
         if (!chatMessages) return;
+        renderedPersonalityId = activePersonality?.id || null;
         chatMessages.innerHTML = '';
         if (!activePersonality) return;
 
@@ -65,64 +68,143 @@ window.KiroChat = (function () {
         });
     }
 
-    async function sendPrompt(messageText, activePersonality, chatHistories) {
-        if (!activePersonality || !messageText.trim()) return;
+    function getHistorySnapshot(personalityId, chatHistories) {
+        return (chatHistories[personalityId] || []).map(item => ({
+            role: item.role,
+            message: item.message
+        }));
+    }
 
-        appendUserMessage(messageText);
+    function getIntensity() {
+        const intensitySelect = document.getElementById('aiIntensitySelect');
+        return intensitySelect?.value || localStorage.getItem('ai_intensity') || 'normal';
+    }
 
+    function setRequestPending(isPending) {
+        requestPending = isPending;
+        document.querySelectorAll('.quick-help-btn').forEach(button => {
+            button.disabled = isPending;
+        });
+
+        ['sendBtn', 'sendCodeToMentorBtn', 'micBtn'].forEach(id => {
+            const button = document.getElementById(id);
+            if (button) button.disabled = isPending;
+        });
+
+        const messageInput = document.getElementById('messageInput');
+        if (messageInput) messageInput.disabled = isPending;
+    }
+
+    function appendTypingIndicator() {
         const typingEl = document.createElement('div');
         typingEl.className = 'message-row model typing';
         typingEl.innerHTML = `
             <div class="avatar">🤖</div>
             <div class="bubble"><em>Gemini está pensando...</em></div>
         `;
-        chatMessages.appendChild(typingEl);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
+        chatMessages?.appendChild(typingEl);
+        if (chatMessages) chatMessages.scrollTop = chatMessages.scrollHeight;
+        return typingEl;
+    }
 
-        const currentHistory = (chatHistories[activePersonality.id] || []).map(h => ({
-            role: h.role,
-            message: h.message
-        }));
+    function ensureHistory(personalityId, chatHistories) {
+        if (!chatHistories[personalityId]) {
+            chatHistories[personalityId] = [];
+        }
+        return chatHistories[personalityId];
+    }
 
-        const intensitySelect = document.getElementById('aiIntensitySelect');
-        const intensityVal = intensitySelect ? intensitySelect.value : (localStorage.getItem('ai_intensity') || 'normal');
+    function saveUserMessage(personalityId, displayMessage, chatHistories) {
+        ensureHistory(personalityId, chatHistories).push({
+            role: 'user',
+            message: displayMessage
+        });
+    }
+
+    function saveModelResponse(personalityId, response, chatHistories) {
+        ensureHistory(personalityId, chatHistories).push({
+            role: 'model',
+            message: response
+        });
+    }
+
+    async function sendRequest({ endpoint, payload, displayMessage, activePersonality, chatHistories }) {
+        if (requestPending || !activePersonality || !displayMessage.trim()) return false;
+
+        const personalityId = activePersonality.id;
+        saveUserMessage(personalityId, displayMessage, chatHistories);
+        appendUserMessage(displayMessage);
+        const typingEl = appendTypingIndicator();
+        setRequestPending(true);
 
         try {
-            const res = await fetch('/api/chat/send', {
+            const response = await fetch(endpoint, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    personalityId: activePersonality.id,
-                    message: messageText,
-                    history: currentHistory,
-                    intensity: intensityVal,
-                    customApiKey: localStorage.getItem('gemini_api_key') || null,
-                    model: localStorage.getItem('gemini_model') || 'gemini-3.5-flash'
-                })
+                body: JSON.stringify(payload)
             });
 
-            if (!res.ok) {
-                const textErr = await res.text();
-                throw new Error(`HTTP ${res.status}: ${textErr || res.statusText}`);
-            }
-
-            const data = await res.json();
+            const data = await response.json().catch(() => null);
             typingEl.remove();
 
-            if (data.success) {
-                appendModelMessage(data.response);
-                if (!chatHistories[activePersonality.id]) {
-                    chatHistories[activePersonality.id] = [];
-                }
-                chatHistories[activePersonality.id].push({ role: 'user', message: messageText });
-                chatHistories[activePersonality.id].push({ role: 'model', message: data.response });
-            } else {
-                appendErrorMessage(data.errorMessage || 'Error al comunicarse con Gemini.');
+            if (!response.ok || !data?.success) {
+                const errorMessage = data?.errorMessage || `Error HTTP ${response.status}`;
+                if (renderedPersonalityId === personalityId) appendErrorMessage(errorMessage);
+                return false;
             }
-        } catch (err) {
+
+            saveModelResponse(personalityId, data.response, chatHistories);
+            if (renderedPersonalityId === personalityId) appendModelMessage(data.response);
+            return true;
+        } catch (error) {
             typingEl.remove();
-            appendErrorMessage('Error de red al enviar mensaje: ' + err.message);
+            if (renderedPersonalityId === personalityId) {
+                appendErrorMessage('Error de red al enviar mensaje: ' + error.message);
+            }
+            return false;
+        } finally {
+            setRequestPending(false);
         }
+    }
+
+    async function sendPrompt(messageText, activePersonality, chatHistories) {
+        if (!activePersonality || !messageText.trim()) return false;
+
+        return sendRequest({
+            endpoint: '/api/chat/send',
+            displayMessage: messageText,
+            activePersonality,
+            chatHistories,
+            payload: {
+                personalityId: activePersonality.id,
+                message: messageText,
+                history: getHistorySnapshot(activePersonality.id, chatHistories),
+                intensity: getIntensity(),
+                customApiKey: localStorage.getItem('gemini_api_key') || null,
+                model: localStorage.getItem('gemini_model') || 'gemini-3.5-flash'
+            }
+        });
+    }
+
+    async function sendQuickHelp(options, activePersonality, chatHistories) {
+        if (!activePersonality || !options?.helpType || !options?.displayMessage) return false;
+
+        return sendRequest({
+            endpoint: '/api/chat/quick-help',
+            displayMessage: options.displayMessage,
+            activePersonality,
+            chatHistories,
+            payload: {
+                personalityId: activePersonality.id,
+                helpType: options.helpType,
+                currentCode: options.helpType === 'Understand' ? null : (options.currentCode || null),
+                language: options.language || 'csharp',
+                history: getHistorySnapshot(activePersonality.id, chatHistories),
+                intensity: getIntensity(),
+                customApiKey: localStorage.getItem('gemini_api_key') || null,
+                model: localStorage.getItem('gemini_model') || 'gemini-3.5-flash'
+            }
+        });
     }
 
     function escapeHtml(str) {
@@ -139,6 +221,8 @@ window.KiroChat = (function () {
         appendModelMessage,
         appendErrorMessage,
         renderCurrentChatHistory,
-        sendPrompt
+        sendPrompt,
+        sendQuickHelp,
+        isRequestPending: () => requestPending
     };
 })();

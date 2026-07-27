@@ -584,6 +584,63 @@ body {
     background: #09090d;
 }
 
+.quick-help-actions {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.quick-help-btn {
+    min-width: 0;
+    min-height: 32px;
+    padding: 5px 7px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    background: rgba(255, 69, 0, 0.08);
+    color: var(--text-muted);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    transition: color 0.18s ease, background 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+}
+
+.quick-help-btn:hover,
+.quick-help-btn:focus-visible {
+    color: var(--text-main);
+    background: rgba(255, 69, 0, 0.18);
+    border-color: var(--accent-primary);
+    outline: none;
+    transform: translateY(-1px);
+}
+
+.quick-help-btn:disabled {
+    opacity: 0.5;
+    cursor: wait;
+    transform: none;
+}
+
+.quick-help-number {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--accent-primary);
+    color: #000;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    font-size: 10px;
+    font-weight: 800;
+}
+
 .input-form {
     display: flex;
     gap: 8px;

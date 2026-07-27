@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Elementos DOM principales
     const messageInput = document.getElementById('messageInput');
     const chatForm = document.getElementById('chatForm');
+    const quickHelpButtons = Array.from(document.querySelectorAll('.quick-help-btn'));
     const runJudge0Btn = document.getElementById('runJudge0Btn');
     const runTestsBtn = document.getElementById('runTestsBtn');
     const sendCodeToMentorBtn = document.getElementById('sendCodeToMentorBtn');
@@ -201,7 +202,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     sendCodeToMentorBtn?.addEventListener('click', () => {
-        if (!requireUserAuth()) return;
+        if (!requireUserAuth() || window.KiroChat?.isRequestPending?.()) return;
         const code = window.KiroEditor?.getValue();
         if (code && activePersonality && messageInput) {
             const curLang = window.KiroEditor?.getCurrentLanguage() || 'csharp';
@@ -227,9 +228,26 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
+    quickHelpButtons.forEach(button => {
+        button.addEventListener('click', async () => {
+            if (!requireUserAuth() || !activePersonality) return;
+
+            const helpType = button.dataset.helpType;
+            const displayMessage = button.dataset.displayMessage;
+            if (!helpType || !displayMessage) return;
+
+            await window.KiroChat?.sendQuickHelp({
+                helpType,
+                displayMessage,
+                currentCode: window.KiroEditor?.getValue() || '',
+                language: window.KiroEditor?.getCurrentLanguage() || 'csharp'
+            }, activePersonality, chatHistories);
+        });
+    });
+
     chatForm?.addEventListener('submit', (e) => {
         e.preventDefault();
-        if (!requireUserAuth()) return;
+        if (!requireUserAuth() || window.KiroChat?.isRequestPending?.()) return;
         const text = messageInput?.value?.trim();
         if (text && activePersonality) {
             messageInput.value = '';

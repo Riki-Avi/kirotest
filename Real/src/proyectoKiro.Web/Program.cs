@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Registrar servicios de la aplicación
 builder.Services.AddSingleton<PersonalityService>();
+builder.Services.AddSingleton<QuickHelpPromptService>();
 builder.Services.AddSingleton<WhisperService>();
 builder.Services.AddHttpClient<GeminiService>();
 builder.Services.AddHttpClient<Judge0Service>();
