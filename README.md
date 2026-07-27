@@ -108,5 +108,5 @@ dotnet run --project src/proyectoKiro.Web
 ## 8. Entregables del Hackathon
 
 - **Repositorio Código Fuente**: [https://github.com/Riki-Avi/kirotest](https://github.com/Riki-Avi/kirotest)
-- **Demostración en Línea**: `https://codelab.engineer/`
-- **Video de Presentación Pitch**: `https://`
+- **Demostración en Línea**: https://codelab.engineer/
+- **Video de Presentación Pitch**: https://
