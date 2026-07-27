@@ -10,7 +10,6 @@ RUN dotnet restore Real/src/proyectoKiro.Web/proyectoKiro.Web.csproj
 
 # Copiar el resto del código y compilar la aplicación
 COPY Real/src/ Real/src/
-COPY Real/personalities.json Real/src/proyectoKiro.Web/
 WORKDIR /app/Real/src/proyectoKiro.Web
 RUN dotnet publish -c Release -o /app/publish /p:UseAppHost=false
 
