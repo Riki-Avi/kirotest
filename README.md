@@ -8,7 +8,7 @@ Proyecto desarrollado para el **Hackathon IA Masivo Online AWS por Código Facil
 
 Kiro Code Lab es una plataforma web interactiva orientada a estudiantes y desarrolladores que buscan perfeccionar sus habilidades en resolución de algoritmos y estructuras de datos.
 
-El sistema proporciona un entorno de ejecución de código en tiempo real con soporte multi-lenguaje (C#, Java y TypeScript), evaluación automatizada de suites de pruebas unitarias, tutoría socrática impulsada por Inteligencia Artificial y un sintetizador de audio de enfoque basado en ruido marrón para maximizar la concentración durante sesiones de programación.
+El sistema proporciona un entorno de ejecución de código en tiempo real con soporte multi-lenguaje (C#, Java y TypeScript), evaluación automatizada de suites de pruebas unitarias, tutoría socrática impulsada por Inteligencia Artificial y un sintetizador de audio de enfoque para maximizar la concentración durante sesiones de programación.
 
 ---
 
@@ -21,7 +21,7 @@ Kiro Code Lab resuelve este problema mediante:
 - **Tutoría Socrática Adaptativa**: El asistente de IA no entrega respuestas resueltas directamente. En su lugar, analiza el código del usuario y formula preguntas o pistas progresivas para guiar el aprendizaje.
 - **Niveles de Intensidad Configurable**: Permite ajustar la respuesta del tutor entre tres modos (Conciso, Normal y Detallado), adaptándose al nivel de experiencia del estudiante.
 - **Evaluación Remota Multi-lenguaje**: Ejecución segura y aislada de pruebas en C#, Java y TypeScript a través de un runner remoto.
-- **Zona de Enfoque Cognitivo**: Integración de un sintetizador de sonido ambiente (Ruido Marrón) desarrollado con la Web Audio API para reducir distracciones y mejorar la retención mental.
+- **Zona de Enfoque Cognitivo**: Integración de un sintetizador de sonido ambiente desarrollado con la Web Audio API para reducir distracciones y mejorar la retención mental.
 
 ---
 
@@ -105,25 +105,8 @@ dotnet run --project src/proyectoKiro.Web
 `http://localhost:5062`
 
 ---
-
-## 7. Despliegue en AWS mediante Docker
-
-Para desplegar la aplicación en AWS (App Runner o ECS):
-
-1. Construir la imagen de Docker:
-```bash
-docker build -t kiro-code-lab .
-```
-
-2. Ejecutar el contenedor localmente para verificación:
-```bash
-docker run -p 8080:8080 kiro-code-lab
-```
-
----
-
 ## 8. Entregables del Hackathon
 
 - **Repositorio Código Fuente**: [https://github.com/Riki-Avi/kirotest](https://github.com/Riki-Avi/kirotest)
-- **Demostración en Línea**: `http://localhost:5062` (o enlace de producción desplegado)
-- **Video de Presentación Pitch**: Enlace al video explicativo de 5 minutos.
+- **Demostración en Línea**: `https://codelab.engineer/`
+- **Video de Presentación Pitch**: `https://`
