@@ -23,7 +23,8 @@ namespace proyectoKiro.Infrastructure.Services
             {
                 var apiKey = !string.IsNullOrWhiteSpace(request.CustomApiKey) 
                     ? request.CustomApiKey 
-                    : _configuration["Gemini:ApiKey"];
+                    : Environment.GetEnvironmentVariable("GEMINI_API_KEY") 
+                      ?? _configuration["Gemini:ApiKey"];
 
                 if (string.IsNullOrWhiteSpace(apiKey))
                 {
