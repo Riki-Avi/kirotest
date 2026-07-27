@@ -249,44 +249,6 @@ public class Program
                         new TestCaseItem { Id = "3", Description = "Múltiplo de 3 y 5 (15)", MethodCall = "Program.ObtenerFizzBuzz(15)", ExpectedOutput = "FizzBuzz" },
                         new TestCaseItem { Id = "4", Description = "Número normal (7)", MethodCall = "Program.ObtenerFizzBuzz(7)", ExpectedOutput = "7" }
                     }
-                },
-                new Personality
-                {
-                    Id = "default-csharp-dev",
-                    Name = "Desarrollador C# Senior",
-                    Emoji = "💻",
-                    Description = "Experto en C#, .NET 10, clean code, patrones de diseño y arquitectura de software.",
-                    SystemInstruction = "Eres un arquitecto y desarrollador de software Senior especializado en C# y la plataforma .NET. Respondes con explicaciones claras, código limpio de producción, buenas prácticas y sugerencias de arquitectura modernas.",
-                    Temperature = 0.4,
-                    IsCustom = false,
-                    StarterCode = @"using System;
-
-public class Program
-{
-    public static void Main()
-    {
-        Console.WriteLine(""¡Hola Mundo desde C# y .NET 10!"");
-    }
-}"
-                },
-                new Personality
-                {
-                    Id = "default-teacher",
-                    Name = "Profesor Paciente",
-                    Emoji = "📚",
-                    Description = "Explica conceptos complejos paso a paso con analogías sencillas.",
-                    SystemInstruction = "Eres un profesor universitario sumamente paciente, pedagógico y empático. Tu objetivo es explicar cualquier concepto de forma muy clara, usando ejemplos cotidianos y analogías.",
-                    Temperature = 0.6,
-                    IsCustom = false,
-                    StarterCode = @"using System;
-
-public class Program
-{
-    public static void Main()
-    {
-        Console.WriteLine(""Escribe aquí tu código para consultar al profesor..."");
-    }
-}"
                 }
             };
         }

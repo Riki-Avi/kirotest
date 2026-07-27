@@ -60,19 +60,31 @@ window.KiroModals = (function () {
     }
 
     function openCompleteModal() {
-        completeModal?.classList.add('active');
+        const modal = document.getElementById('completeModal');
+        if (modal) {
+            modal.classList.add('active', 'open');
+        }
     }
 
     function closeCompleteModal() {
-        completeModal?.classList.remove('active');
+        const modal = document.getElementById('completeModal');
+        if (modal) {
+            modal.classList.remove('active', 'open');
+        }
     }
 
     function openAuthRequiredModal() {
-        authRequiredModal?.classList.add('active');
+        const modal = document.getElementById('authRequiredModal');
+        if (modal) {
+            modal.classList.add('active', 'open');
+        }
     }
 
     function closeAuthRequiredModal() {
-        authRequiredModal?.classList.remove('active');
+        const modal = document.getElementById('authRequiredModal');
+        if (modal) {
+            modal.classList.remove('active', 'open');
+        }
     }
 
     return {

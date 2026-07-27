@@ -205,7 +205,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         const code = window.KiroEditor?.getValue();
         if (code && activePersonality && messageInput) {
             const curLang = window.KiroEditor?.getCurrentLanguage() || 'csharp';
-            messageInput.value = `Por favor revisa mi código ${curLang.toUpperCase()} actual para el ejercicio "${activePersonality.name}":\n\n\`\`\`${curLang}\n${code}\n\`\`\`\n\n¿Es correcto? ¿Tengo algún error de lógica o sintaxis?`;
+            const langNames = { csharp: 'C#', java: 'Java', typescript: 'TypeScript' };
+            const langLabel = langNames[curLang.toLowerCase()] || curLang;
+            messageInput.value = `Por favor revisa mi código en ${langLabel} para el ejercicio "${activePersonality.name}":\n\n\`\`\`${curLang}\n${code}\n\`\`\`\n\n¿Es correcto? ¿Tengo algún error de lógica o sintaxis?`;
             chatForm?.dispatchEvent(new Event('submit'));
         }
     });
@@ -218,10 +220,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     });
 
+    messageInput?.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            chatForm?.dispatchEvent(new Event('submit', { cancelable: true }));
+        }
+    });
+
     chatForm?.addEventListener('submit', (e) => {
         e.preventDefault();
         if (!requireUserAuth()) return;
-        const text = messageInput?.value;
+        const text = messageInput?.value?.trim();
         if (text && activePersonality) {
             messageInput.value = '';
             window.KiroChat?.sendPrompt(text, activePersonality, chatHistories);
@@ -230,7 +239,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // 5. Modales & Guardado de Entregas en Perfil
     completeExerciseBtn?.addEventListener('click', () => {
-        if (!requireUserAuth()) return;
         window.KiroModals?.openCompleteModal();
     });
 
@@ -271,6 +279,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('closeAuthRequiredModalBtn')?.addEventListener('click', () => window.KiroModals?.closeAuthRequiredModal());
     document.getElementById('cancelAuthRequiredBtn')?.addEventListener('click', () => window.KiroModals?.closeAuthRequiredModal());
 
-    // 6. Voz / Micrófono
+    // 6. Intensidad del Tutor IA
+    const intensitySelect = document.getElementById('aiIntensitySelect');
+    if (intensitySelect) {
+        const savedIntensity = localStorage.getItem('ai_intensity');
+        if (savedIntensity) intensitySelect.value = savedIntensity;
+
+        intensitySelect.addEventListener('change', (e) => {
+            localStorage.setItem('ai_intensity', e.target.value);
+            window.KiroUI?.showToast(`🤖 Intensidad cambiada a: ${e.target.options[e.target.selectedIndex].text}`);
+        });
+    }
+
+    // 7. Voz / Micrófono y Sintetizador de Audio Ambient (Ruido Marrón)
     window.KiroVoice?.init();
+    window.KiroAudio?.init();
 });

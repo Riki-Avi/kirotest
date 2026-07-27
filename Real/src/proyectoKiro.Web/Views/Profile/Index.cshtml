@@ -186,7 +186,7 @@
                 Cargando usuario...
             </h1>
             <p class="profile-email" id="userEmail">Esperando sesión...</p>
-            <span class="badge-user">⚡ Estudiante de C#</span>
+            <span class="badge-user">⚡ Estudiante Multi-lenguaje</span>
         </div>
         <div class="profile-actions">
             <a href="/editor" class="btn-primary" style="padding: 10px 18px; border-radius: 8px; font-weight: 600; text-decoration: none; display: flex; align-items: center; gap: 8px;">
@@ -210,8 +210,8 @@
         <div class="stat-card">
             <div class="stat-icon">⚡</div>
             <div>
-                <div class="stat-value">C# .NET</div>
-                <div class="stat-label">Lenguaje Principal</div>
+                <div class="stat-value">Multi-lenguaje</div>
+                <div class="stat-label">C# • Java • TypeScript</div>
             </div>
         </div>
     </div>
@@ -315,6 +315,7 @@
             container.innerHTML = '';
             submissions.forEach(sub => {
                 const dateStr = sub.submittedAt ? new Date(sub.submittedAt).toLocaleString('es-AR') : 'Fecha desconocida';
+                const langName = detectLanguage(sub.submittedCode);
                 const card = document.createElement('div');
                 card.className = 'submission-card';
                 card.innerHTML = `
@@ -325,7 +326,7 @@
                         </div>
                         <div class="submission-date">📅 ${dateStr}</div>
                     </div>
-                    <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:8px;">Solución en C# guardada:</p>
+                    <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:8px;">Solución en <strong>${langName}</strong> guardada:</p>
                     <pre class="code-preview"><code>${escapeHtml(sub.submittedCode || '// Sin código')}</code></pre>
                 `;
                 container.appendChild(card);
@@ -339,6 +340,21 @@
                 </div>
             `;
         }
+    }
+
+    function detectLanguage(code) {
+        if (!code) return 'Código';
+        const c = code.toLowerCase();
+        if (c.includes('system.out.') || c.includes('string[] args') || c.includes('boolean ') || c.includes('import java.')) {
+            return 'Java';
+        }
+        if (c.includes('console.log') || c.includes('function ') || c.includes(': string') || c.includes(': number') || c.includes(': boolean')) {
+            return 'TypeScript';
+        }
+        if (c.includes('console.writeline') || c.includes('using system') || c.includes('namespace ')) {
+            return 'C#';
+        }
+        return 'Código';
     }
 
     function escapeHtml(str) {

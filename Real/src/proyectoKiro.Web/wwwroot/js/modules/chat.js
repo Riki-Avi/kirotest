@@ -84,6 +84,9 @@ window.KiroChat = (function () {
             message: h.message
         }));
 
+        const intensitySelect = document.getElementById('aiIntensitySelect');
+        const intensityVal = intensitySelect ? intensitySelect.value : (localStorage.getItem('ai_intensity') || 'normal');
+
         try {
             const res = await fetch('/api/chat/send', {
                 method: 'POST',
@@ -92,6 +95,7 @@ window.KiroChat = (function () {
                     personalityId: activePersonality.id,
                     message: messageText,
                     history: currentHistory,
+                    intensity: intensityVal,
                     customApiKey: localStorage.getItem('gemini_api_key') || null,
                     model: localStorage.getItem('gemini_model') || 'gemini-3.5-flash'
                 })

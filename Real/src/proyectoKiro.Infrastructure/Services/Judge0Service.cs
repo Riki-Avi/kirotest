@@ -32,7 +32,8 @@ namespace proyectoKiro.Infrastructure.Services
 
                 if (targetLangId == 62 || targetLangId == 91) // Java
                 {
-                    sourceCodeToRun = System.Text.RegularExpressions.Regex.Replace(sourceCodeToRun, @"public\s+class\s+", "class ");
+                    var javaClassRegex = new System.Text.RegularExpressions.Regex(@"(public\s+)?class\s+[A-Za-z0-9_]+");
+                    sourceCodeToRun = javaClassRegex.Replace(sourceCodeToRun, "public class Main", 1);
                 }
 
                 var payload = new
@@ -115,24 +116,37 @@ namespace proyectoKiro.Infrastructure.Services
 
             if (languageId == 62 || languageId == 91) // Java
             {
-                var safeUserCode = System.Text.RegularExpressions.Regex.Replace(sourceCode, @"public\s+class\s+", "class ");
+                var javaClassRegex = new System.Text.RegularExpressions.Regex(@"(public\s+)?class\s+[A-Za-z0-9_]+");
+                var safeUserCode = javaClassRegex.Replace(sourceCode, "public class Main", 1);
                 safeUserCode = safeUserCode.Replace("public static void main", "public static void userMainOriginal");
-                sb.AppendLine(safeUserCode);
-                sb.AppendLine();
-                sb.AppendLine("public class Main {");
-                sb.AppendLine("    public static void main(String[] args) {");
+
+                var testMainSb = new StringBuilder();
+                testMainSb.AppendLine();
+                testMainSb.AppendLine("    public static void main(String[] args) {");
                 foreach (var test in personality.TestCases)
                 {
-                    var call = (test.MethodCalls != null && test.MethodCalls.TryGetValue("java", out var c) && !string.IsNullOrWhiteSpace(c)) ? c : test.MethodCall;
-                    sb.AppendLine("        try {");
-                    sb.AppendLine($"            String output_{test.Id} = String.valueOf({call});");
-                    sb.AppendLine($"            System.out.println(\"KIRO_TEST_RES:{test.Id}:\" + output_{test.Id});");
-                    sb.AppendLine("        } catch(Exception ex) {");
-                    sb.AppendLine($"            System.out.println(\"KIRO_TEST_ERR:{test.Id}:\" + ex.getMessage());");
-                    sb.AppendLine("        }");
+                    var rawCall = (test.MethodCalls != null && test.MethodCalls.TryGetValue("java", out var c) && !string.IsNullOrWhiteSpace(c)) ? c : test.MethodCall;
+                    var directCall = System.Text.RegularExpressions.Regex.Replace(rawCall, @"^[A-Za-z0-9_]+\.", "");
+                    testMainSb.AppendLine("        try {");
+                    testMainSb.AppendLine($"            String output_{test.Id} = String.valueOf({directCall});");
+                    testMainSb.AppendLine($"            System.out.println(\"KIRO_TEST_RES:{test.Id}:\" + output_{test.Id});");
+                    testMainSb.AppendLine("        } catch(Exception ex) {");
+                    testMainSb.AppendLine($"            System.out.println(\"KIRO_TEST_ERR:{test.Id}:\" + (ex.getMessage() != null ? ex.getMessage() : ex.toString()));");
+                    testMainSb.AppendLine("        }");
                 }
-                sb.AppendLine("    }");
-                sb.AppendLine("}");
+                testMainSb.AppendLine("    }");
+
+                var lastBraceIndex = safeUserCode.LastIndexOf('}');
+                if (lastBraceIndex >= 0)
+                {
+                    safeUserCode = safeUserCode.Substring(0, lastBraceIndex) + testMainSb.ToString() + "\n}";
+                }
+                else
+                {
+                    safeUserCode = safeUserCode + "\n" + testMainSb.ToString();
+                }
+
+                sb.AppendLine(safeUserCode);
             }
             else if (languageId == 74) // TypeScript / JavaScript
             {

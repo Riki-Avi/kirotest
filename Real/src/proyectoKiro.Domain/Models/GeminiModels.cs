@@ -109,6 +109,7 @@ namespace proyectoKiro.Domain.Models
         public List<ChatMessageDto> History { get; set; } = new();
         public string? CustomApiKey { get; set; }
         public string? Model { get; set; }
+        public string? Intensity { get; set; }
     }
 
     public class TranscribeRequest

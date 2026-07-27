@@ -41,10 +41,28 @@ namespace proyectoKiro.Infrastructure.Services
 
                 var endpointUrl = $"https://generativelanguage.googleapis.com/v1beta/models/{modelName}:generateContent?key={apiKey}";
 
+                var systemInstructionText = personality.SystemInstruction ?? "";
+                
+                // REGLA FUNDAMENTAL SOCRÁTICA
+                systemInstructionText += "\n\n[REGLA DE ORO DEL TUTOR IA]: NUNCA escribas la solución o el método de código completo del ejercicio directamente en tu respuesta (a menos que el usuario te lo pida explícitamente diciendo 'dame la solución'). Tu rol es ser un mentor socrático: guía al usuario con pistas progresivas, explicaciones de conceptos, analogías o fragmentos genéricos de apoyo para que ÉL escriba el código por sí mismo.";
+
+                if (!string.IsNullOrWhiteSpace(request.Intensity))
+                {
+                    var intensity = request.Intensity.Trim().ToLower();
+                    if (intensity == "concise")
+                    {
+                        systemInstructionText += "\n\n[ESTILO DE RESPUESTA - CONCISO]: Responde de forma muy breve (máximo 2 a 3 oraciones), directa al grano, dando solo una pequeña pista o concepto sin dar la solución en código.";
+                    }
+                    else if (intensity == "detailed")
+                    {
+                        systemInstructionText += "\n\n[ESTILO DE RESPUESTA - DETALLADO]: Proporciona explicaciones conceptuales exhaustivas paso a paso, analogías y análisis de complejidad O(N), pero NUNCA incluyas la función de solución terminada en código. Deja que el alumno escriba el código.";
+                    }
+                }
+
                 // Construir la estructura de la solicitud
                 var geminiReq = new GeminiRequest
                 {
-                    SystemInstruction = GeminiSystemInstruction.FromText(personality.SystemInstruction),
+                    SystemInstruction = GeminiSystemInstruction.FromText(systemInstructionText),
                     GenerationConfig = new GeminiGenerationConfig
                     {
                         Temperature = personality.Temperature,
