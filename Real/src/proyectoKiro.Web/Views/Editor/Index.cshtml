@@ -365,6 +365,10 @@
         window.supabaseClient.auth.onAuthStateChange((event, session) => {
             if (session?.user) {
                 window.currentUserId = session.user.id;
+                window.currentUserMetadata = session.user.user_metadata;
+                if (window.location.hash && window.location.hash.includes('access_token')) {
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }
                 if (typeof window.onUserAuthenticated === 'function') {
                     window.onUserAuthenticated(session.user.id);
                 }

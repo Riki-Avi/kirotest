@@ -69,9 +69,10 @@
         googleBtn.onclick = async () => {
             if (authAlert) authAlert.classList.add('hidden');
             try {
+                const redirectTarget = window.location.origin + '/';
                 const { error } = await supabaseClient.auth.signInWithOAuth({
                     provider: 'google',
-                    options: { redirectTo: window.location.origin + '/' }
+                    options: { redirectTo: redirectTarget }
                 });
                 if (error) throw error;
             } catch (err) {
@@ -82,6 +83,9 @@
         // Redireccionar al editor si ya hay sesión activa
         supabaseClient.auth.onAuthStateChange((event, session) => {
             if (session?.user) {
+                if (window.location.hash.includes('access_token')) {
+                    window.history.replaceState({}, document.title, window.location.pathname);
+                }
                 window.location.href = '/';
             }
         });
