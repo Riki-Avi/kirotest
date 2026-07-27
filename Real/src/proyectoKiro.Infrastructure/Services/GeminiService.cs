@@ -40,8 +40,6 @@ namespace proyectoKiro.Infrastructure.Services
                     ? request.Model 
                     : _configuration["Gemini:DefaultModel"] ?? "gemini-3.5-flash-lite").Replace("models/", "");
 
-                var endpointUrl = $"https://generativelanguage.googleapis.com/v1beta/models/{modelName}:generateContent?key={apiKey}";
-
                 var systemInstructionText = personality.SystemInstruction ?? "";
                 
                 // REGLA FUNDAMENTAL SOCRÁTICA
@@ -121,14 +119,41 @@ namespace proyectoKiro.Infrastructure.Services
                 };
 
                 var payloadJson = JsonSerializer.Serialize(geminiReq, jsonOptions);
-                var content = new StringContent(payloadJson, Encoding.UTF8, "application/json");
 
-                var response = await _httpClient.PostAsync(endpointUrl, content);
-                var responseJson = await response.Content.ReadAsStringAsync();
+                var candidateModels = new List<string> { modelName, "gemini-2.5-flash", "gemini-1.5-flash", "gemini-2.0-flash" }
+                    .Distinct()
+                    .ToList();
 
-                if (!response.IsSuccessStatusCode)
+                HttpResponseMessage? response = null;
+                string responseJson = "";
+
+                foreach (var currentModel in candidateModels)
                 {
-                    string errorMsg = $"Error HTTP {(int)response.StatusCode} ({response.StatusCode}): {responseJson}";
+                    var endpointUrl = $"https://generativelanguage.googleapis.com/v1beta/models/{currentModel}:generateContent?key={apiKey}";
+                    var content = new StringContent(payloadJson, Encoding.UTF8, "application/json");
+
+                    response = await _httpClient.PostAsync(endpointUrl, content);
+                    responseJson = await response.Content.ReadAsStringAsync();
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        break;
+                    }
+
+                    // Si Google responde 503 (High Demand) o 429/404, intentar automáticamente con el siguiente modelo
+                    if ((int)response.StatusCode == 503 || (int)response.StatusCode == 429 || (int)response.StatusCode == 404)
+                    {
+                        continue;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                if (response == null || !response.IsSuccessStatusCode)
+                {
+                    string errorMsg = response != null ? $"Error HTTP {(int)response.StatusCode} ({response.StatusCode}): {responseJson}" : "Error al conectar con Gemini.";
                     try
                     {
                         var errObj = JsonSerializer.Deserialize<GeminiResponse>(responseJson);
