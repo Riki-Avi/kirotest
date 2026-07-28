@@ -27,6 +27,13 @@ var connectionString = Environment.GetEnvironmentVariable("SUPABASE_CONNECTION_S
     ?? builder.Configuration.GetConnectionString("SupabaseConnection") 
     ?? "Host=localhost;Database=proyectoKiroDb;Username=postgres;Password=postgres;";
 
+if (connectionString.Contains("supabase", StringComparison.OrdinalIgnoreCase) 
+    && !connectionString.Contains("SslMode", StringComparison.OrdinalIgnoreCase) 
+    && !connectionString.Contains("SSL Mode", StringComparison.OrdinalIgnoreCase))
+{
+    connectionString += ";SslMode=Require;TrustServerCertificate=true;";
+}
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(connectionString));
 
@@ -59,6 +66,7 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        await dbContext.Database.EnsureCreatedAsync();
         var personalityService = scope.ServiceProvider.GetRequiredService<PersonalityService>();
         await DbSeeder.SeedAsync(dbContext, personalityService);
     }

@@ -26,71 +26,84 @@ public class SubmissionService : ISubmissionService
             };
         }
 
-        // Asegurar que el usuario existe en la tabla Users (evita FK violation)
-        var userExists = await _context.Users.AnyAsync(u => u.Id == request.UserId);
-        if (!userExists)
+        try
         {
-            _context.Users.Add(new User
-            {
-                Id = request.UserId,
-                Email = "",
-                NombreUsuario = "Usuario",
-                CreatedAt = DateTime.UtcNow
-            });
-            await _context.SaveChangesAsync();
-        }
+            await _context.Database.EnsureCreatedAsync();
 
-        int exerciseId = 1;
-        if (!int.TryParse(request.ExerciseId, out exerciseId))
-        {
-            var match = System.Text.RegularExpressions.Regex.Match(request.ExerciseId ?? "", @"\d+");
-            if (match.Success)
+            // Asegurar que el usuario existe en la tabla Users (evita FK violation)
+            var userExists = await _context.Users.AnyAsync(u => u.Id == request.UserId);
+            if (!userExists)
             {
-                int.TryParse(match.Value, out exerciseId);
+                _context.Users.Add(new User
+                {
+                    Id = request.UserId,
+                    Email = "",
+                    NombreUsuario = "Usuario",
+                    CreatedAt = DateTime.UtcNow
+                });
+                await _context.SaveChangesAsync();
             }
-            if (exerciseId <= 0) exerciseId = 1;
-        }
 
-        var existingSubmission = await _context.Submissions
-            .FirstOrDefaultAsync(s => s.UserId == request.UserId && s.ExerciseId == exerciseId);
+            int exerciseId = 1;
+            if (!int.TryParse(request.ExerciseId, out exerciseId))
+            {
+                var match = System.Text.RegularExpressions.Regex.Match(request.ExerciseId ?? "", @"\d+");
+                if (match.Success)
+                {
+                    int.TryParse(match.Value, out exerciseId);
+                }
+                if (exerciseId <= 0) exerciseId = 1;
+            }
 
-        if (existingSubmission != null)
-        {
-            existingSubmission.SubmittedCode = request.SubmittedCode;
-            existingSubmission.Passed = request.Passed;
-            existingSubmission.Output = request.Output;
-            existingSubmission.SubmittedAt = DateTime.UtcNow;
+            var existingSubmission = await _context.Submissions
+                .FirstOrDefaultAsync(s => s.UserId == request.UserId && s.ExerciseId == exerciseId);
 
-            _context.Submissions.Update(existingSubmission);
+            if (existingSubmission != null)
+            {
+                existingSubmission.SubmittedCode = request.SubmittedCode;
+                existingSubmission.Passed = request.Passed;
+                existingSubmission.Output = request.Output;
+                existingSubmission.SubmittedAt = DateTime.UtcNow;
+
+                _context.Submissions.Update(existingSubmission);
+                await _context.SaveChangesAsync();
+
+                return new SaveSubmissionResponse
+                {
+                    Success = true,
+                    Message = "Solución actualizada con éxito en tu perfil.",
+                    SubmissionId = existingSubmission.Id
+                };
+            }
+
+            var submission = new Submission
+            {
+                UserId = request.UserId,
+                ExerciseId = exerciseId,
+                SubmittedCode = request.SubmittedCode,
+                Passed = request.Passed,
+                Output = request.Output,
+                SubmittedAt = DateTime.UtcNow
+            };
+
+            _context.Submissions.Add(submission);
             await _context.SaveChangesAsync();
 
             return new SaveSubmissionResponse
             {
                 Success = true,
-                Message = "Solución actualizada con éxito en tu perfil.",
-                SubmissionId = existingSubmission.Id
+                Message = "Ejercicio completado guardado con éxito.",
+                SubmissionId = submission.Id
             };
         }
-
-        var submission = new Submission
+        catch (Exception ex)
         {
-            UserId = request.UserId,
-            ExerciseId = exerciseId,
-            SubmittedCode = request.SubmittedCode,
-            Passed = request.Passed,
-            Output = request.Output,
-            SubmittedAt = DateTime.UtcNow
-        };
-
-        _context.Submissions.Add(submission);
-        await _context.SaveChangesAsync();
-
-        return new SaveSubmissionResponse
-        {
-            Success = true,
-            Message = "Ejercicio completado guardado con éxito.",
-            SubmissionId = submission.Id
-        };
+            return new SaveSubmissionResponse
+            {
+                Success = false,
+                Message = "Error al conectar con la base de datos de Supabase: " + ex.Message
+            };
+        }
     }
 
     public async Task<List<Submission>> GetUserSubmissionsAsync(string userId)
