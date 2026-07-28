@@ -113,6 +113,6 @@ dotnet run --project src/proyectoKiro.Web
 ## Integrantes:
 
 - **Andriani, Leandro Jonatan**, [Link a LinkedIn](https://www.linkedin.com/in/leandro-jonatan-andriani-07194b238/).
-- **Chamorro, Franco Dabid**, chamorrofranco55@gmail.com.
 - **Avila Echabaudis, Ricardo Leandro**, [Link a LinkedIn](https://www.linkedin.com/in/ricardo-leandro-avila-ec/).
+- **Chamorro, Franco Dabid**, chamorrofranco55@gmail.com.
 - **Silva, Leandro Nahuel**, [Link a LinkedIn](https://www.linkedin.com/in/leandro-nahuel-silva-451351185/).
