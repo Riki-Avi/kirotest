@@ -109,3 +109,10 @@ dotnet run --project src/proyectoKiro.Web
 
 - **Repositorio Código Fuente**: [https://github.com/Riki-Avi/kirotest](https://github.com/Riki-Avi/kirotest)
 - **Demostración en Línea**: https://codelab.engineer/
+
+## Integrantes:
+
+- **Andriani, Leandro Jonatan**, [https://www.linkedin.com/in/leandro-jonatan-andriani-07194b238/](Link a LinkedIn).
+- **Chamorro, Franco Dabid**, chamorrofranco55@gmail.com.
+- **Avila Echabaudis, Ricardo Leandro**, [https://www.linkedin.com/in/ricardo-leandro-avila-ec/](Link a LinkedIn).
+- **Silva, Leandro Nahuel**, [https://www.linkedin.com/in/leandro-nahuel-silva-451351185/](Link a LinkedIn).
