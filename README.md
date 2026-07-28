@@ -109,4 +109,3 @@ dotnet run --project src/proyectoKiro.Web
 
 - **Repositorio Código Fuente**: [https://github.com/Riki-Avi/kirotest](https://github.com/Riki-Avi/kirotest)
 - **Demostración en Línea**: https://codelab.engineer/
-- **Video de Presentación Pitch**: https://
