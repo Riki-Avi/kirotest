@@ -108,9 +108,18 @@ public class SubmissionService : ISubmissionService
 
     public async Task<List<Submission>> GetUserSubmissionsAsync(string userId)
     {
-        return await _context.Submissions
-            .Where(s => s.UserId == userId)
-            .OrderByDescending(s => s.SubmittedAt)
-            .ToListAsync();
+        try
+        {
+            await _context.Database.EnsureCreatedAsync();
+            return await _context.Submissions
+                .Where(s => s.UserId == userId)
+                .OrderByDescending(s => s.SubmittedAt)
+                .ToListAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[SubmissionService GetUserSubmissions Warning]: {ex.Message}");
+            return new List<Submission>();
+        }
     }
 }

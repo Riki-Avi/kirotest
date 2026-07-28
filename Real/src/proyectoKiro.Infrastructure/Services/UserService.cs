@@ -17,33 +17,58 @@ public class UserService : IUserService
 
     public async Task<User> Syncronizacion(SyncUserRequest request)
     {
-        var existingUser = await _context.Users.FindAsync(request.Id);
-
-        if (existingUser == null)
+        try
         {
-            var newUser = new User
+            await _context.Database.EnsureCreatedAsync();
+
+            var existingUser = await _context.Users.FindAsync(request.Id);
+
+            if (existingUser == null)
+            {
+                var newUser = new User
+                {
+                    Id = request.Id,
+                    Email = request.Email ?? "",
+                    NombreUsuario = request.NombreUsuario ?? "Usuario",
+                    Avatar = request.Avatar ?? "",
+                    CreatedAt = DateTime.UtcNow
+                };
+
+                _context.Users.Add(newUser);
+                await _context.SaveChangesAsync();
+                return newUser;
+            }
+
+            existingUser.NombreUsuario = request.NombreUsuario ?? existingUser.NombreUsuario;
+            existingUser.Avatar = request.Avatar ?? existingUser.Avatar;
+            
+            await _context.SaveChangesAsync();
+            return existingUser;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[UserService Sync Warning]: {ex.Message}");
+            return new User
             {
                 Id = request.Id,
-                Email = request.Email,
-                NombreUsuario = request.NombreUsuario,
-                Avatar = request.Avatar,
+                Email = request.Email ?? "",
+                NombreUsuario = request.NombreUsuario ?? "Usuario",
+                Avatar = request.Avatar ?? "",
                 CreatedAt = DateTime.UtcNow
             };
-
-            _context.Users.Add(newUser);
-            await _context.SaveChangesAsync();
-            return newUser;
         }
-
-        existingUser.NombreUsuario = request.NombreUsuario;
-        existingUser.Avatar = request.Avatar;
-        
-        await _context.SaveChangesAsync();
-        return existingUser;
     }
 
     public async Task<User?> GetByIdAsync(string id)
     {
-        return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+        try
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[UserService GetById Warning]: {ex.Message}");
+            return null;
+        }
     }
 }

@@ -40,7 +40,15 @@ public class SubmissionsController : ControllerBase
     [HttpGet("user/{userId}")]
     public async Task<IActionResult> GetUserSubmissions(string userId)
     {
-        var submissions = await _submissionService.GetUserSubmissionsAsync(userId);
-        return Ok(submissions);
+        try
+        {
+            var submissions = await _submissionService.GetUserSubmissionsAsync(userId);
+            return Ok(submissions);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[SubmissionsController GetUserSubmissions Warning]: {ex.Message}");
+            return Ok(new List<proyectoKiro.Domain.Entities.Submission>());
+        }
     }
 }

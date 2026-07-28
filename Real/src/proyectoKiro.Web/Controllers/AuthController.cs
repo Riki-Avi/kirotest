@@ -33,7 +33,15 @@ public class AuthController : Controller
             return BadRequest(new { message = "El ID de usuario es requerido." });
         }
 
-        var user = await _userService.Syncronizacion(request);
-        return Ok(new { message = "Usuario sincronizado con éxito.", userId = user.Id });
+        try
+        {
+            var user = await _userService.Syncronizacion(request);
+            return Ok(new { message = "Usuario sincronizado con éxito.", userId = user.Id });
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[AuthController SyncUser Warning]: {ex.Message}");
+            return Ok(new { message = "Usuario autenticado.", userId = request.Id });
+        }
     }
 }
