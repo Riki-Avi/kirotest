@@ -199,22 +199,22 @@
   {
     "id": "exercise-04-valid-parentheses",
     "emoji": "🔗",
-    "name": "Ejercicio 4: Validar Paréntesis",
+    "name": "Ejercicio 4: Validar Paréntesis (LeetCode #20)",
     "avatar": "",
     "description": "Dada una cadena `s` que contiene únicamente los caracteres `'('`, `')'`, `'{'`, `'}'`, `'['` y `']'`, determina si la cadena de entrada es válida.\n\nUna cadena de entrada es válida si:\n1. Los corchetes y paréntesis abiertos deben cerrarse con el mismo tipo de corchete o paréntesis.\n2. Los corchetes y paréntesis deben cerrarse en el orden correcto.\n3. Cada corchete o paréntesis de cierre tiene un corchete o paréntesis de apertura correspondiente del mismo tipo.\n\n**Ejemplo 1:**\n- **Entrada:** `s = \"()[]{}\"`  \n- **Salida:** `true`  \n\n**Ejemplo 2:**\n- **Entrada:** `s = \"([{}])\"`  \n- **Salida:** `true`  \n\n**Ejemplo 3:**\n- **Entrada:** `s = \"(]\"`  \n- **Salida:** `false`",
-    "systemInstruction": "Eres un Mentor para el Ejercicio: 'Validar Paréntesis'.",
+    "systemInstruction": "Eres un Mentor Interactivo para el Ejercicio LeetCode #20: 'Validar Paréntesis'.\n\nENUNCIADO DEL EJERCICIO:\nDada una cadena s con paréntesis, corchetes y llaves, determina si la secuencia está correctamente balanceada.\n\nREGLAS PARA EL MENTOR:\n1. Si el usuario te pide pistas, sugiere el uso de una estructura de datos de tipo Pila (Stack).\n2. Da explicaciones conceptuales y guía al usuario socráticamente sin darle la solución de código completa.",
     "temperature": 0.5,
-    "starterCode": "using System;\nusing System.Collections.Generic;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine(ParentesisValidos(\"()[]{}\"));\n    }\n\n    public static bool ParentesisValidos(string s)\n    {\n        return false;\n    }\n}",
+    "starterCode": "using System;\nusing System.Collections.Generic;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine(ParentesisValidos(\"()[]{}\"));\n    }\n\n    public static bool ParentesisValidos(string s)\n    {\n        // Tu solución en C# aquí\n        return false;\n    }\n}",
     "starterCodes": {
-      "csharp": "using System;\nusing System.Collections.Generic;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine(ParentesisValidos(\"()[]{}\"));\n    }\n\n    public static bool ParentesisValidos(string s)\n    {\n        return false;\n    }\n}",
-      "java": "import java.util.Stack;\n\npublic class Program\n{\n    public static void main(String[] args)\n    {\n        System.out.println(parentesisValidos(\"()[]{}\"));\n    }\n\n    public static boolean parentesisValidos(String s)\n    {\n        return false;\n    }\n}",
-      "typescript": "function parentesisValidos(s: string): boolean {\n    return false;\n}\n\nconsole.log(parentesisValidos(\"()[]{}\"));"
+      "csharp": "using System;\nusing System.Collections.Generic;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine(ParentesisValidos(\"()[]{}\"));\n    }\n\n    public static bool ParentesisValidos(string s)\n    {\n        // Tu solución en C# aquí\n        return false;\n    }\n}",
+      "java": "import java.util.Stack;\n\npublic class Program\n{\n    public static void main(String[] args)\n    {\n        System.out.println(parentesisValidos(\"()[]{}\"));\n    }\n\n    public static boolean parentesisValidos(String s)\n    {\n        // Tu solución en Java aquí\n        return false;\n    }\n}",
+      "typescript": "function parentesisValidos(s: string): boolean {\n    // Tu solución en TypeScript aquí\n    return false;\n}\n\nconsole.log(parentesisValidos(\"()[]{}\"));"
     },
     "isCustom": false,
     "testCases": [
       {
         "id": "1",
-        "description": "Pares simples ()[]{}\"",
+        "description": "Pares simples ()[]{}",
         "expectedOutput": "True",
         "methodCall": "Program.ParentesisValidos(\"()[]{}\")",
         "methodCalls": {
@@ -225,6 +225,17 @@
       },
       {
         "id": "2",
+        "description": "Anidados ([{}])",
+        "expectedOutput": "True",
+        "methodCall": "Program.ParentesisValidos(\"([{}])\")",
+        "methodCalls": {
+          "csharp": "Program.ParentesisValidos(\"([{}])\")",
+          "java": "Program.parentesisValidos(\"([{}])\")",
+          "typescript": "parentesisValidos(\"([{}])\")"
+        }
+      },
+      {
+        "id": "3",
         "description": "Mismatch (]",
         "expectedOutput": "False",
         "methodCall": "Program.ParentesisValidos(\"(]\")",
@@ -233,47 +244,171 @@
           "java": "Program.parentesisValidos(\"(]\")",
           "typescript": "parentesisValidos(\"(]\")"
         }
+      },
+      {
+        "id": "4",
+        "description": "Orden incorrecto ([)]",
+        "expectedOutput": "False",
+        "methodCall": "Program.ParentesisValidos(\"([)]\")",
+        "methodCalls": {
+          "csharp": "Program.ParentesisValidos(\"([)]\")",
+          "java": "Program.parentesisValidos(\"([)]\")",
+          "typescript": "parentesisValidos(\"([)]\")"
+        }
       }
     ]
   },
   {
     "id": "exercise-05-single-number",
     "emoji": "🎯",
-    "name": "Ejercicio 5: Número Único",
+    "name": "Ejercicio 5: Número Único (LeetCode #136)",
     "avatar": "",
     "description": "Dado un arreglo de enteros no vacío `numeros`, donde cada elemento aparece dos veces excepto uno que aparece solo una vez, encuentra y retorna ese elemento único.\n\nDebes implementar una solución con una complejidad de tiempo lineal O(n) y utilizar espacio de memoria adicional constante O(1).\n\n**Ejemplo 1:**\n- **Entrada:** `numeros = [2, 2, 1]`  \n- **Salida:** `1`  \n\n**Ejemplo 2:**\n- **Entrada:** `numeros = [4, 1, 2, 1, 2]`  \n- **Salida:** `4`  \n\n**Ejemplo 3:**\n- **Entrada:** `numeros = [1]`  \n- **Salida:** `1`",
-    "systemInstruction": "Eres un Mentor para el Ejercicio: 'Número Único'.",
+    "systemInstruction": "Eres un Mentor Interactivo para el Ejercicio LeetCode #136: 'Número Único'.\n\nENUNCIADO DEL EJERCICIO:\nEncuentra el número que no se repite en un arreglo de números duplicados.\n\nREGLAS PARA EL MENTOR:\n1. Si el usuario te pide pistas para lograr O(1) de memoria extra, dale la pista de usar el operador binario XOR (^).\n2. Si usa un diccionario/HashMap, felicítalo por resolverlo y luego desafíalo a usar XOR.",
     "temperature": 0.5,
-    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine(NumeroUnico(new int[]{2, 2, 1}));\n    }\n\n    public static int NumeroUnico(int[] numeros)\n    {\n        return 0;\n    }\n}",
+    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine(NumeroUnico(new int[]{2, 2, 1}));\n    }\n\n    public static int NumeroUnico(int[] numeros)\n    {\n        // Tu solución en C# aquí\n        return 0;\n    }\n}",
     "starterCodes": {
-      "csharp": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine(NumeroUnico(new int[]{2, 2, 1}));\n    }\n\n    public static int NumeroUnico(int[] numeros)\n    {\n        return 0;\n    }\n}",
-      "java": "public class Program\n{\n    public static void main(String[] args)\n    {\n        System.out.println(numeroUnico(new int[]{2, 2, 1}));\n    }\n\n    public static int numeroUnico(int[] numeros)\n    {\n        return 0;\n    }\n}",
-      "typescript": "function numeroUnico(numeros: number[]): number {\n    return 0;\n}\n\nconsole.log(numeroUnico([2, 2, 1]));"
+      "csharp": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine(NumeroUnico(new int[]{2, 2, 1}));\n    }\n\n    public static int NumeroUnico(int[] numeros)\n    {\n        // Tu solución en C# aquí\n        return 0;\n    }\n}",
+      "java": "public class Program\n{\n    public static void main(String[] args)\n    {\n        System.out.println(numeroUnico(new int[]{2, 2, 1}));\n    }\n\n    public static int numeroUnico(int[] numeros)\n    {\n        // Tu solución en Java aquí\n        return 0;\n    }\n}",
+      "typescript": "function numeroUnico(numeros: number[]): number {\n    // Tu solución en TypeScript aquí\n    return 0;\n}\n\nconsole.log(numeroUnico([2, 2, 1]));"
     },
     "isCustom": false,
     "testCases": [
       {
         "id": "1",
-        "description": "Caso básico [2,2,1]",
+        "description": "Caso básico [2, 2, 1]",
         "expectedOutput": "1",
-        "methodCall": "Program.NumeroUnico(new int[]{2,2,1})",
+        "methodCall": "Program.NumeroUnico(new int[]{2, 2, 1})",
         "methodCalls": {
-          "csharp": "Program.NumeroUnico(new int[]{2,2,1})",
-          "java": "Program.numeroUnico(new int[]{2,2,1})",
-          "typescript": "numeroUnico([2,2,1])"
+          "csharp": "Program.NumeroUnico(new int[]{2, 2, 1})",
+          "java": "Program.numeroUnico(new int[]{2, 2, 1})",
+          "typescript": "numeroUnico([2, 2, 1])"
+        }
+      },
+      {
+        "id": "2",
+        "description": "Varios elementos [4, 1, 2, 1, 2]",
+        "expectedOutput": "4",
+        "methodCall": "Program.NumeroUnico(new int[]{4, 1, 2, 1, 2})",
+        "methodCalls": {
+          "csharp": "Program.NumeroUnico(new int[]{4, 1, 2, 1, 2})",
+          "java": "Program.numeroUnico(new int[]{4, 1, 2, 1, 2})",
+          "typescript": "numeroUnico([4, 1, 2, 1, 2])"
+        }
+      },
+      {
+        "id": "3",
+        "description": "Un solo elemento [1]",
+        "expectedOutput": "1",
+        "methodCall": "Program.NumeroUnico(new int[]{1})",
+        "methodCalls": {
+          "csharp": "Program.NumeroUnico(new int[]{1})",
+          "java": "Program.numeroUnico(new int[]{1})",
+          "typescript": "numeroUnico([1])"
         }
       }
     ]
   },
   {
-    "id": "exercise-06-fibonacci",
+    "id": "exercise-06-climbing-stairs",
+    "emoji": "🧗",
+    "name": "Ejercicio 6: Subir Escaleras (LeetCode #70)",
+    "avatar": "",
+    "description": "Estás subiendo una escalera. Toma `n` pasos para llegar a la cima.\n\nCada vez puedes subir 1 o 2 pasos. ¿De cuántas formas distintas puedes subir a la cima?\n\n**Ejemplo 1:**\n- **Entrada:** `n = 2`  \n- **Salida:** `2`  \n- **Explicación:** Hay dos formas de subir a la cima: (1 paso + 1 paso) o (2 pasos).\n\n**Ejemplo 2:**\n- **Entrada:** `n = 3`  \n- **Salida:** `3`  \n- **Explicación:** Hay tres formas: (1+1+1), (1+2), (2+1).\n\n**Ejemplo 3:**\n- **Entrada:** `n = 5`  \n- **Salida:** `8`",
+    "systemInstruction": "Eres un Mentor Interactivo para el Ejercicio LeetCode #70: 'Subir Escaleras'.\n\nENUNCIADO DEL EJERCICIO:\nCalcula de cuántas formas se pueden subir n escalones dando pasos de 1 o 2.\n\nREGLAS PARA EL MENTOR:\n1. Ayuda al alumno a notar la relación de la secuencia de Fibonacci.\n2. Sugiere un enfoque de Programación Dinámica (DP) iterativo para evitar recursión lenta O(2^n).",
+    "temperature": 0.5,
+    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine($\"SubirEscaleras(3): {SubirEscaleras(3)}\");\n    }\n\n    public static int SubirEscaleras(int n)\n    {\n        // Tu solución en C# aquí\n        return 0;\n    }\n}",
+    "starterCodes": {
+      "csharp": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine($\"SubirEscaleras(3): {SubirEscaleras(3)}\");\n    }\n\n    public static int SubirEscaleras(int n)\n    {\n        // Tu solución en C# aquí\n        return 0;\n    }\n}",
+      "java": "public class Program\n{\n    public static void main(String[] args)\n    {\n        System.out.println(\"SubirEscaleras(3): \" + subirEscaleras(3));\n    }\n\n    public static int subirEscaleras(int n)\n    {\n        // Tu solución en Java aquí\n        return 0;\n    }\n}",
+      "typescript": "function subirEscaleras(n: number): number {\n    // Tu solución en TypeScript aquí\n    return 0;\n}\n\nconsole.log(\"SubirEscaleras(3):\", subirEscaleras(3));"
+    },
+    "isCustom": false,
+    "testCases": [
+      {
+        "id": "1",
+        "description": "Escalera de 2 pasos",
+        "expectedOutput": "2",
+        "methodCall": "Program.SubirEscaleras(2)",
+        "methodCalls": {
+          "csharp": "Program.SubirEscaleras(2)",
+          "java": "Program.subirEscaleras(2)",
+          "typescript": "subirEscaleras(2)"
+        }
+      },
+      {
+        "id": "2",
+        "description": "Escalera de 3 pasos",
+        "expectedOutput": "3",
+        "methodCall": "Program.SubirEscaleras(3)",
+        "methodCalls": {
+          "csharp": "Program.SubirEscaleras(3)",
+          "java": "Program.subirEscaleras(3)",
+          "typescript": "subirEscaleras(3)"
+        }
+      },
+      {
+        "id": "3",
+        "description": "Escalera de 5 pasos",
+        "expectedOutput": "8",
+        "methodCall": "Program.SubirEscaleras(5)",
+        "methodCalls": {
+          "csharp": "Program.SubirEscaleras(5)",
+          "java": "Program.subirEscaleras(5)",
+          "typescript": "subirEscaleras(5)"
+        }
+      }
+    ]
+  },
+  {
+    "id": "exercise-07-reverse-words",
+    "emoji": "🔀",
+    "name": "Ejercicio 7: Invertir Palabras (LeetCode #151)",
+    "avatar": "",
+    "description": "Dada una cadena de texto `texto`, invierte el orden de las palabras contenidas en ella.\n\nUna palabra se define como una secuencia de caracteres no espaciales. Debes retornar una cadena con las palabras en orden inverso separadas por un solo espacio.\n\n**Ejemplo 1:**\n- **Entrada:** `texto = \"hola mundo\"`  \n- **Salida:** `\"mundo hola\"`  \n\n**Ejemplo 2:**\n- **Entrada:** `texto = \"kiro code lab\"`  \n- **Salida:** `\"lab code kiro\"`  \n\n**Ejemplo 3:**\n- **Entrada:** `texto = \"csharp\"`  \n- **Salida:** `\"csharp\"`",
+    "systemInstruction": "Eres un Mentor Interactivo para el Ejercicio LeetCode #151: 'Invertir Palabras'.",
+    "temperature": 0.5,
+    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine(InvertirPalabras(\"hola mundo\"));\n    }\n\n    public static string InvertirPalabras(string texto)\n    {\n        // Tu solución en C# aquí\n        return \"\";\n    }\n}",
+    "starterCodes": {
+      "csharp": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine(InvertirPalabras(\"hola mundo\"));\n    }\n\n    public static string InvertirPalabras(string texto)\n    {\n        // Tu solución en C# aquí\n        return \"\";\n    }\n}",
+      "java": "public class Program\n{\n    public static void main(String[] args)\n    {\n        System.out.println(invertirPalabras(\"hola mundo\"));\n    }\n\n    public static String invertirPalabras(String texto)\n    {\n        // Tu solución en Java aquí\n        return \"\";\n    }\n}",
+      "typescript": "function invertirPalabras(texto: string): string {\n    // Tu solución en TypeScript aquí\n    return \"\";\n}\n\nconsole.log(invertirPalabras(\"hola mundo\"));"
+    },
+    "isCustom": false,
+    "testCases": [
+      {
+        "id": "1",
+        "description": "hola mundo -> mundo hola",
+        "expectedOutput": "mundo hola",
+        "methodCall": "Program.InvertirPalabras(\"hola mundo\")",
+        "methodCalls": {
+          "csharp": "Program.InvertirPalabras(\"hola mundo\")",
+          "java": "Program.invertirPalabras(\"hola mundo\")",
+          "typescript": "invertirPalabras(\"hola mundo\")"
+        }
+      },
+      {
+        "id": "2",
+        "description": "kiro code lab -> lab code kiro",
+        "expectedOutput": "lab code kiro",
+        "methodCall": "Program.InvertirPalabras(\"kiro code lab\")",
+        "methodCalls": {
+          "csharp": "Program.InvertirPalabras(\"kiro code lab\")",
+          "java": "Program.invertirPalabras(\"kiro code lab\")",
+          "typescript": "invertirPalabras(\"kiro code lab\")"
+        }
+      }
+    ]
+  },
+  {
+    "id": "exercise-08-fibonacci",
     "emoji": "🔢",
-    "name": "Ejercicio 6: Serie de Fibonacci",
+    "name": "Ejercicio 8: Número de Fibonacci (LeetCode #509)",
     "avatar": "",
     "description": "Dado un entero `n`, calcula y retorna el n-ésimo número de la serie de Fibonacci.\n\nLa secuencia se define como: F(0) = 0, F(1) = 1, y F(n) = F(n-1) + F(n-2) para n > 1.\n\n**Ejemplo 1:**\n- **Entrada:** `n = 2`  \n- **Salida:** `1`  \n- **Explicación:** F(2) = F(1) + F(0) = 1 + 0 = 1.\n\n**Ejemplo 2:**\n- **Entrada:** `n = 4`  \n- **Salida:** `3`  \n- **Explicación:** La secuencia es 0, 1, 1, 2, 3.\n\n**Ejemplo 3:**\n- **Entrada:** `n = 6`  \n- **Salida:** `8`",
-    "systemInstruction": "Eres un Mentor Interactivo para el Ejercicio: 'Serie de Fibonacci'.",
+    "systemInstruction": "Eres un Mentor Interactivo para el Ejercicio LeetCode #509: 'Número de Fibonacci'.",
     "temperature": 0.5,
-    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine($\"Fibonacci(6): {Fibonacci(6)}\");\n    }\n\n    public static int Fibonacci(int n)\n    {\n        // Tu solución aquí\n        return 0;\n    }\n}",
+    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine($\"Fibonacci(6): {Fibonacci(6)}\");\n    }\n\n    public static int Fibonacci(int n)\n    {\n        // Tu solución en C# aquí\n        return 0;\n    }\n}",
     "starterCodes": {
       "csharp": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine($\"Fibonacci(6): {Fibonacci(6)}\");\n    }\n\n    public static int Fibonacci(int n)\n    {\n        // Tu solución en C# aquí\n        return 0;\n    }\n}",
       "java": "public class Program\n{\n    public static void main(String[] args)\n    {\n        System.out.println(\"Fibonacci(6): \" + fibonacci(6));\n    }\n\n    public static int fibonacci(int n)\n    {\n        // Tu solución en Java aquí\n        return 0;\n    }\n}",
@@ -302,103 +437,56 @@
           "java": "Program.fibonacci(6)",
           "typescript": "fibonacci(6)"
         }
-      }
-    ]
-  },
-  {
-    "id": "exercise-07-reverse-words",
-    "emoji": "🔀",
-    "name": "Ejercicio 7: Invertir Palabras",
-    "avatar": "",
-    "description": "Dada una cadena de texto `texto`, invierte el orden de las palabras contenidas en ella.\n\nUna palabra se define como una secuencia de caracteres no espaciales. Debes retornar una cadena con las palabras en orden inverso separadas por un solo espacio.\n\n**Ejemplo 1:**\n- **Entrada:** `texto = \"hola mundo\"`  \n- **Salida:** `\"mundo hola\"`  \n\n**Ejemplo 2:**\n- **Entrada:** `texto = \"kiro code lab\"`  \n- **Salida:** `\"lab code kiro\"`  \n\n**Ejemplo 3:**\n- **Entrada:** `texto = \"csharp\"`  \n- **Salida:** `\"csharp\"`",
-    "systemInstruction": "Eres un Mentor Interactivo para el Ejercicio: 'Invertir Palabras'.",
-    "temperature": 0.5,
-    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine(InvertirPalabras(\"hola mundo\"));\n    }\n\n    public static string InvertirPalabras(string texto)\n    {\n        // Tu solución aquí\n        return \"\";\n    }\n}",
-    "starterCodes": {
-      "csharp": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine(InvertirPalabras(\"hola mundo\"));\n    }\n\n    public static string InvertirPalabras(string texto)\n    {\n        // Tu solución en C# aquí\n        return \"\";\n    }\n}",
-      "java": "public class Program\n{\n    public static void main(String[] args)\n    {\n        System.out.println(invertirPalabras(\"hola mundo\"));\n    }\n\n    public static String invertirPalabras(String texto)\n    {\n        // Tu solución en Java aquí\n        return \"\";\n    }\n}",
-      "typescript": "function invertirPalabras(texto: string): string {\n    // Tu solución en TypeScript aquí\n    return \"\";\n}\n\nconsole.log(invertirPalabras(\"hola mundo\"));"
-    },
-    "isCustom": false,
-    "testCases": [
+      },
       {
-        "id": "1",
-        "description": "hola mundo -> mundo hola",
-        "expectedOutput": "mundo hola",
-        "methodCall": "Program.InvertirPalabras(\"hola mundo\")",
+        "id": "3",
+        "description": "Fibonacci de 10",
+        "expectedOutput": "55",
+        "methodCall": "Program.Fibonacci(10)",
         "methodCalls": {
-          "csharp": "Program.InvertirPalabras(\"hola mundo\")",
-          "java": "Program.invertirPalabras(\"hola mundo\")",
-          "typescript": "invertirPalabras(\"hola mundo\")"
+          "csharp": "Program.Fibonacci(10)",
+          "java": "Program.fibonacci(10)",
+          "typescript": "fibonacci(10)"
         }
       }
     ]
   },
   {
-    "id": "exercise-08-factorial",
-    "emoji": "🧮",
-    "name": "Ejercicio 8: Factorial de un Número",
+    "id": "exercise-09-best-time-to-buy-stock",
+    "emoji": "📈",
+    "name": "Ejercicio 9: Comprar y Vender Acciones (LeetCode #121)",
     "avatar": "",
-    "description": "Dado un entero no negativo `n`, calcula y retorna el factorial de `n` (n!).\n\nEl factorial de un número n es el producto de todos los enteros positivos menores o iguales a n. Por definición, 0! = 1.\n\n**Ejemplo 1:**\n- **Entrada:** `n = 5`  \n- **Salida:** `120`  \n- **Explicación:** 5! = 5 * 4 * 3 * 2 * 1 = 120.\n\n**Ejemplo 2:**\n- **Entrada:** `n = 0`  \n- **Salida:** `1`  \n\n**Ejemplo 3:**\n- **Entrada:** `n = 3`  \n- **Salida:** `6`",
-    "systemInstruction": "Eres un Mentor Interactivo para el Ejercicio: 'Factorial de un Número'.",
+    "description": "Dado un arreglo `precios` donde `precios[i]` representa el precio de una acción el día `i`, calcula la ganancia máxima que podrías obtener comprando un día y vendiéndolo en un día posterior futuro.\n\nSi no es posible obtener ninguna ganancia, retorna `0`.\n\n**Ejemplo 1:**\n- **Entrada:** `precios = [7, 1, 5, 3, 6, 4]`  \n- **Salida:** `5`  \n- **Explicación:** Comprar el día 2 (precio = 1) y vender el día 5 (precio = 6), ganancia = 6 - 1 = 5.\n\n**Ejemplo 2:**\n- **Entrada:** `precios = [7, 6, 4, 3, 1]`  \n- **Salida:** `0`  \n- **Explicación:** En este caso, no se realiza ninguna transacción y la ganancia máxima es 0.",
+    "systemInstruction": "Eres un Mentor Interactivo para el Ejercicio LeetCode #121: 'Mejor Momento para Comprar y Vender Acciones'.\n\nENUNCIADO DEL EJERCICIO:\nCalcula la ganancia máxima comprando en un día y vendiendo en un día posterior.\n\nREGLAS PARA EL MENTOR:\n1. Si el usuario te pide pistas, sugiere rastrear el precio mínimo visto hasta el momento y la ganancia máxima en una sola pasada O(N).",
     "temperature": 0.5,
-    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine($\"Factorial(5): {Factorial(5)}\");\n    }\n\n    public static int Factorial(int n)\n    {\n        // Tu solución aquí\n        return 1;\n    }\n}",
+    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        int ganancia = MaximaGanancia(new int[]{7, 1, 5, 3, 6, 4});\n        Console.WriteLine($\"Ganancia: {ganancia}\");\n    }\n\n    public static int MaximaGanancia(int[] precios)\n    {\n        // Tu solución en C# aquí\n        return 0;\n    }\n}",
     "starterCodes": {
-      "csharp": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine($\"Factorial(5): {Factorial(5)}\");\n    }\n\n    public static int Factorial(int n)\n    {\n        // Tu solución en C# aquí\n        return 1;\n    }\n}",
-      "java": "public class Program\n{\n    public static void main(String[] args)\n    {\n        System.out.println(\"Factorial(5): \" + factorial(5));\n    }\n\n    public static int factorial(int n)\n    {\n        // Tu solución en Java aquí\n        return 1;\n    }\n}",
-      "typescript": "function factorial(n: number): number {\n    // Tu solución en TypeScript aquí\n    return 1;\n}\n\nconsole.log(\"Factorial(5):\", factorial(5));"
+      "csharp": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        int ganancia = MaximaGanancia(new int[]{7, 1, 5, 3, 6, 4});\n        Console.WriteLine($\"Ganancia: {ganancia}\");\n    }\n\n    public static int MaximaGanancia(int[] precios)\n    {\n        // Tu solución en C# aquí\n        return 0;\n    }\n}",
+      "java": "public class Program\n{\n    public static void main(String[] args)\n    {\n        int ganancia = maximaGanancia(new int[]{7, 1, 5, 3, 6, 4});\n        System.out.println(\"Ganancia: \" + ganancia);\n    }\n\n    public static int maximaGanancia(int[] precios)\n    {\n        // Tu solución en Java aquí\n        return 0;\n    }\n}",
+      "typescript": "function maximaGanancia(precios: number[]): number {\n    // Tu solución en TypeScript aquí\n    return 0;\n}\n\nconsole.log(\"Ganancia:\", maximaGanancia([7, 1, 5, 3, 6, 4]));"
     },
     "isCustom": false,
     "testCases": [
       {
         "id": "1",
-        "description": "Factorial de 5",
-        "expectedOutput": "120",
-        "methodCall": "Program.Factorial(5)",
+        "description": "Caso con ganancia [7, 1, 5, 3, 6, 4]",
+        "expectedOutput": "5",
+        "methodCall": "Program.MaximaGanancia(new int[]{7, 1, 5, 3, 6, 4})",
         "methodCalls": {
-          "csharp": "Program.Factorial(5)",
-          "java": "Program.factorial(5)",
-          "typescript": "factorial(5)"
+          "csharp": "Program.MaximaGanancia(new int[]{7, 1, 5, 3, 6, 4})",
+          "java": "Program.maximaGanancia(new int[]{7, 1, 5, 3, 6, 4})",
+          "typescript": "maximaGanancia([7, 1, 5, 3, 6, 4])"
         }
       },
       {
         "id": "2",
-        "description": "Factorial de 0",
-        "expectedOutput": "1",
-        "methodCall": "Program.Factorial(0)",
+        "description": "Caso en bajada continua [7, 6, 4, 3, 1]",
+        "expectedOutput": "0",
+        "methodCall": "Program.MaximaGanancia(new int[]{7, 6, 4, 3, 1})",
         "methodCalls": {
-          "csharp": "Program.Factorial(0)",
-          "java": "Program.factorial(0)",
-          "typescript": "factorial(0)"
-        }
-      }
-    ]
-  },
-  {
-    "id": "exercise-09-two-sum-target",
-    "emoji": "✌️",
-    "name": "Ejercicio 9: Pareja de Suma Target",
-    "avatar": "",
-    "description": "Dado un arreglo de enteros `numeros` y un entero `target`, retorna un arreglo con los dos índices de los elementos que suman exactamente `target`.\n\nPuedes asumir que cada entrada tiene exactamente una solución y no puedes usar el mismo elemento dos veces.\n\n**Ejemplo 1:**\n- **Entrada:** `numeros = [2, 7, 11, 15]`, `target = 9`  \n- **Salida:** `[0, 1]`  \n- **Explicación:** numeros[0] + numeros[1] = 2 + 7 = 9.\n\n**Ejemplo 2:**\n- **Entrada:** `numeros = [3, 2, 4]`, `target = 6`  \n- **Salida:** `[1, 2]`  \n\n**Ejemplo 3:**\n- **Entrada:** `numeros = [3, 3]`, `target = 6`  \n- **Salida:** `[0, 1]`",
-    "systemInstruction": "Eres un Mentor Interactivo para el Ejercicio: 'Pareja de Suma Target'.",
-    "temperature": 0.5,
-    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        int[] resultado = DosSuma(new int[]{2, 7, 11, 15}, 9);\n        Console.WriteLine($\"[{resultado[0]}, {resultado[1]}]\");\n    }\n\n    public static int[] DosSuma(int[] numeros, int target)\n    {\n        // Tu solución aquí\n        return new int[]{0, 0};\n    }\n}",
-    "starterCodes": {
-      "csharp": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        int[] resultado = DosSuma(new int[]{2, 7, 11, 15}, 9);\n        Console.WriteLine($\"[{resultado[0]}, {resultado[1]}]\");\n    }\n\n    public static int[] DosSuma(int[] numeros, int target)\n    {\n        // Tu solución en C# aquí\n        return new int[]{0, 0};\n    }\n}",
-      "java": "import java.util.Arrays;\n\npublic class Program\n{\n    public static void main(String[] args)\n    {\n        int[] resultado = dosSuma(new int[]{2, 7, 11, 15}, 9);\n        System.out.println(Arrays.toString(resultado));\n    }\n\n    public static int[] dosSuma(int[] numeros, int target)\n    {\n        // Tu solución en Java aquí\n        return new int[]{0, 0};\n    }\n}",
-      "typescript": "function dosSuma(numeros: number[], target: number): number[] {\n    // Tu solución en TypeScript aquí\n    return [0, 0];\n}\n\nconsole.log(dosSuma([2, 7, 11, 15], 9));"
-    },
-    "isCustom": false,
-    "testCases": [
-      {
-        "id": "1",
-        "description": "Caso básico [2,7,11,15] target 9",
-        "expectedOutput": "[0, 1]",
-        "methodCall": "Program.DosSuma(new int[]{2,7,11,15}, 9)",
-        "methodCalls": {
-          "csharp": "Program.DosSuma(new int[]{2,7,11,15}, 9)",
-          "java": "Program.dosSuma(new int[]{2,7,11,15}, 9)",
-          "typescript": "dosSuma([2,7,11,15], 9)"
+          "csharp": "Program.MaximaGanancia(new int[]{7, 6, 4, 3, 1})",
+          "java": "Program.maximaGanancia(new int[]{7, 6, 4, 3, 1})",
+          "typescript": "maximaGanancia([7, 6, 4, 3, 1])"
         }
       }
     ]
@@ -406,12 +494,12 @@
   {
     "id": "exercise-10-anagram",
     "emoji": "🔤",
-    "name": "Ejercicio 10: Anagrama Válido",
+    "name": "Ejercicio 10: Anagrama Válido (LeetCode #242)",
     "avatar": "",
     "description": "Dadas dos cadenas `s` y `t`, retorna `true` si `t` es un anagrama de `s`, o `false` en caso contrario.\n\nUn anagrama es una palabra formada al reordenar las letras de otra palabra diferente, usando todas las letras originales exactamente una vez.\n\n**Ejemplo 1:**\n- **Entrada:** `s = \"anagrama\"`, `t = \"nagarama\"`  \n- **Salida:** `true`  \n\n**Ejemplo 2:**\n- **Entrada:** `s = \"raton\"`, `t = \"torao\"`  \n- **Salida:** `false`  \n\n**Ejemplo 3:**\n- **Entrada:** `s = \"amor\"`, `t = \"roma\"`  \n- **Salida:** `true`",
-    "systemInstruction": "Eres un Mentor Interactivo para el Ejercicio: 'Anagrama Válido'.",
+    "systemInstruction": "Eres un Mentor Interactivo para el Ejercicio LeetCode #242: 'Anagrama Válido'.",
     "temperature": 0.5,
-    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine(EsAnagrama(\"amor\", \"roma\"));\n    }\n\n    public static bool EsAnagrama(string s, string t)\n    {\n        // Tu solución aquí\n        return false;\n    }\n}",
+    "starterCode": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine(EsAnagrama(\"amor\", \"roma\"));\n    }\n\n    public static bool EsAnagrama(string s, string t)\n    {\n        // Tu solución en C# aquí\n        return false;\n    }\n}",
     "starterCodes": {
       "csharp": "using System;\n\npublic class Program\n{\n    public static void Main()\n    {\n        Console.WriteLine(EsAnagrama(\"amor\", \"roma\"));\n    }\n\n    public static bool EsAnagrama(string s, string t)\n    {\n        // Tu solución en C# aquí\n        return false;\n    }\n}",
       "java": "public class Program\n{\n    public static void main(String[] args)\n    {\n        System.out.println(esAnagrama(\"amor\", \"roma\"));\n    }\n\n    public static boolean esAnagrama(String s, String t)\n    {\n        // Tu solución en Java aquí\n        return false;\n    }\n}",

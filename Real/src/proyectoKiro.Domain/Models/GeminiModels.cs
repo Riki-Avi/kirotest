@@ -104,6 +104,8 @@ namespace proyectoKiro.Domain.Models
     {
         public string PersonalityId { get; set; } = string.Empty;
         public string Message { get; set; } = string.Empty;
+        public string? CurrentCode { get; set; }
+        public string? PreviousCode { get; set; }
         public string? AudioBase64 { get; set; }
         public string? AudioMimeType { get; set; }
         public List<ChatMessageDto> History { get; set; } = new();

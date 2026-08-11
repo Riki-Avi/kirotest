@@ -58,6 +58,17 @@ namespace proyectoKiro.Infrastructure.Services
                     }
                 }
 
+                // ADJUNTAR CÓDIGO DEL EDITOR DE FORMA INVISIBLE PARA EL CHAT DEL USUARIO
+                if (!string.IsNullOrWhiteSpace(request.CurrentCode))
+                {
+                    systemInstructionText += $"\n\n[CÓDIGO ACTUAL EN EL EDITOR DE CÓDIGO DEL ALUMNO]:\n```\n{request.CurrentCode}\n```";
+                    
+                    if (!string.IsNullOrWhiteSpace(request.PreviousCode) && request.PreviousCode != request.CurrentCode)
+                    {
+                        systemInstructionText += $"\n\n[CÓDIGO ANTERIOR EN EL EDITOR DEL ALUMNO (MENSAJE PREVIO)]:\n```\n{request.PreviousCode}\n```\n(Nota: El alumno ha realizado cambios en su código desde la última interacción. Analiza los avances, errores o correcciones realizadas).";
+                    }
+                }
+
                 // Construir la estructura de la solicitud
                 var geminiReq = new GeminiRequest
                 {

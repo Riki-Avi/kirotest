@@ -47,7 +47,10 @@ window.KiroChat = (function () {
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
+    let lastSentCode = null;
+
     function renderCurrentChatHistory(activePersonality, chatHistories) {
+        lastSentCode = null; // Resetear el código rastreado al cambiar de ejercicio
         if (!chatMessages) return;
         chatMessages.innerHTML = '';
         if (!activePersonality) return;
@@ -93,6 +96,10 @@ window.KiroChat = (function () {
             message: h.message
         }));
 
+        const currentCode = window.KiroEditor ? window.KiroEditor.getValue() : null;
+        const previousCode = lastSentCode;
+        lastSentCode = currentCode;
+
         const intensitySelect = document.getElementById('aiIntensitySelect');
         const intensityVal = intensitySelect ? intensitySelect.value : (localStorage.getItem('ai_intensity') || 'normal');
 
@@ -103,6 +110,8 @@ window.KiroChat = (function () {
                 body: JSON.stringify({
                     personalityId: activePersonality.id,
                     message: messageText,
+                    currentCode: currentCode,
+                    previousCode: previousCode,
                     history: currentHistory,
                     intensity: intensityVal,
                     customApiKey: localStorage.getItem('gemini_api_key') || null,
