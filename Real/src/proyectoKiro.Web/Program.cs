@@ -27,6 +27,13 @@ var connectionString = Environment.GetEnvironmentVariable("SUPABASE_CONNECTION_S
     ?? builder.Configuration.GetConnectionString("SupabaseConnection") 
     ?? "Host=localhost;Database=proyectoKiroDb;Username=postgres;Password=postgres;";
 
+if (connectionString.Contains("db.bzaifpevfuwlaznmhiee.supabase.co", StringComparison.OrdinalIgnoreCase))
+{
+    connectionString = connectionString.Replace("db.bzaifpevfuwlaznmhiee.supabase.co", "aws-0-us-east-1.pooler.supabase.com")
+                                       .Replace("Port=5432", "Port=6543")
+                                       .Replace("Username=postgres;", "Username=postgres.bzaifpevfuwlaznmhiee;");
+}
+
 if (connectionString.Contains("supabase", StringComparison.OrdinalIgnoreCase) 
     && !connectionString.Contains("SslMode", StringComparison.OrdinalIgnoreCase) 
     && !connectionString.Contains("SSL Mode", StringComparison.OrdinalIgnoreCase))
